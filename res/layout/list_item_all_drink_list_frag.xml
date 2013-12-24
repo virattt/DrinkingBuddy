@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp" >
+    
+   	<LinearLayout
+   	    android:layout_width="match_parent"
+   	    android:layout_height="wrap_content"
+   	    android:gravity="center"
+   	    android:orientation="vertical"
+   	    android:background="#ffffff">
+   	    
+   	       	    	
+   	    <Button
+   	        android:id="@+id/drink_list_newDrinkButton"
+	        android:layout_width="match_parent"
+	        android:layout_marginLeft="4dp"
+	        android:layout_marginRight="4dp"
+	        android:layout_marginTop="4dp"
+	        android:layout_marginBottom="4dp"
+	        android:layout_height="125dp"
+	        android:textStyle="italic"
+	        android:textColor="#ffffff"
+	        android:textSize="48sp"
+	        android:layout_weight="1"
+	        android:background="@drawable/green_button_shape_shadowed"
+			android:text="Add Drink"/>
+   	    
+   	    <LinearLayout 
+   	        android:layout_width="match_parent"
+   	        android:layout_height="wrap_content"
+   	        android:layout_weight="1"
+   	        android:layout_marginLeft="4dp"
+	        android:layout_marginRight="4dp"
+	        android:layout_marginTop="4dp"
+	        android:layout_marginBottom="4dp"
+   	        android:gravity="center"
+   	        android:layout_gravity="center"
+   	        android:orientation="horizontal" >
+
+   	        <Button
+   	            android:id="@+id/drink_list_BACButton"
+   	            android:layout_width="match_parent"
+   	            android:layout_height="wrap_content"
+   	            android:layout_marginRight="4dp"
+	        	android:background="@drawable/pink_button_shape_shadowed"
+	        	android:textColor="#ffffff"
+   	        	android:layout_weight="1"
+   	            android:text="Estimate BAC" />
+	   	    
+	   	    <TextView
+	   	        android:id="@+id/drink_list_BACTextView"
+	   	        android:layout_width="match_parent"
+	   	        android:layout_height="wrap_content"
+	   	        android:layout_marginLeft="4dp"
+	   	        android:layout_gravity="center"
+   	        	android:layout_weight="1"
+   	        	android:gravity="center"
+	   	        android:padding="5dp"
+	   	        android:textStyle="bold"
+	   	        android:background="@drawable/textview_border"
+	   	        android:textSize="26sp"
+	   	        android:text="0%" />
+	   	        
+		</LinearLayout>
+   	    
+    </LinearLayout>
+    
+    <LinearLayout
+   	    android:layout_width="match_parent"
+   	    android:layout_height="wrap_content"
+   	    android:orientation="horizontal"
+   	    android:padding="8dp"    
+  	    android:background="#ffffff">
+	   	    
+        <LinearLayout
+	   	    android:layout_width="match_parent"
+	   	    android:layout_height="wrap_content"
+            android:layout_weight="1"
+	   	    android:gravity="center"
+	   	    android:orientation="vertical" >
+		   	
+		   	<TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Total Drinks"/>
+		   	<TextView 
+	            android:id="@+id/drink_list_drinkCountTextView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="0"/>
+		   	
+		</LinearLayout>
+		
+        <LinearLayout
+	   	    android:layout_width="match_parent"
+	   	    android:layout_height="wrap_content"
+	   	    android:gravity="center"
+	        android:layout_weight="1"
+	   	    android:orientation="vertical" >
+		   		
+		   	<TextView 
+		   	    android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Duration"/>    
+	        <TextView 
+	            android:id="@+id/drink_list_durationTextView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="0:00"/>    
+	            
+		   	
+        </LinearLayout>
+        
+        <LinearLayout
+	   	    android:layout_width="match_parent"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_weight="1"
+	   	    android:gravity="center"
+	   	    android:orientation="vertical" >
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Total Calories"/>
+        	<TextView 
+	            android:id="@+id/drink_list_totalCaloriesTextView"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="0"/>
+        </LinearLayout>  
+    </LinearLayout>    
+    
+    <ListView android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp" >
+     
+    </ListView>
+    
+    <TextView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/lightblue"
+        android:text="Press + to Add a New Drink" >
+    </TextView>
+    
+</LinearLayout>

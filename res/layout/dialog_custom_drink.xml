@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <TextView
+	    android:layout_width="match_parent"
+	    android:layout_height="64dp"
+	    android:text="Custom Drink"
+	    android:textColor="#ff69b4"
+	    android:background="@color/dodgerblue"
+	    android:textStyle="bold"
+	    android:gravity="center"
+	    android:layout_gravity="center"
+	    android:textSize="32sp" />
+    
+    <EditText 
+        android:id="@+id/custom_drink_dialog_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:inputType="textCapWords"
+        android:hint="Enter drink type" />
+    
+    <EditText 
+        android:id="@+id/custom_drink_dialog_alcohol_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:inputType="numberDecimal"
+        android:hint="% Alcohol (default is 5%)" />
+    
+    <EditText 
+        android:id="@+id/custom_drink_dialog_calories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:inputType="number"
+        android:hint="Calories (default is 100)" />
+    
+    <EditText 
+        android:id="@+id/custom_drink_dialog_volume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:inputType="number"
+        android:hint="Volume in Fl. Oz. (default is 12)" />
+
+</LinearLayout>

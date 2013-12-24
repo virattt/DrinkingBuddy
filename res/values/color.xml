@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="paleturquoise">#AFEEEE</color>
+    <color name="sgiteal">#388E8E</color>
+    <color name="deepskyblue">#00688B</color>
+    <color name="powderblue">#B0E0E6</color>
+    <color name="nypdblue">#39B7CD</color>
+    <color name="lightblue">#BFEFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="dodgerblue">#104E8B</color>
+    
+</resources>

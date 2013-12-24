@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <!-- <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="@string/drink_title_label"
+       style="?android:listSeparatorTextViewStyle"
+       android:textColor="#ffffff" />
+  -->
+ 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <EditText 
+	        android:id="@+id/drink_title"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:inputType="textCapWords"
+	        android:textStyle="bold"
+	        android:layout_weight="1"
+	        android:textSize="26dp"
+	        android:textColor="#FFCC11"
+	        android:hint="@string/drink_title_hint" />
+	    
+	    <Button
+	        android:id="@+id/drink_time"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/drink_time"
+	        android:textColor="#ffffff" />
+	</LinearLayout>     
+	<LinearLayout 
+	    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+	    <Button
+	        android:id="@+id/drink_beerButton"
+	        android:layout_width="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_height="wrap_content"
+	        android:textColor="#ffffff"
+	        android:text="Beer" />
+	    <Button
+	        android:id="@+id/drink_wineButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textColor="#ffffff"
+	        android:text="Wine" />
+	    <Button
+	        android:id="@+id/drink_liquorButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textColor="#ffffff"
+	        android:text="Liquor" />
+	    <Button
+	        android:id="@+id/drink_customDrinkButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textColor="#ffffff"
+	        android:text="Custom" />
+	</LinearLayout>   
+	
+    <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="@string/drink_details_label"
+       style="?android:listSeparatorTextViewStyle"
+       android:textColor="#ffffff" />
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight=".33"
+	    android:gravity="center"
+	    android:padding="8dp" >
+        
+	    <ImageView
+	        android:id="@+id/drink_imageView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:scaleType="centerInside"
+       	 	android:background="#FFCC11"
+       		 android:padding="2dp"
+			android:adjustViewBounds="true"
+			android:cropToPadding="true"
+			android:src="@drawable/logo_drink_fragment"/>
+	    
+    </LinearLayout>
+     
+     <LinearLayout
+        android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="horizontal"
+	    android:layout_weight=".66"
+	    android:gravity="center" >
+	 	    
+	    <ImageButton
+		    android:id="@+id/drink_photo_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" 
+		    android:src="@android:drawable/ic_menu_camera"
+		    android:contentDescription="@string/add_drink_photo" /> 
+		    
+		<ImageButton 
+		    android:id="@+id/drink_photo_delete_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:src="@android:drawable/ic_menu_delete"  
+		    android:contentDescription="@string/delete_drink_photo"/>
+		
+	</LinearLayout>
+	
+    <Button
+        android:id="@+id/drink_saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:text="@string/save_button" />
+	
+</LinearLayout>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/background_activated" >
+    
+   	<ImageView
+        android:id="@+id/drink_list_item_smallImageView"
+        android:layout_width="85dp"
+        android:layout_height="110dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/logo_drink_fragment"
+        android:background="#FFCC11"
+        android:padding="2dp"
+		android:cropToPadding="true" />
+    
+    <TextView
+        android:id="@+id/drink_list_item_drinksTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+		android:textSize="22sp"
+		android:textColor="#ff69b4"
+		android:textStyle="bold"
+		android:text="10" />
+    
+    <TextView
+        android:id="@+id/drink_list_item_titleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/drink_list_item_drinksTextView"
+        android:layout_toLeftOf="@id/drink_list_item_smallImageView"
+        android:layout_marginLeft="8dp"
+        android:gravity="center_vertical"
+        android:hint="Drink"
+        android:textColor="#FFCC11"
+        android:textSize="22sp"
+        android:textStyle="bold" />	  
+        
+	<TextView
+        android:id="@+id/drink_list_item_caloriesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_alignLeft="@id/drink_list_item_titleTextView"
+        android:layout_below="@id/drink_list_item_titleTextView"
+        android:textSize="18sp"
+        android:textColor="#00ff00"
+        android:text="Calories: 0" />
+          
+    <TextView
+        android:id="@+id/drink_list_item_timeTextView"
+        android:layout_width="match_parent" 
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_alignLeft="@id/drink_list_item_titleTextView"
+        android:layout_below="@id/drink_list_item_caloriesTextView"
+        android:textSize="18dp"
+        android:textColor="#FFFFFF"
+        android:text="Time" />
+    
+</RelativeLayout>

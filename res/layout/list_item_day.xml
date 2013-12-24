@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/background_activated" >
+    
+    <TextView
+        android:id="@+id/day_list_item_drinkCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_alignParentRight="true"
+        android:textColor="#ff69b4"
+		android:text="@string/drink_count" />
+        
+    <TextView
+        android:id="@+id/day_list_item_dayTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"	
+        android:textSize="22sp"
+        android:textColor="#FFCC11"
+        android:hint="Day"/>
+    
+    <TextView
+        android:id="@+id/day_list_item_caloriesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/day_list_item_dayTextView"
+        android:textSize="18sp"
+        android:textColor="#00FF00"
+        android:hint="Calories: 0"/>
+    
+    <TextView
+        android:id="@+id/day_list_item_dateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/day_list_item_caloriesTextView"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:hint="Date"/>
+        
+</RelativeLayout>

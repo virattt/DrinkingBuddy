@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/dodgerblue" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+            
+            <ImageButton 
+			    android:id="@+id/user_profile_imageButton"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:background="@null"
+			    android:src="@drawable/user_button"/>
+			<TextView
+			    android:id="@+id/user_profile_textView"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textSize="18sp"
+			    android:textStyle="bold"
+			    android:textColor="#FFCC11" 
+			    android:text="Profile" />
+		            
+        </LinearLayout>
+
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+			
+            <ImageButton 
+			    android:id="@+id/start_drinking_imageButton"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"  
+			    android:background="@null"
+			    android:src="@drawable/ic_launcher" />
+			<TextView
+			    android:id="@+id/start_drinking_textView"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textSize="18sp"
+			    android:textStyle="bold"
+			    android:textColor="#FFCC11" 
+			    android:text="Drinks" />
+		            
+        </LinearLayout>
+            
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/drinkster_disclaimer_imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/about_icon" />
+
+            <TextView
+                android:id="@+id/drinkster_disclaimer_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:textColor="#FFCC11"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            
+        </LinearLayout>
+        
+        
+    </LinearLayout>
+<!--         
+	<ImageButton 
+	    android:id="@+id/user_profile_imageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_centerHorizontal="true"
+	    android:background="@null"
+	    android:src="@drawable/user_button"/>
+	<TextView
+	    android:id="@+id/user_profile_textView"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/user_profile_imageButton"
+	    android:layout_centerHorizontal="true"
+	    android:textSize="18sp"
+	    android:textStyle="bold"
+	    android:textColor="#FFCC11" 
+	    android:layout_marginBottom="24dp"
+	    android:text="Profile" />
+	
+	<ImageButton 
+	    android:id="@+id/start_drinking_imageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"    
+	    android:layout_below="@id/user_profile_textView"
+	    android:layout_centerHorizontal="true"
+	    android:background="@null"
+	    android:src="@drawable/ic_launcher" />
+	<TextView
+	    android:id="@+id/start_drinking_textView"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/start_drinking_imageButton"
+	    android:layout_centerHorizontal="true"
+	    android:textSize="18sp"
+	    android:textStyle="bold"
+	    android:textColor="#FFCC11" 
+	    android:layout_marginBottom="24dp"
+	    android:text="@string/start_drinking" />
+	
+	<ImageButton 
+	    android:id="@+id/drinkster_disclaimer_imageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:layout_below="@id/start_drinking_textView"
+	    android:layout_centerHorizontal="true"
+	    android:background="@null"
+	    android:src="@drawable/about_icon"/>
+	<TextView
+	    android:id="@+id/drinkster_disclaimer_textView"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/drinkster_disclaimer_imageButton"
+	    android:layout_centerHorizontal="true"
+	    android:textSize="18sp"
+	    android:textStyle="bold"
+	    android:textColor="#FFCC11" 
+	    android:text="About" />
+
+ -->
+</RelativeLayout>

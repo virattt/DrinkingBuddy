@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Drinkster</string>
+    <string name="action_settings">Settings</string>
+	<string name="drink_title_hint">Enter name of drink</string>
+	<string name="drink_photo_text">Snap a Pic of Your Drink!</string>
+	<string name="days_title">Drinking Days</string>
+	<string name="drinks_title">Drinks</string>
+	<string name="drink_title_label">Drink Name</string>
+	<string name="drink_details_label">Details</string>
+	<string name="new_drink">New Drink</string>
+	<string name="delete_drink">Delete Drink</string>
+	<string name="time_picker_title">When did you have your drink?</string>
+	<string name="drink_time">Set Time</string>
+	<string name="new_drink_day">New Drink Day</string>
+	<string name="delete_drink_day">Delete</string>
+	<string name="add_drink_photo">Add Photo</string>
+	<string name="delete_drink_photo">Delete Photo</string>
+	<string name="drink_count">Drinks</string>
+	<string name="user_name">Name:</string>
+	<string name="user_male">Male</string>
+	<string name="user_female">Female</string>
+	<string name="user_weight">Weight:</string>
+	<string name="profile"><b>Profile</b></string>
+	<string name="save_button">Save</string>
+	<string name="user_weight_warning">Note: Please enter your weight (for BAC calculator).</string>
+	<string name="start_drinking">Start Drinking</string>
+	<string name="cancel">Cancel</string>
+	<string name="profile_incomplete_title">Complete your profile to estimate BAC</string>
+	<string name="profile_incomplete_OK_button">Edit Profile</string>
+
+</resources>

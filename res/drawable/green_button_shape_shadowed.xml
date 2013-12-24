@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item>
+        <shape android:shape="rectangle" >
+            <corners android:radius="8dp" />
+            
+            <gradient
+                android:angle="90"
+                android:centerColor="#303339"
+                android:centerY="0.05"
+                android:endColor="#00ff00"
+                android:startColor="#009900" />
+        </shape>
+    </item>
+    <item>
+        <inset
+            android:drawable="@drawable/green_button_shape"
+            android:insetBottom="5dp" />
+    </item>
+
+</layer-list>
