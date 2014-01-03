@@ -163,14 +163,11 @@ public class DrinkLab implements Parcelable {
 	
 	public double getAverageAlcoholContent() {
 		double alcohol_content = 0.0;
-		double sum_of_alc_content = 0.0;
 		
 		for (Drink d : mDrinks) {
-			sum_of_alc_content += d.getAlcoholContent();
+			alcohol_content += (d.getAlcoholContent() * d.getVolume());
 		}
-		
-		alcohol_content = (sum_of_alc_content / mDrinks.size());
-		
+
 		return alcohol_content;
 	}
 	
@@ -340,7 +337,7 @@ public class DrinkLab implements Parcelable {
 		}
 		
 		// get range for BAC, low and high
-		bac_low = (((volume * average_alcohol_content) * (5.14)) / (weight * gender_constant)) - (0.015 * hours); 
+		bac_low = (((average_alcohol_content) * (5.14)) / (weight * gender_constant)) - (0.015 * hours); 
 		
 		// convert rage into a String
 		if (bac_low < 0) {
