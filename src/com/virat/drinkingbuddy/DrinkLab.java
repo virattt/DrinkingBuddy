@@ -16,7 +16,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 public class DrinkLab implements Parcelable {
-	private static final String TAG = "DrinkLab";
+	//private static final String TAG = "DrinkLab";
 	private static final String FILENAME = "drinks.json";
 	
 	private static final String JSON_ID = "id";
@@ -167,7 +167,6 @@ public class DrinkLab implements Parcelable {
 		
 		for (Drink d : mDrinks) {
 			sum_of_alc_content += d.getAlcoholContent();
-			Log.d(TAG, "sum is " + sum_of_alc_content + " drink's alc content is " + d.getAlcoholContent());
 		}
 		
 		alcohol_content = (sum_of_alc_content / mDrinks.size());
@@ -203,16 +202,35 @@ public class DrinkLab implements Parcelable {
 	}
 	
 	public String getTotalTime() {
+		if (mDrinks.size() == 0) {
+			return "0:00";
+		}
+		
 		Date first_drink_time = mDrinks.get(0).getTime();
-		Calendar c = Calendar.getInstance();
 		Date time_right_now = new Date();
-		
-		
-		long current_time_in_seconds = c.get(Calendar.HOUR) + c.get(Calendar.MINUTE) + c.get(Calendar.SECOND);
 		
 		long difference = time_right_now.getTime() - first_drink_time.getTime();
 
 		Date drinking_duration = new Date(difference);
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+		
+		//long second = (difference / 1000) % 60;
+		
+		long minute = ((difference / (1000 * 60)) % 60);
+		// for cases when first_drink_time's minute value is greater
+		// than the last_drink_time's minute value
+		if (minute < 0) {
+			minute = Math.abs(60 + minute);
+		}
+		long hour = ((difference / (1000*60*60)) % 24);
+		
+		if (hour < 0) {
+			hour = Math.abs(23 + hour);
+		}
+
+		String time = String.format("%01d:%02d", hour, minute);
+
+		/*Date drinking_duration = new Date(difference);
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 		
 		long second = (difference / 1000) % 60;
@@ -220,7 +238,7 @@ public class DrinkLab implements Parcelable {
 		long hour = (difference / (1000 * 60 * 60)) % 24;
 
 		String time = String.format("%02d:%02d:%02d", hour, minute, second);
-		
+		*/
 		return time;
 	}
 	
@@ -242,16 +260,13 @@ public class DrinkLab implements Parcelable {
 		long minute = ((difference / (1000 * 60)) % 60);
 		// for cases when first_drink_time's minute value is greater
 		// than the last_drink_time's minute value
-		Log.d(TAG, "minute value is: " + minute);
 		if (minute < 0) {
 			minute = Math.abs(60 + minute);
 		}
 		long hour = ((difference / (1000*60*60)) % 24);
-		Log.d(TAG, "hour value is: " + hour);
 		
 		if (hour < 0) {
 			hour = Math.abs(23 + hour);
-			Log.d(TAG, "hour value is: " + hour);
 		}
 
 		String time = String.format("%01d:%02d", hour, minute);
@@ -263,7 +278,7 @@ public class DrinkLab implements Parcelable {
 	// calculate the total # of hours of drinking for
 	// the BAC calculator, which uses hours as its 
 	// input for time.
-	private long getHoursOfDrinking() {
+	protected long getHoursOfDrinking() {
 		if (mDrinks.size() == 0) {
 			return 0;
 		}
@@ -277,16 +292,11 @@ public class DrinkLab implements Parcelable {
 		
 		long hour_now = (time_right_now.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
 		long hour_first_drink = (first_drink_time.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
-		Log.d(TAG, "Hour right now: " + hour_now);
-		Log.d(TAG, "Hour first drink: " + hour_first_drink);
-		
 		
 		long hour_difference = hour_now - hour_first_drink;
-		Log.d(TAG, "Hour difference: " + hour_difference);
 		
 		if (hour_difference < 0) {
 			hour_difference = Math.abs(23 + hour_difference);
-			Log.d(TAG, "hour difference is: " + hour_difference);
 		}
 		
 		/*
@@ -310,22 +320,15 @@ public class DrinkLab implements Parcelable {
 		
 		// total hours of drinking
 		long hours = getHoursOfDrinking();
-		// int total_drinks = mDrinks.size();
 		
-		//int weight = Integer.parseInt(Person.get(mAppContext).getWeight());
-		
-		//int weight = Integer.parseInt(Person.get(mAppContext).getWeight());
 		int weight = 180;
 		
 		int volume = getTotalVolume();
-		Log.d(TAG, "volume is: " + volume);
 		double average_alcohol_content = getAverageAlcoholContent();
-		Log.d(TAG, "average alc content: " + average_alcohol_content);
 		double alcohol_elimination_constant = 0.015;
 		double gender_constant; 
 		double bac_low = 0;
 		String bac_low_string;
-		
 		
 		// calculate the gender constant:
 		// 0.55 for females and 0.68 for males
@@ -336,12 +339,8 @@ public class DrinkLab implements Parcelable {
 			gender_constant = 0.73;
 		}
 		
-		Log.d(TAG, "Gender constant is: " + gender_constant);
-		
 		// get range for BAC, low and high
 		bac_low = (((volume * average_alcohol_content) * (5.14)) / (weight * gender_constant)) - (0.015 * hours); 
-		Log.d(TAG, "hours = " + hours);
-		Log.d(TAG, "bac_low w/o abs value = " + bac_low);
 		
 		// convert rage into a String
 		if (bac_low < 0) {
@@ -349,7 +348,6 @@ public class DrinkLab implements Parcelable {
 		} else {
 			bac_low_string = String.format("%1$,.4f", bac_low);
 		}
-		//String bac_high_string = String.format("%1$,.3f", Math.abs(bac_high));
 		
 		return bac_low_string + "%";
 	}
@@ -365,16 +363,7 @@ public class DrinkLab implements Parcelable {
 		}
 		return null;
 	}
-	/*
-	public boolean saveDrinks() {
-		try {
-			mSerializer.saveDrinkLab(mDrinks);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	*/
+	
 	public String toString() {
 		return mTitle;
 	}

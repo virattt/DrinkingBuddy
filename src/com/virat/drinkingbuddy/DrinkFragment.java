@@ -1,38 +1,41 @@
 package com.virat.drinkingbuddy;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.util.LruCache;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class DrinkFragment extends Fragment {
 
-	private static 	final String TAG = "DrinkFragment"; // for debugging
+	//private static 	final String TAG = "DrinkFragment"; // for debugging
 	
 	public static final String EXTRA_DRINK_ID = "com.virat.drinkingbuddy.drink_id";
 	public static final String EXTRA_DRINKLAB_ID = "com.virat.drinkingbuddy.drinklab_id";
@@ -47,19 +50,25 @@ public class DrinkFragment extends Fragment {
 	private static final int REQUEST_TIME = 0;
 	private static final int REQUEST_PHOTO = 1;
 	private static final int REQUEST_CUSTOM_DRINK = 2;
+	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	
+	
+	public static final int MEDIA_TYPE_IMAGE = 4;
+	public static final int MEDIA_TYPE_VIDEO = 5;
 	
 	private Drink mDrink;
 	private DrinkLab mDrinkLab;
-	private EditText mTitleField;
+	private TextView mTitleField;
 	private Button mTimeButton;
-	private ImageButton mPhotoButton;
 	private ImageButton mDeletePhotoButton;
+	private ImageButton mPhotoButton;
 	private ImageView mPhotoView;
 	private Button mBeerButton;
 	private Button mWineButton;
 	private Button mLiquorButton;
 	private Button mCustomDrinkButton;
 	private Button mSaveButton;
+	private Uri mFileUri;
 	
 	private LruCache<String, Bitmap> mMemoryCache; // memory cache
 	
@@ -125,22 +134,12 @@ public class DrinkFragment extends Fragment {
 		}
 		*/
 		
-		mTitleField = (EditText)v.findViewById(R.id.drink_title);
+		mTitleField = (TextView)v.findViewById(R.id.drink_titleTextView);
 		mTitleField.setText(mDrink.getTitle());
-		mTitleField.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				mDrink.setTitle(s.toString());
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			
-			@Override
-			public void afterTextChanged(Editable s) {}
-		});
+		mTitleField.setHintTextColor(getResources().getColor(R.color.gold));
 		
-		mTimeButton = (Button)v.findViewById(R.id.drink_time);
+		
+		mTimeButton = (Button)v.findViewById(R.id.drink_timeButton);
 		mTimeButton.setOnClickListener(new View.OnClickListener() {	
 			@Override
 			public void onClick(View v) {
@@ -165,16 +164,7 @@ public class DrinkFragment extends Fragment {
 			}
 		});
 	    
-		
-		mPhotoButton = (ImageButton)v.findViewById(R.id.drink_photo_button);
-        mPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), DrinkCameraActivity.class);
-                startActivityForResult(i, REQUEST_PHOTO);
-            }
-        });
-        
+
         mDeletePhotoButton = (ImageButton)v.findViewById(R.id.drink_photo_delete_button);
         mDeletePhotoButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -189,6 +179,24 @@ public class DrinkFragment extends Fragment {
 				
 			}
 		});
+		
+		mPhotoButton = (ImageButton)v.findViewById(R.id.drink_photo_button);
+        mPhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), DrinkCameraActivity.class);
+                startActivityForResult(i, REQUEST_PHOTO);
+            	
+            	/*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            	
+            	mFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, getActivity().getApplicationContext()); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri); // set the image file name
+
+                // start the image capture Intent
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            	*/
+            }
+        });
         
         mBeerButton = (Button)v.findViewById(R.id.drink_beerButton);
         mBeerButton.setOnClickListener(new View.OnClickListener() {
@@ -203,8 +211,6 @@ public class DrinkFragment extends Fragment {
 				mDrink.setCalories(105); // 105 calories in average beer
 				mDrink.setAlcoholContent(.05); // avg alcohol content in beer is 4.5%
 				mDrink.setVolume(12); // avg volume of beer is 12 fluid ounces
-				Log.d(TAG, "Calories in Beer is: " + mDrink.getCalories() + " Alc Content is: " + mDrink.getAlcoholContent());
-				Log.d(TAG, "Volume is: " + mDrink.getVolume());
 			}
 		});
 
@@ -221,8 +227,6 @@ public class DrinkFragment extends Fragment {
 				mDrink.setCalories(125); // 125 calories in average wine glass
 				mDrink.setAlcoholContent(.12); // avg alcohol content in beer is 12%
 				mDrink.setVolume(5); // avg volume of wine is 5 fluid ounces
-				Log.d(TAG, "Calories in Wine is: " + mDrink.getCalories() + " Alc Content is: " + mDrink.getAlcoholContent());
-				Log.d(TAG, "Volume is: " + mDrink.getVolume());
 			}
 		});
         
@@ -239,8 +243,6 @@ public class DrinkFragment extends Fragment {
 				mDrink.setCalories(97); // 97 calories in average liquor drink
 				mDrink.setAlcoholContent(.40); // avg alcohol content in liquor is 40%
 				mDrink.setVolume(1.25); // avg volume of liquor is 1.5 fluid ounces
-				Log.d(TAG, "Calories in Liquor is: " + mDrink.getCalories() + " Alc Content is: " + mDrink.getAlcoholContent());
-				Log.d(TAG, "Volume is: " + mDrink.getVolume());
 
 			}
 		});
@@ -271,7 +273,6 @@ public class DrinkFragment extends Fragment {
 			}
 		});
 		
-        
         // If camera is not available, disable camera functionality
         PackageManager pm = getActivity().getPackageManager();
         if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA) &&
@@ -302,6 +303,7 @@ public class DrinkFragment extends Fragment {
 	*/
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode != Activity.RESULT_OK)
 			return;
 		if (requestCode == REQUEST_TIME) {
@@ -316,7 +318,15 @@ public class DrinkFragment extends Fragment {
 				mDrink.setPhoto(p);
 				showPhoto();
 			}
-		} else if (requestCode == REQUEST_CUSTOM_DRINK) {
+		} else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+			String filename = data.getDataString();
+			
+			if (filename != null) {
+				Photo p = new Photo(filename);
+				mDrink.setPhoto(p);
+				showPhoto();
+			}
+	    } else if (requestCode == REQUEST_CUSTOM_DRINK) {
 			String custom_drink_name = data.getStringExtra(CustomDrinkFragment.EXTRA_CUSTOM_DRINK_NAME);
 			mDrink.setTitle(custom_drink_name);
 			mTitleField.setText(mDrink.getTitle());
@@ -327,12 +337,76 @@ public class DrinkFragment extends Fragment {
 			int custom_drink_calories = data.getIntExtra(CustomDrinkFragment.EXTRA_CUSTOM_DRINK_CALORIES, 0);
 			mDrink.setCalories(custom_drink_calories);
 			
-			int custom_drink_volume = data.getIntExtra(CustomDrinkFragment.EXTRA_CUSTOM_DRINK_VOLUME, 0);
+			double custom_drink_volume = data.getDoubleExtra(CustomDrinkFragment.EXTRA_CUSTOM_DRINK_VOLUME, 0.00);
 			mDrink.setVolume(custom_drink_volume);
-			
-			Log.d(TAG, "Custom Drink Name: " + mDrink.getTitle() + " Alc: " + mDrink.getAlcoholContent() + " Calories: " + mDrink.getCalories());
 		}
 	}
+	
+	/** create a String Uri for saving an image */
+	public String getPhotoDirString() {
+	// Create a filename
+				String filename = UUID.randomUUID().toString() + ".jpg";
+				// Save the jpeg data to disk
+				FileOutputStream os = null;
+				boolean success = true;
+				try {
+					os = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
+					//os.write();
+				} catch (Exception e) {
+					success = false;
+				} finally {
+					try {
+						if (os != null)
+							os.close();
+					} catch (Exception e) {
+						success = false;
+					}
+				}
+				return filename;
+	}
+	/** Create a file Uri for saving an image or video */
+	private static Uri getOutputMediaFileUri(int type, Context context){
+		return Uri.fromFile(getOutputMediaFile(type, context));
+	}
+
+	/** Create a File for saving an image or video */
+	private static File getOutputMediaFile(int type, Context context){
+	    // To be safe, you should check that the SDCard is mounted
+	    // using Environment.getExternalStorageState() before doing this.
+		String filename = UUID.randomUUID().toString() + ".jpg";
+		File mediaStorageDir;
+
+
+		mediaStorageDir = new File(context.getFilesDir(), "DrinksterPictures");
+		mediaStorageDir.mkdirs();
+		
+
+	    // Create the storage directory if it does not exist
+	    if (! mediaStorageDir.exists()){
+	        if (! mediaStorageDir.mkdirs()){
+	            return null;
+	        }
+	    }
+
+	    // Create a media file name
+	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+	    File mediaFile;
+	    if (type == MEDIA_TYPE_IMAGE){
+	        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+	        "IMG_"+ timeStamp + ".jpg");
+	        mediaFile.mkdirs();
+	    } else if(type == MEDIA_TYPE_VIDEO) {
+	        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+	        "VID_"+ timeStamp + ".mp4");
+	    } else {
+	        return null;
+	    }
+	    
+	    //Log.d(TAG, "mediaFile: " + mediaFile);
+
+	    return mediaFile;
+	}
+	
 	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
 	    if (getBitmapFromMemCache(key) == null) {
 	        mMemoryCache.put(key, bitmap);
@@ -358,14 +432,10 @@ public class DrinkFragment extends Fragment {
 			
 			if (bitmap != null) {
 				mPhotoView.setImageBitmap(bitmap);
-				Log.d(TAG, "DrinkFragment Bitmap is not null");
 
 			} else {
 				BitmapWorkerTask task = new BitmapWorkerTask(getActivity(), mPhotoView);
 				task.execute(path);
-
-				Log.d(TAG, "DrinkFragment Bitmap is NULL");
-				//b = PictureUtils.getScaledDrawable(getActivity(), path);
 			}
 		}
 		//mPhotoView.setImageDrawable(b);	
@@ -426,5 +496,12 @@ public class DrinkFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();	
+	}
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    if (mFileUri != null) {
+	        outState.putString("cameraImageUri", mFileUri.toString());
+	    }
 	}
 }

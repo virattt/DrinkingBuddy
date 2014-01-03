@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -21,6 +21,28 @@
     
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/black</item>
+    </style>
+    
+    <style name="DrinkDetailsButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">#ffffff</item>
+		<item name="android:textSize">18dp</item>
+		<item name="android:background">@drawable/pink_button_shape_not_shadowed</item>
+        
+        
+        
+    </style>
+    <style name="DrinkDetailsTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#000000</item>
+		<item name="android:paddingBottom">4dp</item>
+		<item name="android:paddingTop">4dp</item>
+		<item name="android:textSize">14dp</item>
+		<item name="android:background">@drawable/shape_three_borders</item>
     </style>
     
     

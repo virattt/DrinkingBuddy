@@ -7,13 +7,13 @@
     <TextView
 	    android:layout_width="match_parent"
 	    android:layout_height="64dp"
-	    android:text="Custom Drink"
 	    android:textColor="#ff69b4"
 	    android:background="@color/dodgerblue"
 	    android:textStyle="bold"
 	    android:gravity="center"
 	    android:layout_gravity="center"
-	    android:textSize="32sp" />
+	    android:textSize="32dp"
+	    android:text="Custom Drink" />
     
     <EditText 
         android:id="@+id/custom_drink_dialog_name"
@@ -24,7 +24,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:inputType="textCapWords"
-        android:hint="Enter drink type" />
+        android:hint="Enter Drink Name" />
     
     <EditText 
         android:id="@+id/custom_drink_dialog_alcohol_content"
@@ -35,7 +35,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:inputType="numberDecimal"
-        android:hint="% Alcohol (default is 5%)" />
+        android:hint="Enter Alcohol % (default is 40%)" />
     
     <EditText 
         android:id="@+id/custom_drink_dialog_calories"
@@ -46,7 +46,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:inputType="number"
-        android:hint="Calories (default is 100)" />
+        android:hint="Enter Calories (default is 100)" />
     
     <EditText 
         android:id="@+id/custom_drink_dialog_volume"
@@ -56,7 +56,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:inputType="number"
-        android:hint="Volume in Fl. Oz. (default is 12)" />
+        android:inputType="numberDecimal"
+        android:hint="Enter Volume (default is 1.25 fl oz)" />
 
 </LinearLayout>

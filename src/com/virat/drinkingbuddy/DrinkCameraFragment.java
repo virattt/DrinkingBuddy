@@ -2,31 +2,32 @@ package com.virat.drinkingbuddy;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+@SuppressLint("NewApi")
 public class DrinkCameraFragment extends Fragment {
-	private static final String TAG = "drinkCameraFragment";
+	//private static final String TAG = "drinkCameraFragment";
 	
 	public static final String EXTRA_PHOTO_FILENAME = 
 			"com.virat.drinkingbuddy.photo_filename";
@@ -78,7 +79,6 @@ public class DrinkCameraFragment extends Fragment {
 	                    
                     }
                 } catch (IOException exception) {
-                    Log.e(TAG, "Error setting up preview display", exception);
                 }   
             }
 
@@ -95,10 +95,20 @@ public class DrinkCameraFragment extends Fragment {
                 // The surface has changed size; update the camera preview size
                 Camera.Parameters parameters = mCamera.getParameters();
                 Size s = getBestSupportedSize(parameters.getSupportedPreviewSizes(), w, h);
+                
+                // check is user's phone is a Samsung Galaxy S4. 
+                // The reason for this is because the S4 has a 
+                // resolution setting is 2560 x 1440.  Without this
+                // check and reformatting of s.width to 1440, the user's
+                // S4 will take pictures that have white/black bars on the 
+                // side of the image that are quite unsightly.
+                if (isGalaxyS4()) {
+                	s.width = 1440;
+                }
                 parameters.setPreviewSize(s.width, s.height);
                 s = getBestSupportedSize(parameters.getSupportedPictureSizes(), w, h);
                 parameters.setPictureSize(s.width, s.height);
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 mCamera.setParameters(parameters);
                 
                 // toggle flash button
@@ -124,11 +134,10 @@ public class DrinkCameraFragment extends Fragment {
 				});
                 
                 // handle auto focus touching
-                
+
                 try {
                     mCamera.startPreview();
                 } catch (Exception e) {
-                    Log.e(TAG, "Could not start preview", e);
                     mCamera.release();
                     mCamera = null;
                 }
@@ -178,14 +187,12 @@ public class DrinkCameraFragment extends Fragment {
 				os = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
 				os.write(data);
 			} catch (Exception e) {
-				Log.e(TAG, "Error writing to file " + filename, e);
 				success = false;
 			} finally {
 				try {
 					if (os != null)
 						os.close();
 				} catch (Exception e) {
-					Log.e(TAG, "Error closing file " + filename, e);
 					success = false;
 				}
 			}
@@ -200,6 +207,18 @@ public class DrinkCameraFragment extends Fragment {
 			getActivity().finish();
 		}
 	};
+
+	private boolean isGalaxyS4() {
+		if (Build.MODEL.equals("SAMSUNG-SGH-M919") || 
+			Build.MODEL.equals("SAMSUNG-SGH-I337") ||
+			Build.MODEL.equals("SAMSUNG-SCH-I545") ||
+			Build.MODEL.equals("SAMSUNG-SPH-L720") ||
+			Build.MODEL.equals("SAMSUNG-SCH-R970"))
+			return true;
+		else {
+			return false;
+		}
+	}
     
     @TargetApi(9)
     @Override

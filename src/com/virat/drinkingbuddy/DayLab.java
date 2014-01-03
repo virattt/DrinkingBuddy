@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class DayLab {
 
-	private static final String TAG = "DrinkLab";
+	//private static final String TAG = "DrinkLab";
 	private static final String FILENAME = "drinks.json";
 	
 	private ArrayList<DrinkLab> mDrinkDays;
@@ -26,10 +26,8 @@ public class DayLab {
 		
 		try {
 			mDrinkDays = mSerializer.loadDrinkLab();
-			Log.d(TAG, "Drinks loaded successfully");
 		} catch (Exception e) {
 			mDrinkDays = new ArrayList<DrinkLab>();
-			Log.e(TAG, "Drinks NOT loaded successfully", e);
 		}
 	}
 	

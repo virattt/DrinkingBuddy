@@ -7,6 +7,10 @@
         android:title="Profile"
         android:showAsAction="ifRoom|withText" />
     
+    <item android:id="@+id/daylist_menu_item_disclaimer"
+        android:title="Disclaimer"
+        android:showAsAction="never|withText" />
+    
    <!--  <item android:id="@+id/menu_item_new_drink_day"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/new_drink_day"

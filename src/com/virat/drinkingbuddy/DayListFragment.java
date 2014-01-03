@@ -6,9 +6,12 @@ import java.util.Date;
 
 import android.annotation.TargetApi;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
@@ -31,12 +34,20 @@ import android.widget.TextView;
 
 public class DayListFragment extends ListFragment {
 	
-	private static final String TAG = "DayListFragment";
+	//private static final String TAG = "DayListFragment";
+	private static final String DIALOG_TERMS = "terms_and_conditions";
+	
+	private static final int REQUEST_TERMS = 0;
+	
+	public static final String TERMS_AND_CONDITIONS = "TermsAndConditions";
+	
 	
 	private ArrayList<DrinkLab> mDrinkDays;
 	private TextView mDayTextView;
 	private TextView mCaloriesTextView;
 	private TextView mDateTextView;
+	
+	private boolean mTermsAgreed;
 	
 	private Button mStartDrinkingButton;
 	
@@ -54,6 +65,49 @@ public class DayListFragment extends ListFragment {
 		DayAdapter adapter = new DayAdapter(mDrinkDays);		
 		setListAdapter(adapter);
 		setHasOptionsMenu(true);
+		
+		// Set up Shared Prefs for Terms & Conditions
+		SharedPreferences terms_settings = this.getActivity().getSharedPreferences(TERMS_AND_CONDITIONS, 0);
+		mTermsAgreed = terms_settings.getBoolean("terms agreed", false);
+		
+		// Check if Terms have been seen
+		if (mTermsAgreed == false) {
+			FragmentManager fm = getActivity().getSupportFragmentManager();
+			TermsAndConditionsFragment dialog = new TermsAndConditionsFragment();
+			dialog.setTargetFragment(DayListFragment.this, REQUEST_TERMS);
+			dialog.show(fm, DIALOG_TERMS);
+		}
+		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_OK)
+			return;
+		
+		if (requestCode == REQUEST_TERMS) {
+			mTermsAgreed = data.getBooleanExtra(TermsAndConditionsFragment.EXTRA_TERMS_AGREED, false);
+			SharedPreferences terms_settings = this.getActivity().getSharedPreferences(TERMS_AND_CONDITIONS, 0);
+			// Editor object to make preference changes
+			SharedPreferences.Editor editor = terms_settings.edit();
+			
+			// Force kill application if user did not agree
+			// to the Terms & Conditions
+			if (mTermsAgreed == false) {
+				// The terms have NOT been agreed
+				editor.putBoolean("terms agreed", mTermsAgreed);	
+				// Commit the edits
+				editor.commit();
+				// closing Entire Application
+				android.os.Process.killProcess(android.os.Process.myPid());
+			} else {
+				// the user agreed to the Terms, run App as usual
+				editor.putBoolean("terms agreed", mTermsAgreed);
+				editor.commit();
+			}
+		}
+		
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@TargetApi(11)
@@ -178,7 +232,6 @@ public class DayListFragment extends ListFragment {
 		Intent i = new Intent(getActivity(), DrinkListActivity.class);
 		i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, d.getId());
 		i.putExtra(DrinkListFragment.EXTRA_DRINKLAB, d);
-		Log.d(TAG, "UUID is: " + d.getId());
 		startActivity(i);
 	}
 	
@@ -204,6 +257,12 @@ public class DayListFragment extends ListFragment {
 				i.putExtra(DrinkListFragment.EXTRA_DRINKLAB, drinkLab);
 				startActivityForResult(i, 0);				
 				return true; */
+			case R.id.daylist_menu_item_disclaimer:
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				TermsAndConditionsFragment dialog = new TermsAndConditionsFragment();
+				dialog.setTargetFragment(DayListFragment.this, REQUEST_TERMS);
+				dialog.show(fm, DIALOG_TERMS);
+				return true;
 			case android.R.id.home:
 				if (NavUtils.getParentActivityName(getActivity()) != null) {
 					NavUtils.navigateUpFromSameTask(getActivity());

@@ -47,13 +47,15 @@ import android.widget.Toast;
 
 public class DrinkListFragment extends ListFragment {
 	
-	private static final String TAG = "DrinkListFragment";
+	//private static final String TAG = "DrinkListFragment";
 	
 	public static final String EXTRA_DRINKLAB = "com.virat.drinkingbuddy.drinklab";
 	
 	private static final String DIALOG_PROFILE = "profile";
+	private static final String DIALOG_TERMS = "terms_and_conditions";
 	
 	private static final int REQUEST_DRINKLAB = 0;
+	private static final int REQUEST_TERMS = 1;
 	
 	private ArrayList<Drink> mDrinks;
 	private DrinkLab mDrinkLab;
@@ -79,11 +81,11 @@ public class DrinkListFragment extends ListFragment {
 	
 	private LruCache<String, Bitmap> mMemoryCache; // memory cache
 	
-	private DiskLruImageCache mDiskLruCache;
-	private final Object mDiskCacheLock = new Object();
-	private boolean mDiskCacheStarting = true;
-	private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
-	private static final String DISK_CACHE_SUBDIR = "thumbnails";
+	//private DiskLruImageCache mDiskLruCache;
+	//private final Object mDiskCacheLock = new Object();
+	//private boolean mDiskCacheStarting = true;
+	//private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
+	//private static final String DISK_CACHE_SUBDIR = "thumbnails";
 	
 	
 	public static DrinkListFragment newInstance (UUID drinkLabId, DrinkLab drinkLab) {
@@ -110,6 +112,7 @@ public class DrinkListFragment extends ListFragment {
 		ActionBar actionBar = getActivity().getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 		actionBar.setCustomView(R.layout.actionbar);
+		actionBar.setDisplayShowHomeEnabled(true);
 		
 		UUID drinkLabId = (UUID)getArguments().getSerializable(DrinkFragment.EXTRA_DRINKLAB_ID);
 		
@@ -143,8 +146,8 @@ public class DrinkListFragment extends ListFragment {
 		};
 		
 		// Initialize disk cache on background thread
-		File cacheDir = getDiskCacheDir(getActivity(), DISK_CACHE_SUBDIR);
-		new InitDiskCacheTask().execute(cacheDir);
+		//File cacheDir = getDiskCacheDir(getActivity(), DISK_CACHE_SUBDIR);
+		//new InitDiskCacheTask().execute(cacheDir);
 	}
 
 	/*
@@ -260,13 +263,11 @@ public class DrinkListFragment extends ListFragment {
 			@Override
 			public void onClick(View v) {
 				if (userProfileIncomplete()) {
-					Toast.makeText(getActivity(), "Complete profile", Toast.LENGTH_SHORT).show();
 					FragmentManager fm = getActivity().getSupportFragmentManager();
 					ProfileIncompleteFragment dialog = new ProfileIncompleteFragment();
 					dialog.show(fm, DIALOG_PROFILE);
 				} else {
 					mBacTextView.setText(mDrinkLab.getBAC());
-			
 				}
 			}
 		});
@@ -282,7 +283,7 @@ public class DrinkListFragment extends ListFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		//inflater.inflate(R.menu.fragment_drink_list, menu);
+		inflater.inflate(R.menu.fragment_drink_list, menu);
 	}
 	
 	/*
@@ -306,6 +307,14 @@ public class DrinkListFragment extends ListFragment {
 				startActivityForResult(i, REQUEST_DRINKLAB);
 				return true;
 				*/
+			/*
+			case R.id.drinklist_menu_item_disclaimer:
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				TermsAndConditionsFragment dialog = new TermsAndConditionsFragment();
+				dialog.setTargetFragment(DrinkListFragment.this, REQUEST_TERMS);
+				dialog.show(fm, DIALOG_TERMS);
+				return true;
+			*/
 			case android.R.id.home:
 				if (NavUtils.getParentActivityName(getActivity()) != null) {
 					NavUtils.navigateUpFromSameTask(getActivity());
@@ -335,13 +344,11 @@ public class DrinkListFragment extends ListFragment {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//super.onActivityResult(requestCode, resultCode, data);
-		Log.d(TAG, "DrinkListFragment.onActivityResult called");
 		
 		if (resultCode != Activity.RESULT_OK) 
 			return;
 		
 		if (requestCode == REQUEST_DRINKLAB) {
-			Log.d(TAG, "EXTRA_DRINKS_ARRAY received by DrinkListFragment onActivityResult");
 			mDrinkLab = data.getParcelableExtra(DrinkFragment.EXTRA_DRINKS_ARRAY);
 		}
 	}
@@ -443,10 +450,7 @@ public class DrinkListFragment extends ListFragment {
 			if (cancelPotentialWork(path, imageView)) {
 				if (bitmap != null) {
 					imageView.setImageBitmap(bitmap);
-					Log.d(TAG, "Bitmap is not null");
 				} else {
-					
-					Log.d(TAG, "Bitmap is NULL");
 					final BitmapWorkerTask task = new BitmapWorkerTask(getActivity(), imageView);
 					final AsyncDrawable asyncDrawable = 
 							new AsyncDrawable(getResources(), null, task);
@@ -457,7 +461,7 @@ public class DrinkListFragment extends ListFragment {
 		}
 	}
 	
-	class InitDiskCacheTask extends AsyncTask<File, Void, Void> {
+	/*class InitDiskCacheTask extends AsyncTask<File, Void, Void> {
 	    @Override
 	    protected Void doInBackground(File... params) {
 	        synchronized (mDiskCacheLock) {
@@ -473,7 +477,7 @@ public class DrinkListFragment extends ListFragment {
 	        return null;
 	    }
 	}
-	
+	*/
 	class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
 		protected String data;
@@ -491,11 +495,10 @@ public class DrinkListFragment extends ListFragment {
 		@Override
 		protected Bitmap doInBackground(String... params) {
 			data = params[0];
-			Bitmap bitmap = getBitmapFromDiskCache(data);
+			Bitmap bitmap = getBitmapFromMemCache(data);
 			
 			if (bitmap == null) {
 				bitmap = PictureUtils.getScaledThumbnail(imageActivity, data);
-				Log.d(TAG, "getBitmapFromDiskCache was null");
 			}
 			addBitmapToMemoryCache(data, bitmap);
 			addBitmapToCache(data, bitmap);
@@ -545,15 +548,15 @@ public class DrinkListFragment extends ListFragment {
 	        mMemoryCache.put(key, bitmap);
 	    }
 
-	    // Also add to disk cache
+	   /* // Also add to disk cache
 	    synchronized (mDiskCacheLock) {
 	        if (mDiskLruCache != null && mDiskLruCache.getBitmap(key) == null) {
 	            mDiskLruCache.put(key, bitmap);
 	        }
-	    }
+	    }*/
 	}
 
-	public Bitmap getBitmapFromDiskCache(String key) {
+	/*public Bitmap getBitmapFromDiskCache(String key) {
 	    synchronized (mDiskCacheLock) {
 	        // Wait while disk cache is started from background thread
 	        while (mDiskCacheStarting) {
@@ -567,7 +570,7 @@ public class DrinkListFragment extends ListFragment {
 	        }
 	    }
 	    return null;
-	}
+	}*/
 
 	// Creates a unique subdirectory of the designated app cache directory. Tries to use external
 	// but if not mounted, falls back on internal storage.

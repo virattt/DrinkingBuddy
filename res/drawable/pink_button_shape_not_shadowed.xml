@@ -3,7 +3,7 @@
     
     <item>
         <shape android:shape="rectangle" >
-            <corners android:radius="8dp" />
+            <corners android:topLeftRadius="8dp" android:topRightRadius="8dp"/>
             
             <gradient
                 android:angle="90"
@@ -15,8 +15,7 @@
     </item>
     <item>
         <inset
-            android:drawable="@drawable/pink_button_shape"
-            android:insetBottom="3dp" />
+            android:drawable="@drawable/pink_button_shape" />
     </item>
 
 </layer-list>

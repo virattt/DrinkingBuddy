@@ -9,10 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 
 public class ProfileIncompleteFragment extends DialogFragment {
-	
 
-	private static final String TAG = "ProfileIncompleteFragment";
-	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -24,7 +21,6 @@ public class ProfileIncompleteFragment extends DialogFragment {
 						// Launch UserFragment
 						Intent i = new Intent(getActivity(), UserActivity.class);
 						startActivity(i);
-						Log.d(TAG, "Edit Profile Pressed");
 						
 					}
 				})
@@ -33,8 +29,6 @@ public class ProfileIncompleteFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						ProfileIncompleteFragment.this.getDialog().cancel();
-						Log.d(TAG, "Cancel Pressed");
-						
 					}
 				});
 		

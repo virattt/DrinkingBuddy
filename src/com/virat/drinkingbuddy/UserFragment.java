@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class UserFragment extends Fragment {
 	
@@ -28,7 +29,7 @@ public class UserFragment extends Fragment {
 	private Button mDoneButton;
 	private TextView mUserWeightWarning;
 	
-	private static final String TAG = "UserFragment";
+	// private static final String TAG = "UserFragment";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,16 +105,13 @@ public class UserFragment extends Fragment {
 				switch(checkedId) {
 					case R.id.user_female_radioButton:
 						Person.get(getActivity()).setGender("female"); // user is female
-						Log.d(TAG, "User is " + Person.get(getActivity()).getGender());
 						break;
 					case R.id.user_male_radioButton:
 						Person.get(getActivity()).setGender("male"); // user is male
-						Log.d(TAG, "User is " + Person.get(getActivity()).getGender());
 						break;
 					default:
 						break;
 				}
-				
 			}
 		});
 		
@@ -124,15 +122,15 @@ public class UserFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				// check if user has entered a weight
+				// check if user has entered a valid weight
 				if (Person.get(getActivity()).getWeight() == null || 
-						Person.get(getActivity()).getWeight().equals("")) {
+						Person.get(getActivity()).getWeight().equals("") ||
+						Person.get(getActivity()).getWeight().equals("0")) {
 					mUserWeightWarning.setVisibility(View.VISIBLE);
-					Log.d(TAG, "Weight value is: " + Person.get(getActivity()).getWeight());
 					
 				} else {
 					mUserWeightWarning.setVisibility(View.INVISIBLE);
-					Log.d(TAG, "Weight value is: " + Person.get(getActivity()).getWeight());
+					Toast.makeText(getActivity(), "Profile Saved!", Toast.LENGTH_SHORT).show();
 					getActivity().finish();	
 				}
 			}

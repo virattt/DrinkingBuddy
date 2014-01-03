@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-		android:textSize="22sp"
+		android:textSize="22dp"
 		android:textColor="#ff69b4"
 		android:textStyle="bold"
 		android:text="10" />
@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:hint="Drink"
         android:textColor="#FFCC11"
-        android:textSize="22sp"
+        android:textSize="22dp"
         android:textStyle="bold" />	  
         
 	<TextView
@@ -46,7 +46,7 @@
         android:gravity="center_vertical"
         android:layout_alignLeft="@id/drink_list_item_titleTextView"
         android:layout_below="@id/drink_list_item_titleTextView"
-        android:textSize="18sp"
+        android:textSize="18dp"
         android:textColor="#00ff00"
         android:text="Calories: 0" />
           

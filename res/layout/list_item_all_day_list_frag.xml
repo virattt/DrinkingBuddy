@@ -18,7 +18,7 @@
 	        android:layout_height="125dp"
 	        android:layout_weight="1"
 	        android:textStyle="italic"
-	        android:textSize="48sp"
+	        android:textSize="48dp"
 	        android:textColor="#ffffff"
 	        android:background="@drawable/green_button_shape_shadowed"
 			android:text="Start Drinking"/>

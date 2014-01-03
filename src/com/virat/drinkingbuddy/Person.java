@@ -9,7 +9,6 @@ import android.content.Context;
 import android.util.Log;
 
 public class Person {
-	private static final String TAG = "Person";
 	private static final String FILENAME = "person.json";
 	
 	private static final String JSON_NAME = "name";

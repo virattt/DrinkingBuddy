@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 public class CustomDrinkFragment extends DialogFragment {
 
-	private static 	final String TAG = "CustomDrinkFragment"; // for debugging
+	//private static 	final String TAG = "CustomDrinkFragment"; // for debugging
 	
 	public static final String EXTRA_CUSTOM_DRINK_NAME = "com.virat.drinkingbuddy.custom_drink_name";
 	public static final String EXTRA_CUSTOM_DRINK_ALCOHOL_CONTENT = "com.virat.drinkingbuddy.custom_drink_alcohol_content";
@@ -23,7 +23,7 @@ public class CustomDrinkFragment extends DialogFragment {
 	private String mCustomDrinkName;
 	private double mCustomDrinkAlcoholContent;
 	private int mCustomDrinkCalories;
-	private int mCustomDrinkVolume;
+	private double mCustomDrinkVolume;
 	
 	private EditText mDrinkName;
 	private EditText mDrinkAlcoholContent;
@@ -53,11 +53,8 @@ public class CustomDrinkFragment extends DialogFragment {
 					// set Drink's alcohol content
 					mDrinkAlcoholContent = (EditText)d.findViewById(R.id.custom_drink_dialog_alcohol_content);
 					if (mDrinkAlcoholContent.getText().toString() == null || mDrinkAlcoholContent.getText().toString().equals("")) {
-						mCustomDrinkAlcoholContent = .05;
-						Log.d(TAG, "getText() is empty");
+						mCustomDrinkAlcoholContent = .40;
 					} else {
-
-						Log.d(TAG, "getText() is NOT empty");
 						mCustomDrinkAlcoholContent = Double.parseDouble(mDrinkAlcoholContent.getText().toString()) / 100;
 					}
 					
@@ -72,13 +69,11 @@ public class CustomDrinkFragment extends DialogFragment {
 					// set Drink's volume
 					mDrinkVolume = (EditText)d.findViewById(R.id.custom_drink_dialog_volume);
 					if (mDrinkVolume.getText().toString() == null || mDrinkVolume.getText().toString().equals("")) {
-						mCustomDrinkVolume = 12; 
+						mCustomDrinkVolume = 1.25; 
 					} else {
-						mCustomDrinkVolume = Integer.parseInt(mDrinkVolume.getText().toString());
+						mCustomDrinkVolume = Double.parseDouble(mDrinkVolume.getText().toString());
 					}
-					
 					sendResult(Activity.RESULT_OK);
-					
 				}
 			})
 			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -86,12 +81,9 @@ public class CustomDrinkFragment extends DialogFragment {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					CustomDrinkFragment.this.getDialog().cancel();
-					
 				}
 			});
 			
-		
-		
 		return builder.create();
 	}
 	
@@ -107,5 +99,4 @@ public class CustomDrinkFragment extends DialogFragment {
 		
 		getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
 	}
-
 }

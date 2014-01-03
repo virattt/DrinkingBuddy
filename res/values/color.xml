@@ -9,5 +9,7 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="dodgerblue">#104E8B</color>
+    <color name="gold">#FFCC11</color>
+    <color name="hotpink">#ff69b4</color>
     
 </resources>
