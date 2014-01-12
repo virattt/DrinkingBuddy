@@ -16,7 +16,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 public class DrinkLab implements Parcelable {
-	//private static final String TAG = "DrinkLab";
+	private static final String TAG = "DrinkLab";
 	private static final String FILENAME = "drinks.json";
 	
 	private static final String JSON_ID = "id";
@@ -206,13 +206,13 @@ public class DrinkLab implements Parcelable {
 		Date first_drink_time = mDrinks.get(0).getTime();
 		Date time_right_now = new Date();
 		
+		long hour_now = (time_right_now.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
+		long hour_first_drink = (first_drink_time.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
+		
+		long hour_difference = hour_now - hour_first_drink;
+		
 		long difference = time_right_now.getTime() - first_drink_time.getTime();
 
-		Date drinking_duration = new Date(difference);
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-		
-		//long second = (difference / 1000) % 60;
-		
 		long minute = ((difference / (1000 * 60)) % 60);
 		// for cases when first_drink_time's minute value is greater
 		// than the last_drink_time's minute value
@@ -225,18 +225,12 @@ public class DrinkLab implements Parcelable {
 			hour = Math.abs(23 + hour);
 		}
 
-		String time = String.format("%01d:%02d", hour, minute);
-
-		/*Date drinking_duration = new Date(difference);
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-		
-		long second = (difference / 1000) % 60;
-		long minute = ((difference / (1000 * 60)) % 60) + 1;
-		long hour = (difference / (1000 * 60 * 60)) % 24;
-
-		String time = String.format("%02d:%02d:%02d", hour, minute, second);
-		*/
-		return time;
+		String time = String.format("%01d:%02d", hour_difference, minute);
+		if (hour_difference >= 24) {
+			return "";
+		} else {
+			return time;
+		}
 	}
 	
 	public String getDrinkingSessionTime() {
@@ -248,11 +242,6 @@ public class DrinkLab implements Parcelable {
 		Date last_drink_time = mDrinks.get(mDrinks.size() -1).getTime();
 		
 		long difference = last_drink_time.getTime() - first_drink_time.getTime();
-
-		Date drinking_duration = new Date(difference);
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-		
-		//long second = (difference / 1000) % 60;
 		
 		long minute = ((difference / (1000 * 60)) % 60);
 		// for cases when first_drink_time's minute value is greater

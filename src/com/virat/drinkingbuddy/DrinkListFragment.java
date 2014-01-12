@@ -251,7 +251,7 @@ public class DrinkListFragment extends ListFragment {
 		
 		// TextView for total drinking time
 		mTotalTimeTextView = (TextView)v.findViewById(R.id.drink_list_durationTextView);		
-		mTotalTimeTextView.setText(mDrinkLab.getDrinkingSessionTime() + "");
+		mTotalTimeTextView.setText(mDrinkLab.getTotalTime() + "");
 		
 		// TextView for BAC
 		mBacTextView = (TextView)v.findViewById(R.id.drink_list_BACTextView);
