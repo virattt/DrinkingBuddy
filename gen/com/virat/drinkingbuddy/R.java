@@ -8,6 +8,9 @@
 package com.virat.drinkingbuddy;
 
 public final class R {
+    public static final class array {
+        public static final int custom_drink_array=0x7f070000;
+    }
     public static final class attr {
     }
     public static final class color {
@@ -68,64 +71,65 @@ public final class R {
         public static final int user_profile_textview_border=0x7f02001f;
     }
     public static final class id {
-        public static final int action_settings=0x7f090039;
-        public static final int actionbar_user_button=0x7f090000;
-        public static final int custom_drink_dialog_alcohol_content=0x7f090003;
-        public static final int custom_drink_dialog_calories=0x7f090004;
-        public static final int custom_drink_dialog_name=0x7f090002;
-        public static final int custom_drink_dialog_volume=0x7f090005;
-        public static final int day_list_item_caloriesTextView=0x7f090026;
-        public static final int day_list_item_dateTextView=0x7f090027;
-        public static final int day_list_item_dayTextView=0x7f090025;
-        public static final int day_list_item_drinkCountTextView=0x7f090024;
-        public static final int day_list_startDrinkingButton=0x7f09001d;
-        public static final int daylist_menu_item_disclaimer=0x7f090038;
-        public static final int dialog_time_timePicker=0x7f090006;
-        public static final int drink_beerButton=0x7f090009;
-        public static final int drink_camera_flashButton=0x7f090014;
-        public static final int drink_camera_progressContainer=0x7f090016;
-        public static final int drink_camera_surfaceView=0x7f090013;
-        public static final int drink_camera_takePictureButton=0x7f090015;
-        public static final int drink_customDrinkButton=0x7f09000c;
-        public static final int drink_imageView=0x7f09000d;
-        public static final int drink_liquorButton=0x7f09000b;
-        public static final int drink_list_BACButton=0x7f09001f;
-        public static final int drink_list_BACTextView=0x7f090020;
-        public static final int drink_list_drinkCountTextView=0x7f090021;
-        public static final int drink_list_durationTextView=0x7f090022;
-        public static final int drink_list_item_caloriesTextView=0x7f09002b;
-        public static final int drink_list_item_drinksTextView=0x7f090029;
-        public static final int drink_list_item_smallImageView=0x7f090028;
-        public static final int drink_list_item_timeTextView=0x7f09002c;
-        public static final int drink_list_item_titleTextView=0x7f09002a;
-        public static final int drink_list_newDrinkButton=0x7f09001e;
-        public static final int drink_list_totalCaloriesTextView=0x7f090023;
-        public static final int drink_photo_button=0x7f09000f;
-        public static final int drink_photo_delete_button=0x7f09000e;
-        public static final int drink_saveButton=0x7f090010;
-        public static final int drink_time=0x7f090012;
-        public static final int drink_timeButton=0x7f090008;
-        public static final int drink_title=0x7f090011;
-        public static final int drink_titleTextView=0x7f090007;
-        public static final int drink_wineButton=0x7f09000a;
-        public static final int drinkster_disclaimer_imageButton=0x7f09001b;
-        public static final int drinkster_disclaimer_textView=0x7f09001c;
-        public static final int fragmentContainer=0x7f090001;
-        public static final int menu_item_delete_drink=0x7f090036;
-        public static final int menu_item_user_profile=0x7f090037;
-        public static final int radioGender=0x7f090031;
-        public static final int start_drinking_imageButton=0x7f090019;
-        public static final int start_drinking_textView=0x7f09001a;
-        public static final int user_done_button=0x7f090034;
-        public static final int user_female_radioButton=0x7f090032;
-        public static final int user_male_radioButton=0x7f090033;
-        public static final int user_name_editText=0x7f09002e;
-        public static final int user_name_textView=0x7f09002d;
-        public static final int user_profile_imageButton=0x7f090017;
-        public static final int user_profile_textView=0x7f090018;
-        public static final int user_weight_editText=0x7f090030;
-        public static final int user_weight_textView=0x7f09002f;
-        public static final int user_weight_warning_textView=0x7f090035;
+        public static final int action_settings=0x7f0a003a;
+        public static final int actionbar_user_button=0x7f0a0000;
+        public static final int custom_drink_dialog_alcohol_content=0x7f0a0004;
+        public static final int custom_drink_dialog_calories=0x7f0a0005;
+        public static final int custom_drink_dialog_name=0x7f0a0002;
+        public static final int custom_drink_dialog_volume=0x7f0a0006;
+        public static final int custom_drink_spinner=0x7f0a0003;
+        public static final int day_list_item_caloriesTextView=0x7f0a0027;
+        public static final int day_list_item_dateTextView=0x7f0a0028;
+        public static final int day_list_item_dayTextView=0x7f0a0026;
+        public static final int day_list_item_drinkCountTextView=0x7f0a0025;
+        public static final int day_list_startDrinkingButton=0x7f0a001e;
+        public static final int daylist_menu_item_disclaimer=0x7f0a0039;
+        public static final int dialog_time_timePicker=0x7f0a0007;
+        public static final int drink_beerButton=0x7f0a000a;
+        public static final int drink_camera_flashButton=0x7f0a0015;
+        public static final int drink_camera_progressContainer=0x7f0a0017;
+        public static final int drink_camera_surfaceView=0x7f0a0014;
+        public static final int drink_camera_takePictureButton=0x7f0a0016;
+        public static final int drink_customDrinkButton=0x7f0a000d;
+        public static final int drink_imageView=0x7f0a000e;
+        public static final int drink_liquorButton=0x7f0a000c;
+        public static final int drink_list_BACButton=0x7f0a0020;
+        public static final int drink_list_BACTextView=0x7f0a0021;
+        public static final int drink_list_drinkCountTextView=0x7f0a0022;
+        public static final int drink_list_durationTextView=0x7f0a0023;
+        public static final int drink_list_item_caloriesTextView=0x7f0a002c;
+        public static final int drink_list_item_drinksTextView=0x7f0a002a;
+        public static final int drink_list_item_smallImageView=0x7f0a0029;
+        public static final int drink_list_item_timeTextView=0x7f0a002d;
+        public static final int drink_list_item_titleTextView=0x7f0a002b;
+        public static final int drink_list_newDrinkButton=0x7f0a001f;
+        public static final int drink_list_totalCaloriesTextView=0x7f0a0024;
+        public static final int drink_photo_button=0x7f0a0010;
+        public static final int drink_photo_delete_button=0x7f0a000f;
+        public static final int drink_saveButton=0x7f0a0011;
+        public static final int drink_time=0x7f0a0013;
+        public static final int drink_timeButton=0x7f0a0009;
+        public static final int drink_title=0x7f0a0012;
+        public static final int drink_titleTextView=0x7f0a0008;
+        public static final int drink_wineButton=0x7f0a000b;
+        public static final int drinkster_disclaimer_imageButton=0x7f0a001c;
+        public static final int drinkster_disclaimer_textView=0x7f0a001d;
+        public static final int fragmentContainer=0x7f0a0001;
+        public static final int menu_item_delete_drink=0x7f0a0037;
+        public static final int menu_item_user_profile=0x7f0a0038;
+        public static final int radioGender=0x7f0a0032;
+        public static final int start_drinking_imageButton=0x7f0a001a;
+        public static final int start_drinking_textView=0x7f0a001b;
+        public static final int user_done_button=0x7f0a0035;
+        public static final int user_female_radioButton=0x7f0a0033;
+        public static final int user_male_radioButton=0x7f0a0034;
+        public static final int user_name_editText=0x7f0a002f;
+        public static final int user_name_textView=0x7f0a002e;
+        public static final int user_profile_imageButton=0x7f0a0018;
+        public static final int user_profile_textView=0x7f0a0019;
+        public static final int user_weight_editText=0x7f0a0031;
+        public static final int user_weight_textView=0x7f0a0030;
+        public static final int user_weight_warning_textView=0x7f0a0036;
     }
     public static final class layout {
         public static final int actionbar=0x7f030000;
@@ -141,13 +145,15 @@ public final class R {
         public static final int list_item_all_drink_list_frag=0x7f03000a;
         public static final int list_item_day=0x7f03000b;
         public static final int list_item_drink=0x7f03000c;
-        public static final int user_fragment=0x7f03000d;
+        public static final int my_spinner_dropdown_style=0x7f03000d;
+        public static final int my_spinner_style=0x7f03000e;
+        public static final int user_fragment=0x7f03000f;
     }
     public static final class menu {
-        public static final int drink_list_item_context=0x7f080000;
-        public static final int fragment_day_list=0x7f080001;
-        public static final int fragment_drink_list=0x7f080002;
-        public static final int main=0x7f080003;
+        public static final int drink_list_item_context=0x7f090000;
+        public static final int fragment_day_list=0x7f090001;
+        public static final int fragment_drink_list=0x7f090002;
+        public static final int main=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
@@ -207,12 +213,12 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
          */
-        public static final int AppTheme=0x7f070001;
-        public static final int DrinkDetailsButton=0x7f070003;
-        public static final int DrinkDetailsTextView=0x7f070004;
-        public static final int MyActionBar=0x7f070002;
+        public static final int AppTheme=0x7f080001;
+        public static final int DrinkDetailsButton=0x7f080003;
+        public static final int DrinkDetailsTextView=0x7f080004;
+        public static final int MyActionBar=0x7f080002;
     }
 }

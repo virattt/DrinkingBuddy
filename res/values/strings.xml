@@ -35,5 +35,20 @@
 	<string name="standard_drink_liquor"><b>40% Alc</b> \n 97  Cals \n 1.25 fl oz</string>
 	<string name="agree_button">Accept</string>
 	<string name="disagree_button">Decline</string>
+	
+	<string-array name="custom_drink_array">
+	    <item>Custom</item>
+	    <item>Light Beer</item>
+	    <item>Medium Beer</item>
+	    <item>Strong Beer</item>
+	    <item>Margarita</item>
+	    <item>Mimosa</item>
+	    <item>Bloody Mary</item>
+	    <item>Long Island</item>
+	    <item>Rum &amp; Coke</item>
+	    <item>Gin &amp; Tonic</item>
+	    <item>Vodka Soda</item>
+	    <item>Sake Bomb</item>
+	</string-array>
 
 </resources>

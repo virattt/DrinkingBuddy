@@ -228,6 +228,12 @@ public class DrinkListFragment extends ListFragment {
 			@Override
 			public void onClick(View v) {
 				Drink drink = new Drink();
+				// set default values for a new Drink
+				drink.setTitle("");
+				drink.setAlcoholContent(0.00);
+				drink.setCalories(0);
+				drink.setVolume(0.00);
+				
 				DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId()).addDrink(drink);
 				
 				Intent i = new Intent(getActivity(), DrinkActivity.class);

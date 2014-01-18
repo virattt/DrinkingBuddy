@@ -10,6 +10,7 @@ import java.util.UUID;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -253,7 +254,7 @@ public class DrinkFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				FragmentManager fm = getActivity().getSupportFragmentManager();
-				CustomDrinkFragment dialog = new CustomDrinkFragment();
+				CustomDrinkFragment dialog = CustomDrinkFragment.newInstance(mDrink);
 				dialog.setTargetFragment(DrinkFragment.this, REQUEST_CUSTOM_DRINK);
 				dialog.show(fm, DIALOG_CUSTOM_DRINK);
 			}

@@ -15,48 +15,105 @@
 	    android:textSize="32dp"
 	    android:text="Custom Drink" />
     
-    <EditText 
-        android:id="@+id/custom_drink_dialog_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="wrap_content"        
+        android:orientation="horizontal"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:inputType="textCapWords"
-        android:hint="Enter Drink Name" />
-    
-    <EditText 
-        android:id="@+id/custom_drink_dialog_alcohol_content"
+        android:layout_marginBottom="4dp" >
+        
+        <!-- <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Name:" />
+         -->
+        <EditText 
+	        android:id="@+id/custom_drink_dialog_name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:selectAllOnFocus="true"
+	        android:inputType="textCapWords"
+	        android:textSize="18dp"
+	        android:hint="Enter Drink Name" />
+        
+        <Spinner 
+            android:id="@+id/custom_drink_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"        
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:inputType="numberDecimal"
-        android:hint="Enter Alcohol % (default is 40%)" />
-    
-    <EditText 
-        android:id="@+id/custom_drink_dialog_calories"
+        android:layout_marginBottom="4dp" >
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Alcohol %:" />
+    	<EditText 
+	        android:id="@+id/custom_drink_dialog_alcohol_content"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:selectAllOnFocus="true"
+	        android:inputType="numberDecimal"
+	        android:hint="40.0" />
+	</LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"        
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:inputType="number"
-        android:hint="Enter Calories (default is 100)" />
-    
-    <EditText 
-        android:id="@+id/custom_drink_dialog_volume"
+        android:layout_marginBottom="4dp" >
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Calories:" />
+  
+	    <EditText 
+	        android:id="@+id/custom_drink_dialog_calories"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:selectAllOnFocus="true"
+	        android:inputType="number"
+	        android:hint="100" />
+	</LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"        
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
-        android:inputType="numberDecimal"
-        android:hint="Enter Volume (default is 1.25 fl oz)" />
-
+        android:layout_marginBottom="4dp" >
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Alcohol Volume (fl oz):" /> 
+	    <EditText 
+	        android:id="@+id/custom_drink_dialog_volume"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:selectAllOnFocus="true"
+	        android:inputType="numberDecimal"
+	        android:hint="1.25" />
+	</LinearLayout>
 </LinearLayout>
