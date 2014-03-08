@@ -47,9 +47,8 @@ import android.widget.Toast;
 
 public class DrinkListFragment extends ListFragment {
 	
-	//private static final String TAG = "DrinkListFragment";
-	
 	public static final String EXTRA_DRINKLAB = "com.virat.drinkingbuddy.drinklab";
+	private static final String TAG = "DrinkListFragment";
 	
 	private static final String DIALOG_PROFILE = "profile";
 	private static final String DIALOG_TERMS = "terms_and_conditions";
@@ -80,13 +79,6 @@ public class DrinkListFragment extends ListFragment {
 	private Bitmap mPlaceHolderDrawable;
 	
 	private LruCache<String, Bitmap> mMemoryCache; // memory cache
-	
-	//private DiskLruImageCache mDiskLruCache;
-	//private final Object mDiskCacheLock = new Object();
-	//private boolean mDiskCacheStarting = true;
-	//private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
-	//private static final String DISK_CACHE_SUBDIR = "thumbnails";
-	
 	
 	public static DrinkListFragment newInstance (UUID drinkLabId, DrinkLab drinkLab) {
 		Bundle args = new Bundle();
@@ -144,10 +136,6 @@ public class DrinkListFragment extends ListFragment {
 	            return bitmap.getByteCount() / 1024;
 			}
 		};
-		
-		// Initialize disk cache on background thread
-		//File cacheDir = getDiskCacheDir(getActivity(), DISK_CACHE_SUBDIR);
-		//new InitDiskCacheTask().execute(cacheDir);
 	}
 
 	/*
@@ -228,11 +216,10 @@ public class DrinkListFragment extends ListFragment {
 			@Override
 			public void onClick(View v) {
 				Drink drink = new Drink();
-				// set default values for a new Drink
-				drink.setTitle("");
-				drink.setAlcoholContent(0.00);
-				drink.setCalories(0);
-				drink.setVolume(0.00);
+				
+				Log.d(TAG, "Drink alc content: " + drink.getAlcoholContent()
+						+ " Drink calories: " + drink.getCalories()
+						+ " Drink volume: " + drink.getVolume());
 				
 				DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId()).addDrink(drink);
 				
@@ -301,26 +288,6 @@ public class DrinkListFragment extends ListFragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
-			/*
-			case R.id.menu_item_new_drink:
-				Drink drink = new Drink();
-				DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId()).addDrink(drink);
-				
-				Intent i = new Intent(getActivity(), DrinkActivity.class);
-				i.putExtra(DrinkFragment.EXTRA_DRINK_ID, drink.getId());
-				i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, mDrinkLab.getId());
-
-				startActivityForResult(i, REQUEST_DRINKLAB);
-				return true;
-				*/
-			/*
-			case R.id.drinklist_menu_item_disclaimer:
-				FragmentManager fm = getActivity().getSupportFragmentManager();
-				TermsAndConditionsFragment dialog = new TermsAndConditionsFragment();
-				dialog.setTargetFragment(DrinkListFragment.this, REQUEST_TERMS);
-				dialog.show(fm, DIALOG_TERMS);
-				return true;
-			*/
 			case android.R.id.home:
 				if (NavUtils.getParentActivityName(getActivity()) != null) {
 					NavUtils.navigateUpFromSameTask(getActivity());
@@ -410,7 +377,7 @@ public class DrinkListFragment extends ListFragment {
 			
 			// Configure the view for this Drink
 			Drink d = getItem(position);
-			int resId = R.drawable.drink_list_small_imageview; // placeholder bitmap ID
+			int resId = R.drawable.drink_list_small_imageview_pink; // placeholder bitmap ID
 			Bitmap bitmap; // placeholder bitmap 
 			
 			mDrinksTextView = (TextView)convertView.findViewById(R.id.drink_list_item_drinksTextView);
@@ -429,7 +396,6 @@ public class DrinkListFragment extends ListFragment {
 				bitmap = PictureUtils.getScaledThumbnailFromResId(getActivity(), resId);
 				mSmallImageView.setImageBitmap(bitmap);
 			}
-			
 			return convertView;
 		}
 	}
@@ -467,23 +433,6 @@ public class DrinkListFragment extends ListFragment {
 		}
 	}
 	
-	/*class InitDiskCacheTask extends AsyncTask<File, Void, Void> {
-	    @Override
-	    protected Void doInBackground(File... params) {
-	        synchronized (mDiskCacheLock) {
-	            File cacheDir = params[0];
-				if (mDiskLruCache == null) {
-					mDiskLruCache = new DiskLruImageCache(getActivity().getApplicationContext(), cacheDir, DISK_CACHE_SIZE);
-					Log.d(TAG, "mDiskLruCache is null");
-				}
-				
-	            mDiskCacheStarting = false; // Finished initialization
-	            mDiskCacheLock.notifyAll(); // Wake any waiting threads
-	        }
-	        return null;
-	    }
-	}
-	*/
 	class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 		private final WeakReference<ImageView> imageViewReference;
 		protected String data;
@@ -553,31 +502,7 @@ public class DrinkListFragment extends ListFragment {
 	    if (getBitmapFromMemCache(key) == null) {
 	        mMemoryCache.put(key, bitmap);
 	    }
-
-	   /* // Also add to disk cache
-	    synchronized (mDiskCacheLock) {
-	        if (mDiskLruCache != null && mDiskLruCache.getBitmap(key) == null) {
-	            mDiskLruCache.put(key, bitmap);
-	        }
-	    }*/
 	}
-
-	/*public Bitmap getBitmapFromDiskCache(String key) {
-	    synchronized (mDiskCacheLock) {
-	        // Wait while disk cache is started from background thread
-	        while (mDiskCacheStarting) {
-	            try {
-	                mDiskCacheLock.wait();
-	            } catch (InterruptedException e) {}
-	        }
-	        if (mDiskLruCache != null) {
-	        	Log.d(TAG, "getBitmap(key) is" + key);
-	            return mDiskLruCache.getBitmap(key);
-	        }
-	    }
-	    return null;
-	}*/
-
 	// Creates a unique subdirectory of the designated app cache directory. Tries to use external
 	// but if not mounted, falls back on internal storage.
 	public static File getDiskCacheDir(Context context, String uniqueName) {

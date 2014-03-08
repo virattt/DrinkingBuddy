@@ -25,7 +25,8 @@
 	<string name="user_gender">Gender</string>
 	<string name="profile"><b>Profile</b></string>
 	<string name="save_button">Save</string>
-	<string name="user_weight_warning">Note: Please enter your weight (for BAC calculator).</string>
+	<string name="confirm_button">Confirm</string>
+	<string name="user_profile_incomplete">Note: Please enter your name and weight.</string>
 	<string name="start_drinking">Start Drinking</string>
 	<string name="cancel">Cancel</string>
 	<string name="profile_incomplete_title">Complete your profile to get BAC</string>
@@ -50,5 +51,29 @@
 	    <item>Vodka Soda</item>
 	    <item>Sake Bomb</item>
 	</string-array>
-
+	
+	<string-array name="custom_beer_array">
+	    <item>Custom</item>
+	    <item>Light Beer</item>
+	    <item>Medium Beer</item>
+	    <item>Strong Beer</item>	
+    </string-array>
+    
+	<string-array name="custom_wine_array">
+	    <item>Custom</item>
+	    <item>Red Wine</item>
+	    <item>White Wine</item>	
+    </string-array>
+    
+	<string-array name="custom_liquor_array">
+	    <item>Custom</item>
+	    <item>Margarita</item>
+	    <item>Mimosa</item>
+	    <item>Bloody Mary</item>
+	    <item>Long Island</item>
+	    <item>Rum &amp; Coke</item>
+	    <item>Gin &amp; Tonic</item>
+	    <item>Vodka Soda</item>
+	</string-array>
+	
 </resources>

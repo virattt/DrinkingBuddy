@@ -141,7 +141,7 @@ public class DrinkLab implements Parcelable {
 	}
 	
 	public void addDrink(Drink d) {
-		mDrinks.add(d);
+		mDrinks.add(0, d);
 	}
 	
 	public void deleteDrink(Drink d) {
@@ -199,34 +199,40 @@ public class DrinkLab implements Parcelable {
 	}
 	
 	public String getTotalTime() {
+		int first_drink_index = 0;
 		if (mDrinks.size() == 0) {
 			return "0:00";
+		} else {
+			first_drink_index = mDrinks.size() - 1;
 		}
 		
-		Date first_drink_time = mDrinks.get(0).getTime();
+		// Get the time of the first drink
+		
+		Date first_drink_time = mDrinks.get(first_drink_index).getTime();
+		// Get the current time
 		Date time_right_now = new Date();
 		
-		long hour_now = (time_right_now.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
-		long hour_first_drink = (first_drink_time.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
-		
-		long hour_difference = hour_now - hour_first_drink;
-		
+		// Get the difference in TOTAL time between now and first drink
 		long difference = time_right_now.getTime() - first_drink_time.getTime();
-
-		long minute = ((difference / (1000 * 60)) % 60);
-		// for cases when first_drink_time's minute value is greater
-		// than the last_drink_time's minute value
-		if (minute < 0) {
-			minute = Math.abs(60 + minute);
+		// Get the difference in minutes between now and first drink
+		long minute_difference = ((difference / (1000 * 60)) % 60);
+		// Get the difference in hours between now and first drink
+		double hour = Math.floor(((difference / (1000*60*60)) % 24));
+				
+		// For cases when first_drink_time's minute value is greater
+		// than the current minutes value; i.e. :55 > :53
+		if (minute_difference < 0) {
+			minute_difference = Math.abs(60 + minute_difference);
 		}
-		long hour = ((difference / (1000*60*60)) % 24);
 		
+		// For cases when you've been drinking for more than 24 hours
+		// Not sure if this is even necessary...
 		if (hour < 0) {
 			hour = Math.abs(23 + hour);
 		}
 
-		String time = String.format("%01d:%02d", hour_difference, minute);
-		if (hour_difference >= 24) {
+		String time = String.format("%01d:%02d", (int)hour, minute_difference);
+		if (hour > 23) {
 			return "";
 		} else {
 			return time;
@@ -234,11 +240,14 @@ public class DrinkLab implements Parcelable {
 	}
 	
 	public String getDrinkingSessionTime() {
+		int first_drink_index = 0;
 		if (mDrinks.size() == 0) {
 			return "0:00";
+		} else {
+			first_drink_index = mDrinks.size() - 1;
 		}
 		
-		Date first_drink_time = mDrinks.get(0).getTime();
+		Date first_drink_time = mDrinks.get(first_drink_index).getTime();
 		Date last_drink_time = mDrinks.get(mDrinks.size() -1).getTime();
 		
 		long difference = last_drink_time.getTime() - first_drink_time.getTime();
@@ -264,12 +273,16 @@ public class DrinkLab implements Parcelable {
 	// calculate the total # of hours of drinking for
 	// the BAC calculator, which uses hours as its 
 	// input for time.
-	protected long getHoursOfDrinking() {
+	protected int getHoursOfDrinking() {
+		int first_drink_index = 0;
+		
 		if (mDrinks.size() == 0) {
 			return 0;
+		} else {
+			first_drink_index = mDrinks.size() - 1;
 		}
 		
-		Date first_drink_time = mDrinks.get(0).getTime();
+		Date first_drink_time = mDrinks.get(first_drink_index).getTime();
 		Date time_right_now = new Date();
 		// Date last_drink_time = mDrinks.get(mDrinks.size() -1).getTime();
 		
@@ -279,7 +292,7 @@ public class DrinkLab implements Parcelable {
 		long hour_now = (time_right_now.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
 		long hour_first_drink = (first_drink_time.getTime() / (1000 * 60 * 60)); // I TOOK OFF MOD 24 ( % 24) TO SEE IF I CAN GET ABSOLUTE HOUR DURATION vs 24/hr based HOUR
 		
-		long hour_difference = hour_now - hour_first_drink;
+		double hour_difference = Math.floor(hour_now - hour_first_drink);
 		
 		if (hour_difference < 0) {
 			hour_difference = Math.abs(23 + hour_difference);
@@ -294,7 +307,7 @@ public class DrinkLab implements Parcelable {
 		}
 		*/
 		
-		return hour_difference;
+		return (int)hour_difference;
 	}
 	
 	// calculate BAC using the Widmark formula 

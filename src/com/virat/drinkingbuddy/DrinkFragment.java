@@ -47,10 +47,14 @@ public class DrinkFragment extends Fragment {
 	private static final String DIALOG_IMAGE = "image";
 	private static final String DIALOG_TIME = "time";
 	private static final String DIALOG_CUSTOM_DRINK = "custom_drink";
+	private static final String DIALOG_CUSTOM_BEER = "custom_beer";
+	private static final String DIALOG_CUSTOM_WINE = "custom_wine";
+	private static final String DIALOG_CUSTOM_LIQUOR = "custom_liquor";
 	
 	private static final int REQUEST_TIME = 0;
 	private static final int REQUEST_PHOTO = 1;
 	private static final int REQUEST_CUSTOM_DRINK = 2;
+	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	
 	
@@ -127,14 +131,6 @@ public class DrinkFragment extends Fragment {
 		View v = inflater.inflate(R.layout.drink_fragment, container, false);
 		v.setBackgroundColor(getResources().getColor(R.color.dodgerblue));
 		
-		/*
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			if (NavUtils.getParentActivityName(getActivity()) != null) {
-				getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-			}
-		}
-		*/
-		
 		mTitleField = (TextView)v.findViewById(R.id.drink_titleTextView);
 		mTitleField.setText(mDrink.getTitle());
 		mTitleField.setHintTextColor(getResources().getColor(R.color.gold));
@@ -204,14 +200,20 @@ public class DrinkFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				// set Drink title
-				mDrink.setTitle("Beer");
+				// set Drink title 
 				mTitleField.setText(mDrink.getTitle());
 				
-				// set Drink's calories and alcohol content
-				mDrink.setCalories(105); // 105 calories in average beer
-				mDrink.setAlcoholContent(.05); // avg alcohol content in beer is 4.5%
-				mDrink.setVolume(12); // avg volume of beer is 12 fluid ounces
+				if (isNewDrink()) {
+					// set Drink's calories and alcohol content
+					mDrink.setCalories(100); // 105 calories in average beer
+					mDrink.setAlcoholContent(.04); // avg alcohol content in beer is 4.5%
+					mDrink.setVolume(12); // avg volume of beer is 12 fluid ounces
+				}
+				
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				CustomBeerFragment dialog = CustomBeerFragment.newInstance(mDrink);
+				dialog.setTargetFragment(DrinkFragment.this, REQUEST_CUSTOM_DRINK);
+				dialog.show(fm, DIALOG_CUSTOM_BEER);
 			}
 		});
 
@@ -221,13 +223,19 @@ public class DrinkFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// set Drink title
-				mDrink.setTitle("Wine");
 				mTitleField.setText(mDrink.getTitle());
 				
-				// set Drink's calories and alcohol content
-				mDrink.setCalories(125); // 125 calories in average wine glass
-				mDrink.setAlcoholContent(.12); // avg alcohol content in beer is 12%
-				mDrink.setVolume(5); // avg volume of wine is 5 fluid ounces
+				if (isNewDrink()) {
+					// set Drink's calories and alcohol content
+					mDrink.setCalories(125); // 125 calories in average wine glass
+					mDrink.setAlcoholContent(.12); // avg alcohol content in beer is 12%
+					mDrink.setVolume(5); // avg volume of wine is 5 fluid ounces
+				}
+				
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				CustomWineFragment dialog = CustomWineFragment.newInstance(mDrink);
+				dialog.setTargetFragment(DrinkFragment.this, REQUEST_CUSTOM_DRINK);
+				dialog.show(fm, DIALOG_CUSTOM_WINE);
 			}
 		});
         
@@ -237,14 +245,18 @@ public class DrinkFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// set Drink title
-				mDrink.setTitle("Liquor");
 				mTitleField.setText(mDrink.getTitle());
 				
-				// set Drink's calories and alcohol content
-				mDrink.setCalories(97); // 97 calories in average liquor drink
-				mDrink.setAlcoholContent(.40); // avg alcohol content in liquor is 40%
-				mDrink.setVolume(1.25); // avg volume of liquor is 1.5 fluid ounces
-
+				if (isNewDrink()) {
+					// set Drink's calories and alcohol content
+					mDrink.setCalories(97); // 97 calories in average liquor drink
+					mDrink.setAlcoholContent(.40); // avg alcohol content in liquor is 40%
+					mDrink.setVolume(1.25); // avg volume of liquor is 1.5 fluid ounces
+				}
+				FragmentManager fm = getActivity().getSupportFragmentManager();
+				CustomLiquorFragment dialog = CustomLiquorFragment.newInstance(mDrink);
+				dialog.setTargetFragment(DrinkFragment.this, REQUEST_CUSTOM_DRINK);
+				dialog.show(fm, DIALOG_CUSTOM_LIQUOR);
 			}
 		});
         
@@ -284,29 +296,22 @@ public class DrinkFragment extends Fragment {
 		return v; 
 	}
 	
-	/*
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			// Respond to the action bar's Up/Home button
-			case android.R.id.home:
-				if (NavUtils.getParentActivityName(getActivity()) != null) {
-					Intent intent = new Intent(getActivity(), DrinkListActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					intent.putExtra(EXTRA_DRINKLAB_ID, mDrinkLab.getId());
-					NavUtils.navigateUpTo(getActivity(), intent);
-				}
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+	private boolean isNewDrink() {
+		if (mDrink.getCalories() == 0 
+			&& mDrink.getAlcoholContent() == 0.00 
+			&& mDrink.getVolume() == 0.00) {
+			return true;
+		} else {
+			return false;
 		}
 	}
-	*/
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode != Activity.RESULT_OK)
 			return;
+		
 		if (requestCode == REQUEST_TIME) {
 			Date time = (Date)data.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
 			mDrink.setTime(time);

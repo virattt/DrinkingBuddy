@@ -17,17 +17,21 @@ public class Drink implements Parcelable {
 	private static final String JSON_DATE = "date";
 	private static final String JSON_PHOTO = "photo";
 	private static final String JSON_CALORIES = "calories";
+	private static final String JSON_MIXER_CALORIES = "mixer_calories";
 	private static final String JSON_VOLUME = "volume";
+	private static final String JSON_MIXER_VOLUME = "mixer_volume";
 	private static final String JSON_ALCOHOL = "alcohol";
 	
 	private UUID mId;
-	private String mTitle;
+	private String mTitle = "";
 	private Date mDate;
 	private Date mTime;
 	private Photo mPhoto;
-	private int mCalories = 100;
-	private double mVolume = 12.0;
-	private double mAlcoholContent = 0.06;
+	private int mCalories = 0; // default caloric value of new drink
+	private int mMixerCalories = 0; // default calories for drink's mixer
+	private double mVolume = 0.00; // default volume of new drink
+	private double mMixerVolume = 0.00; // default volume of drink's mixer
+	private double mAlcoholContent = 0.00; // default alc content of new drink
 	
 	public Drink() {
 		//Generate unique identifier
@@ -47,8 +51,14 @@ public class Drink implements Parcelable {
 		if (json.has(JSON_CALORIES)) {
 			mCalories = json.getInt(JSON_CALORIES);
 		}
+		if (json.has(JSON_MIXER_CALORIES)) {
+			mMixerCalories = json.getInt(JSON_MIXER_CALORIES);
+		}
 		if (json.has(JSON_VOLUME)) {
 			mVolume = json.getDouble(JSON_VOLUME);
+		}
+		if (json.has(JSON_MIXER_VOLUME)) {
+			mMixerVolume = json.getDouble(JSON_MIXER_VOLUME);
 		}
 		if (json.has(JSON_ALCOHOL)) {
 			mAlcoholContent = json.getDouble(JSON_ALCOHOL);
@@ -63,7 +73,9 @@ public class Drink implements Parcelable {
 		mDate = (Date)in.readSerializable();
 		mTime = (Date)in.readSerializable();
 		mCalories = in.readInt();
+		mMixerCalories = in.readInt();
 		mVolume = in.readDouble();
+		mMixerVolume = in.readDouble();
 		mAlcoholContent = in.readDouble();
 	}
 	
@@ -76,7 +88,9 @@ public class Drink implements Parcelable {
 			json.put(JSON_PHOTO, mPhoto.toJSON());
 		}
 		json.put(JSON_CALORIES, mCalories);
+		json.put(JSON_MIXER_CALORIES, mMixerCalories);
 		json.put(JSON_VOLUME, mVolume);
+		json.put(JSON_MIXER_VOLUME, mMixerVolume);
 		json.put(JSON_ALCOHOL, mAlcoholContent);
 		
 		return json;
@@ -93,7 +107,9 @@ public class Drink implements Parcelable {
 		out.writeSerializable(mDate);
 		out.writeSerializable(mTime);
 		out.writeInt(mCalories);
-		out.writeDouble(mCalories);
+		out.writeInt(mMixerCalories);
+		out.writeDouble(mVolume);
+		out.writeDouble(mMixerVolume);
 		out.writeDouble(mAlcoholContent);
 	}
 	
@@ -151,28 +167,45 @@ public class Drink implements Parcelable {
 		mPhoto = p;
 	}
 	
-	public void setCalories(int calories) {
-		mCalories = calories;
-	}
 	
 	public int getCalories() {
 		return mCalories;
 	}
 	
-	public void setVolume(double volume) {
-		mVolume = volume;
+	public void setCalories(int calories) {
+		mCalories = calories;
+	}
+	
+	public int getMixerCalories() {
+		return mMixerCalories;
+	}
+	
+	public void setMixerCalories(int mixerCalories) {
+		mMixerCalories = mixerCalories;
 	}
 	
 	public double getVolume() {
 		return mVolume;
 	}
 	
-	public void setAlcoholContent(double alcoholContent) {
-		mAlcoholContent = alcoholContent;
+	public void setVolume(double volume) {
+		mVolume = volume;
 	}
 	
+	public double getMixerVolume() {
+		return mMixerVolume;
+	}
+	
+	public void setMixerVolume(double mixerVolume) {
+		mMixerVolume = mixerVolume;
+	}
+		
 	public double getAlcoholContent() {
 		return mAlcoholContent;
+	}
+	
+	public void setAlcoholContent(double alcoholContent) {
+		mAlcoholContent = alcoholContent;
 	}
 	
 	/** Static field used to regenerate object, individually or as arrays */

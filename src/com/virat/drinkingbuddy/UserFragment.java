@@ -27,7 +27,7 @@ public class UserFragment extends Fragment {
 	private RadioButton mRadioFemaleButton;
 	private RadioButton mRadioMaleButton;
 	private Button mDoneButton;
-	private TextView mUserWeightWarning;
+	private TextView mUserProfileIncompleteTextView;
 	
 	// private static final String TAG = "UserFragment";
 	
@@ -115,7 +115,7 @@ public class UserFragment extends Fragment {
 			}
 		});
 		
-		mUserWeightWarning = (TextView)v.findViewById(R.id.user_weight_warning_textView);
+		mUserProfileIncompleteTextView = (TextView)v.findViewById(R.id.user_profile_incomplete_textView);
 		
 		mDoneButton = (Button)v.findViewById(R.id.user_done_button);
 		mDoneButton.setOnClickListener(new View.OnClickListener() {
@@ -123,13 +123,12 @@ public class UserFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// check if user has entered a valid weight
-				if (Person.get(getActivity()).getWeight() == null || 
-						Person.get(getActivity()).getWeight().equals("") ||
-						Person.get(getActivity()).getWeight().equals("0")) {
-					mUserWeightWarning.setVisibility(View.VISIBLE);
+				if (weightIncomplete() || nameIncomplete()) {
+					mUserProfileIncompleteTextView.setVisibility(View.VISIBLE);
 					
 				} else {
-					mUserWeightWarning.setVisibility(View.INVISIBLE);
+					mUserProfileIncompleteTextView.setVisibility(View.INVISIBLE);
+					Person.get(getActivity()).savePerson();
 					Toast.makeText(getActivity(), "Profile Saved!", Toast.LENGTH_SHORT).show();
 					getActivity().finish();	
 				}
@@ -137,6 +136,26 @@ public class UserFragment extends Fragment {
 		});
 		
 		return v;
+	}
+	
+	// Check if user has entered weight
+	private boolean weightIncomplete() {
+		if (Person.get(getActivity()).getWeight() == null || 
+				Person.get(getActivity()).getWeight().equals("") ||
+				Person.get(getActivity()).getWeight().equals("0")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean nameIncomplete() {
+		if (Person.get(getActivity()).getName() == null || 
+				Person.get(getActivity()).getName().equals("")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	@Override

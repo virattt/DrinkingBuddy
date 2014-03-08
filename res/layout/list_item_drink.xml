@@ -12,7 +12,7 @@
         android:scaleType="centerInside"
         android:layout_alignParentRight="true"
         android:src="@drawable/logo_drink_fragment"
-        android:background="#FFCC11"
+        android:background="@color/gold"
         android:padding="2dp"
 		android:cropToPadding="true" />
     

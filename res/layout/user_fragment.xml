@@ -126,12 +126,12 @@
 	    android:text="@string/save_button" />
 	
 	<TextView 
-		    android:id="@+id/user_weight_warning_textView"
+		    android:id="@+id/user_profile_incomplete_textView"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:textStyle="bold"
 		    android:textColor="#FFFFFF"
 		    android:visibility="invisible"
-		    android:text="@string/user_weight_warning"/>
+		    android:text="@string/user_profile_incomplete"/>
 	
 </LinearLayout>

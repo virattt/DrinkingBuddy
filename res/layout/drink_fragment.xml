@@ -162,7 +162,7 @@
 	      		android:padding="2dp"
 				android:adjustViewBounds="true"
 				android:cropToPadding="true"
-				android:src="@drawable/logo_drink_fragment"/>
+				android:src="@drawable/logo_drink_fragment_pink"/>
 		    
 	    </LinearLayout>
 	    
@@ -194,7 +194,9 @@
 	        android:id="@+id/drink_saveButton"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/gold"
+	        android:layout_margin="4dp"
+	        android:textColor="@color/white"
+	        android:background="@drawable/green_button_shape_not_shadowed"
 	        android:text="@string/save_button" />
 	</LinearLayout>		
 </LinearLayout>
