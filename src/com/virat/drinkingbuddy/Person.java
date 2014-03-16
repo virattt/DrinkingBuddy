@@ -14,6 +14,7 @@ public class Person {
 	private static final String JSON_NAME = "name";
 	private static final String JSON_GENDER = "gender";
 	private static final String JSON_WEIGHT = "weight";
+	private static final String JSON_IS_DRINKING = "is_drinking";
 	
 	private static Person sPerson;
 	private Context mAppContext;
@@ -23,6 +24,7 @@ public class Person {
 	private String mName;
 	private String mGender = "none";
 	private String mWeight;
+	private boolean mIsDrinking;
 	
 	public Person(Context appContext) {
 		mAppContext = appContext;
@@ -34,6 +36,7 @@ public class Person {
 			mName = json.getString(JSON_NAME);
 			mGender = json.getString(JSON_GENDER);
 			mWeight = json.getString(JSON_WEIGHT);
+			mIsDrinking = json.getBoolean(JSON_IS_DRINKING);
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -48,6 +51,7 @@ public class Person {
 		json.put(JSON_NAME, mName);
 		json.put(JSON_GENDER, mGender);
 		json.put(JSON_WEIGHT, mWeight);
+		json.put(JSON_IS_DRINKING, mIsDrinking);
 		
 		return json;
 	}
@@ -81,6 +85,14 @@ public class Person {
 
 	public void setWeight(String weight) {
 		mWeight = weight;
+	}
+	
+	public boolean getIsDrinking() {
+		return mIsDrinking;
+	}
+	
+	public void setIsDrinking(boolean isDrinking) {
+		mIsDrinking = isDrinking;
 	}
 	
 	public boolean savePerson() {

@@ -3,20 +3,19 @@
     
     <item>
         <shape android:shape="rectangle" >
-            <corners android:radius="8dp" />
+            <corners android:topLeftRadius="8dp" android:topRightRadius="8dp"/>
             
             <gradient
                 android:angle="90"
                 android:centerColor="#303339"
                 android:centerY="0.05"
         		android:endColor="#e55ea2"
-        		android:startColor="#ff78bb" />
+        		android:startColor="@color/dodgerblue" />
         </shape>
     </item>
     <item>
         <inset
-            android:drawable="@drawable/pink_button_shape"
-            android:insetBottom="2dp" />
+            android:drawable="@drawable/blue_button_shape" />
     </item>
 
 </layer-list>

@@ -3,17 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:layout_margin="8dp"
     android:background="@drawable/background_activated" >
     
-    <TextView
+   <!-- <TextView
         android:id="@+id/day_list_item_drinkCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="18dp"
+        android:textSize="22dp"
         android:layout_alignParentRight="true"
-        android:textColor="@color/white"
+        android:textColor="#ff69b4"
 		android:text="@string/drink_count" />
         
     <TextView
@@ -21,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"	
-        android:textSize="18dp"
-        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textColor="#FFCC11"
         android:hint="Day"/>
     
     <TextView
@@ -30,18 +29,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/day_list_item_dayTextView"
-        android:textSize="14dp"
-        android:textStyle="bold"
-        android:textColor="@color/hotpink"
-        android:hint="0 Calories"/>
+        android:textSize="18dp"
+        android:textColor="#00FF00"
+        android:hint="Calories: 0"/>
     
     <TextView
         android:id="@+id/day_list_item_dateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/day_list_item_caloriesTextView"
-        android:textSize="14dp"
-        android:textColor="@color/lightblue"
+        android:textSize="18dp"
+        android:textColor="#FFFFFF"
         android:hint="Date"/>
-        
+       -->   
 </RelativeLayout>

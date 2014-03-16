@@ -3,7 +3,7 @@
 
     <string name="app_name">Drinkster</string>
     <string name="action_settings">Settings</string>
-	<string name="drink_title_hint">Select Drink Type</string>
+	<string name="drink_title_hint">Please Select Drink</string>
 	<string name="drink_photo_text">Snap a Pic of Your Drink!</string>
 	<string name="days_title">Drinking Days</string>
 	<string name="drinks_title">Drinks</string>
@@ -31,14 +31,13 @@
 	<string name="cancel">Cancel</string>
 	<string name="profile_incomplete_title">Complete your profile to get BAC</string>
 	<string name="profile_incomplete_OK_button">Edit Profile</string>
-	<string name="standard_drink_beer"><b>5% Alc</b> \n 105  Cals \n 12 fl oz</string>
+	<string name="standard_drink_beer"><b>4% Alc</b> \n 100  Cals \n 12 fl oz</string>
 	<string name="standard_drink_wine"><b>12% Alc</b> \n 125  Cals \n 5 fl oz</string>
 	<string name="standard_drink_liquor"><b>40% Alc</b> \n 97  Cals \n 1.25 fl oz</string>
 	<string name="agree_button">Accept</string>
 	<string name="disagree_button">Decline</string>
 	
 	<string-array name="custom_drink_array">
-	    <item>Custom</item>
 	    <item>Light Beer</item>
 	    <item>Medium Beer</item>
 	    <item>Strong Beer</item>
@@ -53,20 +52,18 @@
 	</string-array>
 	
 	<string-array name="custom_beer_array">
-	    <item>Custom</item>
 	    <item>Light Beer</item>
 	    <item>Medium Beer</item>
 	    <item>Strong Beer</item>	
     </string-array>
     
 	<string-array name="custom_wine_array">
-	    <item>Custom</item>
 	    <item>Red Wine</item>
 	    <item>White Wine</item>	
     </string-array>
     
 	<string-array name="custom_liquor_array">
-	    <item>Custom</item>
+	    <item>Liquor Shot</item>
 	    <item>Margarita</item>
 	    <item>Mimosa</item>
 	    <item>Bloody Mary</item>

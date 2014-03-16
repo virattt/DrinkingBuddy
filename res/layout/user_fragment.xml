@@ -2,16 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dodgerblue" 
     android:gravity="center_horizontal"
     android:orientation="vertical">
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gold"
+        android:textColor="@color/dodgerblue"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
         android:textSize="24dp"
         android:textStyle="bold"
         android:text="@string/profile" />
@@ -25,13 +23,13 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:padding="4dp"
-        android:background="@drawable/user_profile_textview_border"
+        android:background="@drawable/white_background_rounded_corners"
     	android:orientation="vertical">
 	    
 	    <LinearLayout 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="4dp"
+	        android:layout_marginTop="16dp"
 	        android:layout_marginBottom="4dp"
 	        android:padding="4dp"
 	    	android:orientation="vertical">
@@ -119,9 +117,11 @@
 	    android:id="@+id/user_done_button"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:textColor="@color/gold"
-	    android:layout_marginTop="8dp"
-	    android:layout_margin="4dp"
+	    android:textColor="@color/white"
+	    android:layout_marginTop="16dp"
+	    android:layout_marginLeft="8dp"
+	    android:layout_marginRight="8dp"
+	    android:background="@drawable/blue_button_shape_shadowed"
 	    android:textStyle="bold"
 	    android:text="@string/save_button" />
 	

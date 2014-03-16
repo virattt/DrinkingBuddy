@@ -3,11 +3,12 @@
     
     <item
         android:state_activated="true"
-        android:drawable="@android:color/darker_gray" />
+        android:drawable="@drawable/gray_background_rounded_corners" />
     
     <item
         android:state_activated="false"
-        android:drawable="@color/black" />
+       	
+        android:drawable="@drawable/dark_gray_button_shape_shadowed" />
     
 
 </selector>

@@ -1,6 +1,8 @@
 package com.virat.drinkingbuddy;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,7 +36,10 @@ public class UserFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		setHasOptionsMenu(true);
+		ActionBar actionBar = getActivity().getActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+		actionBar.setCustomView(R.layout.actionbar);
+		
 		super.onCreate(savedInstanceState);
 	}
 	
@@ -44,11 +49,7 @@ public class UserFragment extends Fragment {
 		
 		View v = getActivity().getLayoutInflater().inflate(R.layout.user_fragment, null);
 		
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			if (NavUtils.getParentActivityName(getActivity()) != null) {
-				getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
-			}
-		}
+		v.setBackgroundColor(Color.parseColor("#B1BDCD")); // light gray background
 		
 		mPersonName = (EditText)v.findViewById(R.id.user_name_editText);
 		mPersonName.setText(Person.get(getActivity()).getName());

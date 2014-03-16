@@ -9,6 +9,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -34,7 +35,7 @@ import android.widget.TextView;
 
 public class DayListFragment extends ListFragment {
 	
-	//private static final String TAG = "DayListFragment";
+	private static final String TAG = "DayListFragment";
 	private static final String DIALOG_TERMS = "terms_and_conditions";
 	
 	private static final int REQUEST_TERMS = 0;
@@ -115,7 +116,7 @@ public class DayListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = getActivity().getLayoutInflater().inflate(R.layout.list_item_all_day_list_frag, null);
-		v.setBackgroundColor(getResources().getColor(R.color.dodgerblue));
+		v.setBackgroundColor(Color.parseColor("#B1BDCD")); // light gray background
 		
 		mStartDrinkingButton = (Button)v.findViewById(R.id.day_list_startDrinkingButton);
 		mStartDrinkingButton.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +128,12 @@ public class DayListFragment extends ListFragment {
 				Intent i = new Intent(getActivity(), DrinkListActivity.class);
 				i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, drinkLab.getId());
 				i.putExtra(DrinkListFragment.EXTRA_DRINKLAB, drinkLab);
+
+				// Person is now drinking
+				Person.get(getActivity()).setIsDrinking(true);
+				Person.get(getActivity()).savePerson();
+				Log.d(TAG, "Person isDrinking?" + Person.get(getActivity()).getIsDrinking());
+				
 				startActivityForResult(i, 0);
 			}
 		});
@@ -249,14 +256,6 @@ public class DayListFragment extends ListFragment {
 				i = new Intent(getActivity(), UserActivity.class);
 				startActivity(i);
 				return true;
-			/*case R.id.menu_item_new_drink_day:
-				DrinkLab drinkLab = new DrinkLab();				
-				DayLab.get(getActivity()).addDrinkLab(drinkLab);
-				i = new Intent(getActivity(), DrinkListActivity.class);
-				i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, drinkLab.getId());
-				i.putExtra(DrinkListFragment.EXTRA_DRINKLAB, drinkLab);
-				startActivityForResult(i, 0);				
-				return true; */
 			case R.id.daylist_menu_item_disclaimer:
 				FragmentManager fm = getActivity().getSupportFragmentManager();
 				TermsAndConditionsFragment dialog = new TermsAndConditionsFragment();
@@ -307,7 +306,7 @@ public class DayListFragment extends ListFragment {
 			mDayTextView.setText(formatDay(d.getDate()));
 			
 			mCaloriesTextView = (TextView)convertView.findViewById(R.id.day_list_item_caloriesTextView);
-			mCaloriesTextView.setText("Calories: " + d.getCalories());
+			mCaloriesTextView.setText(d.getCalories() + " Calories");
 			
 			mDateTextView = (TextView)convertView.findViewById(R.id.day_list_item_dateTextView);
 			mDateTextView.setText(formatDate(d.getDate()));
@@ -320,6 +319,11 @@ public class DayListFragment extends ListFragment {
 		super.onResume();
 		((DayAdapter)getListAdapter()).notifyDataSetChanged();
 	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		Log.d(TAG, "Person isDrinking?" + Person.get(getActivity()).getIsDrinking());
+	}
 	
 	private String formatDay(Date date) {
 		SimpleDateFormat fmt = new SimpleDateFormat("EEEE");
@@ -327,7 +331,7 @@ public class DayListFragment extends ListFragment {
 	}
 	
 	private String formatDate(Date date) {
-		SimpleDateFormat fmt = new SimpleDateFormat("MMM. d, yyyy");
+		SimpleDateFormat fmt = new SimpleDateFormat("MMMM d, yyyy");
 		return fmt.format(date);
 	}
 }

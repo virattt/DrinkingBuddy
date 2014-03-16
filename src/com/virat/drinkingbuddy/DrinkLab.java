@@ -21,10 +21,12 @@ public class DrinkLab implements Parcelable {
 	
 	private static final String JSON_ID = "id";
 	private static final String JSON_TITLE = "title";
+	private static final String JSON_DRINKING_DURATION = "drinking_duration";
 	private static final String JSON_DATE = "date";
 	private static final String JSON_DRINKS = "drinks";
 	private static final String JSON_CALORIES = "calories";
 	private static final String JSON_VOLUME = "volume";
+	private static final String JSON_IS_DRINKING = "is_drinking";
 	
 	private ArrayList<Drink> mDrinks;
 	private DrinkingBuddyJSONSerializer mSerializer;
@@ -33,17 +35,21 @@ public class DrinkLab implements Parcelable {
 	private Context mAppContext;
 	
 	private String mTitle;
+	private String mDrinkingDuration;
 	private UUID mId;
 	private Date mDate;
 	private int mCalories;
+	private boolean mIsDrinking;
+	
 	private int mTotalDrinks;
-	private long mTotalTime;
 	
 	public DrinkLab(){
 		mId = UUID.randomUUID();
 		mDate = new Date();
 		
 		mDrinks = new ArrayList<Drink>();
+		mIsDrinking = true;
+		mDrinkingDuration = "0:00";
 	}
 	
 	public DrinkLab(JSONObject json) throws JSONException {
@@ -54,6 +60,9 @@ public class DrinkLab implements Parcelable {
 		if (json.has(JSON_TITLE)) {
 			mTitle = json.getString(JSON_TITLE);
 		}
+		if (json.has(JSON_DRINKING_DURATION)) {
+			mDrinkingDuration = json.getString(JSON_DRINKING_DURATION);
+		}
 		mDate = new Date(json.getLong(JSON_DATE));
 		jsArray = json.getJSONArray(JSON_DRINKS);
 		
@@ -61,33 +70,20 @@ public class DrinkLab implements Parcelable {
 			mDrinks.add(new Drink(jsArray.getJSONObject(i)));
 		}
 		mCalories = json.getInt(JSON_CALORIES);
+		mIsDrinking = json.getBoolean(JSON_IS_DRINKING);
+		
 	}
-	
-	/*public DrinkLab(Context appContext) {
-		mAppContext = appContext;
-		mSerializer = new DrinkingBuddyJSONSerializer(mAppContext, FILENAME);
-
-		mId = UUID.randomUUID();
-		mDate = new Date();
-	
-		//mDrinks = new ArrayList<Drink>();
-		try {
-			mDrinks = mSerializer.loadDrinks();
-			Log.d(TAG, "Drinks loaded successfully");
-		} catch (Exception e) {
-			mDrinks = new ArrayList<Drink>();
-			Log.e(TAG, "Drinks NOT loaded successfully", e);
-		}
-	}*/
 	
 	private DrinkLab(Parcel in) {
 		this();
 		
 		in.readTypedList(mDrinks, Drink.CREATOR);
 		mTitle = in.readString();
+		mDrinkingDuration = in.readString();
 		mId = (UUID)in.readSerializable();
 		mDate = (Date)in.readSerializable();
 		mCalories = in.readInt();
+		mIsDrinking = in.readByte() != 0;
 	}
 	
 	public JSONObject toJSON() throws JSONException {
@@ -96,6 +92,7 @@ public class DrinkLab implements Parcelable {
 		
 		json.put(JSON_ID, mId.toString());
 		json.put(JSON_TITLE, mTitle);
+		json.put(JSON_DRINKING_DURATION, mDrinkingDuration);
 		json.put(JSON_DATE, mDate.getTime());
 		
 		
@@ -105,6 +102,7 @@ public class DrinkLab implements Parcelable {
 		
 		json.put(JSON_DRINKS, jsArray);
 		json.put(JSON_CALORIES, mCalories);
+		json.put(JSON_IS_DRINKING, mIsDrinking);
 		
 		return json;
 	}
@@ -117,9 +115,11 @@ public class DrinkLab implements Parcelable {
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeTypedList(mDrinks);
 		out.writeString(mTitle);
+		out.writeString(mDrinkingDuration);
 		out.writeSerializable(mId);
 		out.writeSerializable(mDate);	
 		out.writeInt(mCalories);
+		out.writeByte((byte) (mIsDrinking ? 1 : 0));
 	}
 	
 	public static final Parcelable.Creator<DrinkLab> CREATOR = new Parcelable.Creator<DrinkLab>() {
@@ -192,6 +192,14 @@ public class DrinkLab implements Parcelable {
 		return mCalories;
 	}
 	
+	public boolean getIsDrinking() {
+		return mIsDrinking;
+	}
+	
+	public void setIsDrinking(boolean isDrinking) {
+		mIsDrinking = isDrinking;
+	}
+	
 	public int getTotalDrinks() {
 		mTotalDrinks = mDrinks.size();
 		
@@ -207,7 +215,6 @@ public class DrinkLab implements Parcelable {
 		}
 		
 		// Get the time of the first drink
-		
 		Date first_drink_time = mDrinks.get(first_drink_index).getTime();
 		// Get the current time
 		Date time_right_now = new Date();
@@ -215,7 +222,7 @@ public class DrinkLab implements Parcelable {
 		// Get the difference in TOTAL time between now and first drink
 		long difference = time_right_now.getTime() - first_drink_time.getTime();
 		// Get the difference in minutes between now and first drink
-		long minute_difference = ((difference / (1000 * 60)) % 60);
+		double minute_difference = Math.floor((difference / (1000 * 60)) % 60);
 		// Get the difference in hours between now and first drink
 		double hour = Math.floor(((difference / (1000*60*60)) % 24));
 				
@@ -225,49 +232,17 @@ public class DrinkLab implements Parcelable {
 			minute_difference = Math.abs(60 + minute_difference);
 		}
 		
-		// For cases when you've been drinking for more than 24 hours
-		// Not sure if this is even necessary...
-		if (hour < 0) {
-			hour = Math.abs(23 + hour);
-		}
-
-		String time = String.format("%01d:%02d", (int)hour, minute_difference);
-		if (hour > 23) {
-			return "";
-		} else {
-			return time;
-		}
+		String time = String.format("%01d:%02d", (int)hour, (int)minute_difference);
+		mDrinkingDuration = time;
+		return mDrinkingDuration;
 	}
 	
-	public String getDrinkingSessionTime() {
-		int first_drink_index = 0;
-		if (mDrinks.size() == 0) {
-			return "0:00";
+	public String getDrinkingDuration(DrinkLab drinkLab) {
+		if 	(drinkLab.getIsDrinking()) {
+			return getTotalTime();
 		} else {
-			first_drink_index = mDrinks.size() - 1;
+			return mDrinkingDuration;
 		}
-		
-		Date first_drink_time = mDrinks.get(first_drink_index).getTime();
-		Date last_drink_time = mDrinks.get(mDrinks.size() -1).getTime();
-		
-		long difference = last_drink_time.getTime() - first_drink_time.getTime();
-		
-		long minute = ((difference / (1000 * 60)) % 60);
-		// for cases when first_drink_time's minute value is greater
-		// than the last_drink_time's minute value
-		if (minute < 0) {
-			minute = Math.abs(60 + minute);
-		}
-		long hour = ((difference / (1000*60*60)) % 24);
-		
-		if (hour < 0) {
-			hour = Math.abs(23 + hour);
-		}
-
-		String time = String.format("%01d:%02d", hour, minute);
-		
-		return time;
-	
 	}
 	
 	// calculate the total # of hours of drinking for

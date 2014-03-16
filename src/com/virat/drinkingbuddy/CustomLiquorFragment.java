@@ -67,7 +67,6 @@ public class CustomLiquorFragment extends DialogFragment {
 		
 		mDrink = getArguments().getParcelable(EXTRA_CUSTOM_DRINK);
 		
-		
 	}
 	
 	@Override
@@ -89,8 +88,6 @@ public class CustomLiquorFragment extends DialogFragment {
 		// Apply the adapter to the spinner
 		mSpinner.setAdapter(adapter);
 		mSpinner.setOnItemSelectedListener(new MyItemSelectedListener());
-		
-		
 
 		mDrinkName = (EditText)v.findViewById(R.id.custom_liquor_dialog_name);
 		mDrinkName.setText(mDrink.getTitle());
@@ -185,7 +182,10 @@ public class CustomLiquorFragment extends DialogFragment {
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
 			String selected = parent.getItemAtPosition(pos).toString();
-			if (selected.equals("Margarita")) {
+			if (selected.equals("Liquor Shot")) {
+				setCustomDrink("Liquor Shot", "40.0", "97", "1.25");
+			}
+			else if (selected.equals("Margarita")) {
 				setCustomDrink("Margarita", "40.0", "400", "2.0");
 			} else if (selected.equals("Mimosa")) {
 				setCustomDrink("Mimosa", "12.0", "140", "5.0");

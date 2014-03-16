@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -52,16 +53,18 @@ public class DrinkListFragment extends ListFragment {
 	
 	private static final String DIALOG_PROFILE = "profile";
 	private static final String DIALOG_TERMS = "terms_and_conditions";
+	private static final String DIALOG_DONE_DRINKING = "done_drinking";
+	private static final String DIALOG_BAC = "dialog_bac";
 	
 	private static final int REQUEST_DRINKLAB = 0;
 	private static final int REQUEST_TERMS = 1;
+	private static final int REQUEST_DONE_DRINKING = 2;
 	
 	private ArrayList<Drink> mDrinks;
 	private DrinkLab mDrinkLab;
 	private UUID mDrinkLabId;
 	private int mTotalCalories;
-	
-	private ImageView mSmallImageView; // drink image
+	private boolean mIsDrinking;
 	
 	private TextView mDrinksTextView; // drink count
 	private TextView mTitleTextView; // title of drink
@@ -74,6 +77,7 @@ public class DrinkListFragment extends ListFragment {
 	
 	private Button mBacButton;
 	private Button mNewDrinkButton;
+	private Button mDoneDrinkingButton;
 	
 	private BitmapWorkerTask mTask;
 	private Bitmap mPlaceHolderDrawable;
@@ -113,6 +117,7 @@ public class DrinkListFragment extends ListFragment {
 		
 		mDrinks = mDrinkLab.getDrinks();
 		mTotalCalories = mDrinkLab.getCalories();
+		mIsDrinking = mDrinkLab.getIsDrinking();
 		
 		setHasOptionsMenu(true);
 		
@@ -148,13 +153,14 @@ public class DrinkListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = getActivity().getLayoutInflater().inflate(R.layout.list_item_all_drink_list_frag, null);
-		v.setBackgroundColor(getResources().getColor(R.color.dodgerblue));
+		v.setBackgroundColor(Color.parseColor("#B1BDCD"));
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			if (NavUtils.getParentActivityName(getActivity()) != null) {
 				getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
 			}
 		}
+		
 		
 		ListView listView = (ListView)v.findViewById(android.R.id.list);
 		
@@ -211,26 +217,26 @@ public class DrinkListFragment extends ListFragment {
 		}
 		
 		mNewDrinkButton = (Button)v.findViewById(R.id.drink_list_newDrinkButton);
-		mNewDrinkButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Drink drink = new Drink();
-				
-				Log.d(TAG, "Drink alc content: " + drink.getAlcoholContent()
-						+ " Drink calories: " + drink.getCalories()
-						+ " Drink volume: " + drink.getVolume());
-				
-				DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId()).addDrink(drink);
-				
-				Intent i = new Intent(getActivity(), DrinkActivity.class);
-				i.putExtra(DrinkFragment.EXTRA_DRINK_ID, drink.getId());
-				i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, mDrinkLab.getId());
-
-				startActivityForResult(i, REQUEST_DRINKLAB);
-			}
-		});
 		
+		if (!mDrinkLab.getIsDrinking()) {
+			mNewDrinkButton.setClickable(false);
+		} else {
+			mNewDrinkButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Drink drink = new Drink();
+					
+					DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId()).addDrink(drink);
+					
+					Intent i = new Intent(getActivity(), DrinkActivity.class);
+					i.putExtra(DrinkFragment.EXTRA_DRINK_ID, drink.getId());
+					i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, mDrinkLab.getId());
+	
+					startActivityForResult(i, REQUEST_DRINKLAB);
+				}
+			});
+		}
 		// TextView for total drinks
 		mTotalDrinksTextView = (TextView)v.findViewById(R.id.drink_list_drinkCountTextView); 
 		//if (mDrinkLab.getTotalDrinks() != 0) {
@@ -244,10 +250,10 @@ public class DrinkListFragment extends ListFragment {
 		
 		// TextView for total drinking time
 		mTotalTimeTextView = (TextView)v.findViewById(R.id.drink_list_durationTextView);		
-		mTotalTimeTextView.setText(mDrinkLab.getTotalTime() + "");
+		mTotalTimeTextView.setText(mDrinkLab.getDrinkingDuration(mDrinkLab));
 		
 		// TextView for BAC
-		mBacTextView = (TextView)v.findViewById(R.id.drink_list_BACTextView);
+		//mBacTextView = (TextView)v.findViewById(R.id.drink_list_BACTextView);
 		
 		// Button for BAC
 		mBacButton = (Button)v.findViewById(R.id.drink_list_BACButton);
@@ -260,11 +266,29 @@ public class DrinkListFragment extends ListFragment {
 					ProfileIncompleteFragment dialog = new ProfileIncompleteFragment();
 					dialog.show(fm, DIALOG_PROFILE);
 				} else {
-					mBacTextView.setText(mDrinkLab.getBAC());
+					FragmentManager fm = getActivity().getSupportFragmentManager();
+					BACDialogFragment dialog = new BACDialogFragment().newInstance(mDrinkLab);
+					dialog.show(fm, DIALOG_DONE_DRINKING);				
+					
 				}
 			}
 		});
 		
+		mDoneDrinkingButton = (Button)v.findViewById(R.id.drink_list_doneDrinkingButton);
+		if (!mDrinkLab.getIsDrinking()) {
+			mDoneDrinkingButton.setClickable(false);
+		} else {
+			mDoneDrinkingButton.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					FragmentManager fm = getActivity().getSupportFragmentManager();
+					DoneDrinkingDialogFragment dialog = new DoneDrinkingDialogFragment();
+					dialog.setTargetFragment(DrinkListFragment.this, REQUEST_DONE_DRINKING);
+					dialog.show(fm, DIALOG_DONE_DRINKING);				
+				}
+			});
+		}	
 		return v;
 	}
 
@@ -323,6 +347,13 @@ public class DrinkListFragment extends ListFragment {
 		
 		if (requestCode == REQUEST_DRINKLAB) {
 			mDrinkLab = data.getParcelableExtra(DrinkFragment.EXTRA_DRINKS_ARRAY);
+		} else if (requestCode == REQUEST_DONE_DRINKING) {
+			Person.get(getActivity()).setIsDrinking(false);
+			Person.get(getActivity()).savePerson();
+			mDrinkLab.setIsDrinking(false);
+			mDoneDrinkingButton.setClickable(false);
+			mNewDrinkButton.setClickable(false);
+			Log.d(TAG, "Person isDrinking?" + Person.get(getActivity()).getIsDrinking());
 		}
 	}
 	
@@ -377,8 +408,6 @@ public class DrinkListFragment extends ListFragment {
 			
 			// Configure the view for this Drink
 			Drink d = getItem(position);
-			int resId = R.drawable.drink_list_small_imageview_pink; // placeholder bitmap ID
-			Bitmap bitmap; // placeholder bitmap 
 			
 			mDrinksTextView = (TextView)convertView.findViewById(R.id.drink_list_item_drinksTextView);
 			mDrinksTextView.setText(getPosition(d) + 1 + ""); // get the position for each drink
@@ -386,16 +415,10 @@ public class DrinkListFragment extends ListFragment {
 			mTitleTextView = (TextView)convertView.findViewById(R.id.drink_list_item_titleTextView);
 			mTitleTextView.setText(d.getTitle());
 			mCaloriesTextView = (TextView)convertView.findViewById(R.id.drink_list_item_caloriesTextView);
-			mCaloriesTextView.setText("Calories: " + d.getCalories());
+			mCaloriesTextView.setText(d.getCalories() + " Calories");
 			mTimeTextView = (TextView)convertView.findViewById(R.id.drink_list_item_timeTextView);
-			mTimeTextView.setText("at " + formatTime(d.getTime()));	
-			mSmallImageView = (ImageView)convertView.findViewById(R.id.drink_list_item_smallImageView);
-			if (d.getPhoto() != null) {
-				showPhoto(d.getPhoto(), mSmallImageView);
-			} else {
-				bitmap = PictureUtils.getScaledThumbnailFromResId(getActivity(), resId);
-				mSmallImageView.setImageBitmap(bitmap);
-			}
+			mTimeTextView.setText(formatTime(d.getTime()) + "");	
+			
 			return convertView;
 		}
 	}
@@ -554,7 +577,8 @@ public class DrinkListFragment extends ListFragment {
 	public void onPause() {
 		super.onPause();
 		DayLab.get(getActivity()).saveDrinkLab();
-		//mTask.cancel(true);
+
+		Log.d(TAG, "Person isDrinking?" + Person.get(getActivity()).getIsDrinking());
 	}
 
 	/*

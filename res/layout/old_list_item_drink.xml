@@ -5,26 +5,39 @@
     android:padding="8dp"
     android:background="@drawable/background_activated" >
     
-
+   	<ImageView
+        android:id="@+id/drink_list_item_smallImageView"
+        android:layout_width="85dp"
+        android:layout_height="110dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/logo_drink_fragment"
+        android:background="@color/gold"
+        android:padding="2dp"
+		android:cropToPadding="true" />
+    
     <TextView
         android:id="@+id/drink_list_item_drinksTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-		android:textSize="18dp"
-		android:textColor="@color/white"
+        android:layout_alignParentLeft="true"
+		android:textSize="22dp"
+		android:textColor="#ff69b4"
 		android:textStyle="bold"
+		android:visibility="invisible"
 		android:text="10" />
     
     <TextView
         android:id="@+id/drink_list_item_titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/drink_list_item_drinksTextView"
+        android:layout_toLeftOf="@id/drink_list_item_smallImageView"
         android:layout_marginLeft="8dp"
         android:gravity="center_vertical"
         android:hint="Drink"
-        android:textColor="@color/white"
-        android:textSize="18dp"
+        android:textColor="#FFCC11"
+        android:textSize="22dp"
         android:textStyle="bold" />	  
         
 	<TextView
@@ -34,10 +47,9 @@
         android:gravity="center_vertical"
         android:layout_alignLeft="@id/drink_list_item_titleTextView"
         android:layout_below="@id/drink_list_item_titleTextView"
-        android:textStyle="bold"
-        android:textSize="14dp"
-        android:textColor="@color/hotpink"
-        android:text="0 Calories" />
+        android:textSize="18dp"
+        android:textColor="#00ff00"
+        android:text="Calories: 0" />
           
     <TextView
         android:id="@+id/drink_list_item_timeTextView"
@@ -46,8 +58,8 @@
         android:gravity="center_vertical"
         android:layout_alignLeft="@id/drink_list_item_titleTextView"
         android:layout_below="@id/drink_list_item_caloriesTextView"
-        android:textSize="14dp"
-        android:textColor="@color/lightblue"
+        android:textSize="18dp"
+        android:textColor="#FFFFFF"
         android:text="Time" />
     
 </RelativeLayout>

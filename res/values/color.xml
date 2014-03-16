@@ -11,4 +11,7 @@
     <color name="dodgerblue">#104E8B</color>
     <color name="gold">#FFCC11</color>
     <color name="hotpink">#ff69b4</color>    
+    <color name="gray">#B1BDCD</color>
+    <color name="dark_gray">#3E4957</color>
+    <color name="green">#00FF00</color>
 </resources>
