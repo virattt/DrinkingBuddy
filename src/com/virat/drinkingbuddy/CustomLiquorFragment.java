@@ -183,7 +183,7 @@ public class CustomLiquorFragment extends DialogFragment {
 				long id) {
 			String selected = parent.getItemAtPosition(pos).toString();
 			if (selected.equals("Liquor Shot")) {
-				setCustomDrink("Liquor Shot", "40.0", "97", "1.25");
+				setCustomDrink("Liquor Shot", "40.0", "97", "1.50");
 			}
 			else if (selected.equals("Margarita")) {
 				setCustomDrink("Margarita", "40.0", "400", "2.0");

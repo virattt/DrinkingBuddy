@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/white_background_rounded_corners" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:gravity="left"
+            android:text="\nPlease do not drink and drive.
+        		\n\nThis application is for entertainment and informational purposes only.
+        		\n\nDrinkster is in no way purported to be a guideline for how much you can drink and still drive or avoid being arrested.
+        		\n\nDrinkster does NOT serve as LEGAL ADVICE.  
+        		\n\nThe results from Drinkster&apos;s BAC Estimator are rough estimates for an average person only. Your actual blood alcohol concentration depends on a variety of additional factors, like genetic makeup, personal health, and recent food consumption.  Do not rely on these results to drive or work. 
+        		\n\nDrinkster and its developer are not legally responsible for anything you do while under the influence of alcohol or any other substances.
+        		\n\nPlease drink responsibly. 
+        		\n" />
+    </ScrollView>
+
+</LinearLayout>

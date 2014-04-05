@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.virat.drinkingbuddy"
-    android:versionCode="7"
-    android:versionName="1.1" >
+    android:versionCode="8"
+    android:versionName="2.0" >
 
     <uses-sdk
-        android:minSdkVersion="12"
+        android:minSdkVersion="16"
         android:targetSdkVersion="18" />
     <uses-permission 
         android:name="android.permission.CAMERA" />
@@ -33,7 +33,7 @@
         </activity>
         
         <activity 
-            android:name="com.virat.drinkingbuddy.DayListActivity"
+            android:name="com.virat.drinkingbuddy.MainActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +45,7 @@
             android:name=".DrinkListActivity"
             android:screenOrientation="portrait" >
             <meta-data android:name="android.support.PARENT_ACTIVITY"
-       			android:value="com.virat.drinkingbuddy.DayListActivity"/>
+       			android:value="com.virat.drinkingbuddy.MainActivity"/>
         </activity>
             
         <activity
@@ -61,6 +61,10 @@
             android:label="@string/app_name">
             
         </activity>
+        
+        <receiver
+            android:name="com.virat.drinkingbuddy.DrinkUpdateReceiver">
+        </receiver>
     </application>
 
 </manifest>

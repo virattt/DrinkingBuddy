@@ -196,15 +196,6 @@ public class DrinkFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), DrinkCameraActivity.class);
                 startActivityForResult(i, REQUEST_PHOTO);
-            	
-            	/*Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            	
-            	mFileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE, getActivity().getApplicationContext()); // create a file to save the image
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri); // set the image file name
-
-                // start the image capture Intent
-                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-            	*/
             }
         });
         
@@ -482,8 +473,8 @@ public class DrinkFragment extends Fragment {
 		mTitleField.setText(mDrink.getTitle());
 		
 		// set Beer's default content
-		mDrink.setCalories(100); // 105 calories in average beer
-		mDrink.setAlcoholContent(.04); // avg alcohol content in beer is 4.5%
+		mDrink.setCalories(150); // 105 calories in average beer
+		mDrink.setAlcoholContent(.05); // avg alcohol content in beer is 4.5%
 		mDrink.setVolume(12); // avg volume of beer is 12 fluid ounces
 		
 		FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -514,7 +505,7 @@ public class DrinkFragment extends Fragment {
 			// set Wine's default content
 		mDrink.setCalories(97); // 97 calories in average liquor drink
 		mDrink.setAlcoholContent(.40); // avg alcohol content in liquor is 40%
-		mDrink.setVolume(1.25); // avg volume of liquor is 1.5 fluid ounces
+		mDrink.setVolume(1.50); // avg volume of liquor is 1.5 fluid ounces
 		
 		FragmentManager fm = getActivity().getSupportFragmentManager();
 		CustomLiquorFragment dialog = CustomLiquorFragment.newInstance(mDrink);

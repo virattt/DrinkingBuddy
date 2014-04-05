@@ -8,32 +8,41 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.View;
 
-public class TermsAndConditionsFragment extends DialogFragment {
+public class TodaySessionExistDialogFragment extends DialogFragment {
+
+	public static final String EXTRA_CREATE_ANOTHER_SESSION = "com.virat.drinkingbuddy.create_another_session";
 	
-	public static final String EXTRA_TERMS_AGREED = "com.virat.drinkingbuddy.terms_agreed";
-	private boolean mTermsAgreed;
+	private boolean mCreateAnotherSession;
 	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+			
+	}
+		
+	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		
 		// Get the layout inflater
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-	
-		builder.setView(inflater.inflate(R.layout.dialog_terms_conditions, null))
-		.setPositiveButton(R.string.agree_button, new DialogInterface.OnClickListener() {
+
+		builder.setView(inflater.inflate(R.layout.dialog_today_session_exists, null))
+		.setPositiveButton(R.string.yes_string, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mTermsAgreed = true;
+				mCreateAnotherSession = true;
 				sendResult(Activity.RESULT_OK);
 			}
 		})
-		.setNegativeButton(R.string.disagree_button, new DialogInterface.OnClickListener() {
+		.setNegativeButton(R.string.no_string, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mTermsAgreed = false;
-				sendResult(Activity.RESULT_OK);
+				dismiss();
 			}
 		});
 		
@@ -45,17 +54,9 @@ public class TermsAndConditionsFragment extends DialogFragment {
 			return;
 		
 		Intent i = new Intent();
-		i.putExtra(EXTRA_TERMS_AGREED, mTermsAgreed);
+		i.putExtra(EXTRA_CREATE_ANOTHER_SESSION, mCreateAnotherSession);
 		getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
 
 	}
 
-	@Override
-	public void onPause() {
-		if (mTermsAgreed == false) {
-			// closing Entire Application
-			android.os.Process.killProcess(android.os.Process.myPid());
-		}
-		super.onPause();
-	}
 }

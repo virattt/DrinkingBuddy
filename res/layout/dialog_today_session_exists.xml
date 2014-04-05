@@ -16,29 +16,24 @@
 	    android:text="drinkster"
 	    android:textSize="28dp" />
     
+     <!-- <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:text="Oops!"/>
+     -->
     <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:gravity="center"
         android:textSize="14dp"
-        android:text="Your BAC is approximately:"/>
+        android:text="Are you sure you want to create a new drinking session today? All previous sessions will be marked as Done Drinking."/>
 
-    <TextView 
-        android:id="@+id/bac_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-       	android:textStyle="bold"
-        android:textSize="40dp"
-        android:text="0.000%"/>
-    
-    <TextView 
-        android:id="@+id/bac_impairment_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="8dp"/>
 </LinearLayout>

@@ -150,10 +150,10 @@ public class CustomBeerFragment extends DialogFragment {
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
 			String selected = parent.getItemAtPosition(pos).toString();
-			if (selected.equals("Light Beer")) {
+			if (selected.equals("Regular Beer")) {
+			setCustomDrink("Regular Beer", "5.0", "150", "12.0");
+			} else if (selected.equals("Light Beer")) {
 				setCustomDrink("Light Beer", "4.0", "100", "12.0");
-			} else if (selected.equals("Medium Beer")) {
-				setCustomDrink("Medium Beer", "5.0", "150", "12.0");
 			} else if (selected.equals("Strong Beer")) {
 				setCustomDrink("Strong Beer", "6.0", "200", "12.0");
 			}

@@ -23,7 +23,6 @@
 	<string name="user_female">Female</string>
 	<string name="user_weight">Weight</string>
 	<string name="user_gender">Gender</string>
-	<string name="profile"><b>Profile</b></string>
 	<string name="save_button">Save</string>
 	<string name="confirm_button">Confirm</string>
 	<string name="user_profile_incomplete">Note: Please enter your name and weight.</string>
@@ -31,15 +30,20 @@
 	<string name="cancel">Cancel</string>
 	<string name="profile_incomplete_title">Complete your profile to get BAC</string>
 	<string name="profile_incomplete_OK_button">Edit Profile</string>
-	<string name="standard_drink_beer"><b>4% Alc</b> \n 100  Cals \n 12 fl oz</string>
+	<string name="standard_drink_beer"><b>5% Alc</b> \n 100  Cals \n 12 fl oz</string>
 	<string name="standard_drink_wine"><b>12% Alc</b> \n 125  Cals \n 5 fl oz</string>
-	<string name="standard_drink_liquor"><b>40% Alc</b> \n 97  Cals \n 1.25 fl oz</string>
+	<string name="standard_drink_liquor"><b>40% Alc</b> \n 97  Cals \n 1.50 fl oz</string>
 	<string name="agree_button">Accept</string>
 	<string name="disagree_button">Decline</string>
+	<string name="drawer_open">Open drawer</string>
+	<string name="drawer_close">Close drawer</string>
+	<string name="yes_string">Yes</string>
+	<string name="no_string">No</string>
+	
 	
 	<string-array name="custom_drink_array">
+	    <item>Regular Beer</item>
 	    <item>Light Beer</item>
-	    <item>Medium Beer</item>
 	    <item>Strong Beer</item>
 	    <item>Margarita</item>
 	    <item>Mimosa</item>
@@ -52,8 +56,8 @@
 	</string-array>
 	
 	<string-array name="custom_beer_array">
+	    <item>Regular Beer</item>
 	    <item>Light Beer</item>
-	    <item>Medium Beer</item>
 	    <item>Strong Beer</item>	
     </string-array>
     
@@ -71,6 +75,11 @@
 	    <item>Rum &amp; Coke</item>
 	    <item>Gin &amp; Tonic</item>
 	    <item>Vodka Soda</item>
+	</string-array>
+	
+	<string-array name="nav_drawer_titles">
+	    <item>Home</item>
+	   	<item>Profile</item>
 	</string-array>
 	
 </resources>

@@ -1,23 +1,21 @@
 package com.virat.drinkingbuddy;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 public class BACDialogFragment extends DialogFragment {
 	private static final String EXTRA_CUSTOM_DRINKLAB = "com.virat.drinkingbuddy.custom_drink";
 	
 	private TextView mBACTextView;
+	private TextView mImpairmentLevel;
+	
 	private DrinkLab mDrinkLab;
-	private Spinner mSpinner;
 	
 	public static BACDialogFragment newInstance(DrinkLab d) {
 		BACDialogFragment f = new BACDialogFragment();
@@ -36,7 +34,6 @@ public class BACDialogFragment extends DialogFragment {
 		mDrinkLab = getArguments().getParcelable(EXTRA_CUSTOM_DRINKLAB);
 	}
 		
-	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -45,10 +42,13 @@ public class BACDialogFragment extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View v = inflater.inflate(R.layout.bac_dialog_fragment, null);
 		mBACTextView = (TextView)v.findViewById(R.id.bac_textview);
-		mBACTextView.setText(mDrinkLab.getBAC() + "");
+		mBACTextView.setText(mDrinkLab.getBAC() + "%");
+		
+		mImpairmentLevel = (TextView)v.findViewById(R.id.bac_impairment_level);
+		mImpairmentLevel.setText(mDrinkLab.getImpairmentLevel());
 		
 		builder.setView(v)
-		.setPositiveButton("Yes, I understand", new DialogInterface.OnClickListener() {
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

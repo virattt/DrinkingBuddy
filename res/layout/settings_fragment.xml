@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="16dp" >
+
+        <TextView
+            android:id="@+id/drink_updates_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:text="Drink Updates"
+            android:textSize="18dp"
+            android:textColor="@color/dodgerblue"
+            android:textStyle="bold" />
+        
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/white_background_rounded_corners"
+        android:gravity="center_horizontal"
+        android:padding="16dp" >
+
+        <TextView
+            android:id="@+id/notification_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:text="Notifications"
+            android:textSize="18dp" />
+
+        <Switch
+            android:id="@+id/notification_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/notification_textView"
+            android:layout_toRightOf="@id/notification_textView"
+            android:textOff="Off"
+            android:textOn="On"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/sounds_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/notification_textView"
+            android:layout_below="@id/notification_textView"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="32dp"
+            android:text="Sounds"
+            android:textSize="18dp" />
+
+        <Switch
+            android:id="@+id/sounds_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/sounds_textView"
+            android:layout_alignLeft="@id/notification_switch"
+            android:layout_toRightOf="@id/sounds_textView"
+            android:textOff="Off"
+            android:textOn="On"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/vibration_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/sounds_textView"
+            android:layout_below="@id/sounds_textView"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="32dp"
+            android:text="Vibrations"
+            android:textSize="18dp" />
+
+        <Switch
+            android:id="@+id/vibration_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/vibration_textView"
+            android:layout_alignLeft="@id/sounds_switch"
+            android:layout_toRightOf="@id/vibration_textView"
+            android:textOff="Off"
+            android:textOn="On"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -19,9 +19,11 @@ public class ProfileIncompleteFragment extends DialogFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// Launch UserFragment
-						Intent i = new Intent(getActivity(), UserActivity.class);
-						startActivity(i);
-						
+						Intent i = new Intent(getActivity(), MainActivity.class);
+						Bundle b = new Bundle();
+						b.putInt(MainActivity.ITEM_SELECTED, 1);
+						i.putExtras(b);
+						startActivity(i);						
 					}
 				})
 				.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
