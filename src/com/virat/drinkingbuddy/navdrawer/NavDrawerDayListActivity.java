@@ -1,4 +1,13 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.navdrawer;
+
+import com.virat.drinkingbuddy.DayListFragment;
+import com.virat.drinkingbuddy.R;
+import com.virat.drinkingbuddy.UserFragment;
+import com.virat.drinkingbuddy.R.array;
+import com.virat.drinkingbuddy.R.drawable;
+import com.virat.drinkingbuddy.R.id;
+import com.virat.drinkingbuddy.R.layout;
+import com.virat.drinkingbuddy.R.string;
 
 import android.app.Activity;
 import android.app.Fragment;

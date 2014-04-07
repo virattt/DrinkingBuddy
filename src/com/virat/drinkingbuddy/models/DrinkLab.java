@@ -1,4 +1,4 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.models;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -10,6 +10,8 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.virat.drinkingbuddy.DrinkingBuddyJSONSerializer;
 
 import android.content.Context;
 import android.os.Parcel;

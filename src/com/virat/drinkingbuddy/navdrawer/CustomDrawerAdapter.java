@@ -1,6 +1,9 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.navdrawer;
 
 import java.util.List;
+
+import com.virat.drinkingbuddy.R;
+import com.virat.drinkingbuddy.R.id;
 
 import android.app.Activity;
 import android.content.Context;

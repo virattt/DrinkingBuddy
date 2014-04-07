@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/*
+ * This class inflates the Terms & Conditions 
+ */
 public class DisclaimerFragment extends Fragment {
 
 	@Override
@@ -19,12 +22,12 @@ public class DisclaimerFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		// Create xml layout for this class
+		// Inflate XML layout for this class
 		View v = inflater.inflate(R.layout.terms_conditions_fragment, null);
-		
-		// light gray background
-		v.setBackgroundColor(Color.parseColor("#B1BDCD")); 
-		
+
+		// Light gray background
+		v.setBackgroundColor(Color.parseColor("#B1BDCD"));
+
 		return v;
 	}
 }

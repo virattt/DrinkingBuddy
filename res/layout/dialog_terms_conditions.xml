@@ -2,35 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="#B1BDCD"
     android:orientation="vertical" >
-    
+
     <TextView
-	    android:layout_width="match_parent"
-	    android:layout_height="64dp"
-	    android:textColor="#ff69b4"
-	    android:background="@color/dodgerblue"
-	    android:textStyle="bold"
-	    android:gravity="center"
-	    android:layout_gravity="center"
-	    android:text="Terms &amp; Conditions"
-	    android:textSize="28dp" />
-    
-    <ScrollView 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <TextView 
-        	android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="left"
-        
-        	android:text="\nPlease do not drink and drive.
+        android:layout_height="64dp"
+        android:layout_gravity="center"
+        android:background="@color/dodgerblue"
+        android:gravity="center"
+        android:text="Terms &amp; Conditions"
+        android:textColor="#ff69b4"
+        android:textSize="28dp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/white_background_rounded_corners" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="left"
+            android:text="\nPlease do not drink and drive.
         		\n\nThis application is for entertainment and informational purposes only.
         		\n\nDrinkster is in no way purported to be a guideline for how much you can drink and still drive or avoid being arrested.
         		\n\nDrinkster does NOT serve as LEGAL ADVICE.  
-        		\n\nThe results from Drinkster's BAC Estimator are rough estimates for an average person only. Your actual blood alcohol concentration depends on a variety of additional factors, like genetic makeup, personal health, and recent food consumption.  Do not rely on these results to drive or work. 
+        		\n\nThe results from Drinkster&apos;s BAC Estimator are rough estimates for an average person only. Your actual blood alcohol concentration depends on a variety of additional factors, like genetic makeup, personal health, and recent food consumption.  Do not rely on these results to drive or work. 
         		\n\nDrinkster and its developer are not legally responsible for anything you do while under the influence of alcohol or any other substances.
         		\n\nPlease drink responsibly. 
-        		\n"/>
+        		\n" />
     </ScrollView>
+
 </LinearLayout>

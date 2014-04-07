@@ -1,4 +1,4 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.navdrawer;
 
 public class DrawerItem {
 	 

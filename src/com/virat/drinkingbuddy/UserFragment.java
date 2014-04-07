@@ -1,5 +1,7 @@
 package com.virat.drinkingbuddy;
 
+import com.virat.drinkingbuddy.models.Person;
+
 import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;

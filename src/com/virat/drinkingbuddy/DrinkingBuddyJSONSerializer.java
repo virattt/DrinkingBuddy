@@ -16,6 +16,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.virat.drinkingbuddy.models.DrinkLab;
+import com.virat.drinkingbuddy.models.Person;
+
 import android.content.Context;
 
 public class DrinkingBuddyJSONSerializer {

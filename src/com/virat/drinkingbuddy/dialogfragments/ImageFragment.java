@@ -1,4 +1,6 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.dialogfragments;
+
+import com.virat.drinkingbuddy.models.PictureUtils;
 
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;

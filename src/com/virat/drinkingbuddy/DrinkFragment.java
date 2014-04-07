@@ -7,6 +7,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import com.virat.drinkingbuddy.dialogfragments.CustomBeerFragment;
+import com.virat.drinkingbuddy.dialogfragments.CustomDrinkFragment;
+import com.virat.drinkingbuddy.dialogfragments.CustomLiquorFragment;
+import com.virat.drinkingbuddy.dialogfragments.CustomWineFragment;
+import com.virat.drinkingbuddy.dialogfragments.ImageFragment;
+import com.virat.drinkingbuddy.dialogfragments.TimePickerFragment;
+import com.virat.drinkingbuddy.models.DayLab;
+import com.virat.drinkingbuddy.models.Drink;
+import com.virat.drinkingbuddy.models.DrinkLab;
+import com.virat.drinkingbuddy.models.Photo;
+import com.virat.drinkingbuddy.models.PictureUtils;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;

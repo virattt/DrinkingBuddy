@@ -1,4 +1,4 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,5 +1,12 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.dialogfragments;
 
+
+import com.virat.drinkingbuddy.R;
+import com.virat.drinkingbuddy.R.array;
+import com.virat.drinkingbuddy.R.id;
+import com.virat.drinkingbuddy.R.layout;
+import com.virat.drinkingbuddy.R.string;
+import com.virat.drinkingbuddy.models.Drink;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,7 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CustomDrinkFragment extends DialogFragment {
+public class CustomLiquorFragment extends DialogFragment {
 
 	private static 	final String TAG = "CustomDrinkFragment"; // for debugging
 	
@@ -33,20 +40,24 @@ public class CustomDrinkFragment extends DialogFragment {
 	private String mCustomDrinkName;
 	private double mCustomDrinkAlcoholContent;
 	private int mCustomDrinkCalories;
+	private int mCustomMixerCalories;
 	private double mCustomDrinkVolume;
+	private double mCustomMixerVolume;
 	
 	private EditText mDrinkName;
 	private EditText mDrinkAlcoholContent;
 	private EditText mDrinkCalories;
 	private EditText mDrinkVolume;
+	private EditText mMixerCalories;
+	private EditText mMixerVolume;
 	
 	private TextView mDialogTitle;
 	
 	private Drink mDrink;
 	private Spinner mSpinner;
 	
-	public static CustomDrinkFragment newInstance(Drink d) {
-		CustomDrinkFragment f = new CustomDrinkFragment();
+	public static CustomLiquorFragment newInstance(Drink d) {
+		CustomLiquorFragment f = new CustomLiquorFragment();
 		
 		Bundle args = new Bundle();
 		args.putParcelable(EXTRA_CUSTOM_DRINK, d);
@@ -70,32 +81,48 @@ public class CustomDrinkFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Get the layout inflater
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		View v = inflater.inflate(R.layout.dialog_custom_drink, null);
+		View v = inflater.inflate(R.layout.dialog_custom_liquor, null);
 		
-		mDialogTitle = (TextView)v.findViewById(R.id.custom_drink_title_textview);
-		mDialogTitle.setText("My Drink");
+		mDialogTitle = (TextView)v.findViewById(R.id.custom_liquor_title_textview);
+		mDialogTitle.setText("Liquor");
 		
-		mSpinner = (Spinner)v.findViewById(R.id.custom_drink_spinner);
+		mSpinner = (Spinner)v.findViewById(R.id.custom_liquor_spinner);
+		// Create an ArrayAdapter using the string array and a default spinner layout
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity().getApplicationContext(),
+		        R.array.custom_liquor_array, R.layout.my_spinner_style);
+		// Specify the layout to use when the list of choices appears
+		adapter.setDropDownViewResource(R.layout.my_spinner_dropdown_style);
 		// Apply the adapter to the spinner
-		mSpinner.setVisibility(View.INVISIBLE);
-		
-		mDrinkName = (EditText)v.findViewById(R.id.custom_drink_dialog_name);
+		mSpinner.setAdapter(adapter);
+		mSpinner.setOnItemSelectedListener(new MyItemSelectedListener());
+
+		mDrinkName = (EditText)v.findViewById(R.id.custom_liquor_dialog_name);
 		mDrinkName.setText(mDrink.getTitle());
 		
-		mDrinkAlcoholContent = (EditText)v.findViewById(R.id.custom_drink_dialog_alcohol_content);
+		mDrinkAlcoholContent = (EditText)v.findViewById(R.id.custom_liquor_dialog_alcohol_content);
 		if (mDrink.getAlcoholContent() != 0.00) {
 			mDrinkAlcoholContent.setText((mDrink.getAlcoholContent() * 100) + "");
 		}
 		
-		mDrinkCalories = (EditText)v.findViewById(R.id.custom_drink_dialog_calories);
+		mDrinkCalories = (EditText)v.findViewById(R.id.custom_liquor_dialog_calories);
 		if (mDrink.getCalories() != 0) {
 			mDrinkCalories.setText(mDrink.getCalories() + "");
 		}
 		
-		mDrinkVolume = (EditText)v.findViewById(R.id.custom_drink_dialog_volume);
+		mDrinkVolume = (EditText)v.findViewById(R.id.custom_liquor_dialog_volume);
 		if (mDrink.getVolume() != 0.00) {
 			mDrinkVolume.setText(mDrink.getVolume() + "");
 		}
+		
+		mMixerCalories = (EditText)v.findViewById(R.id.custom_mixer_calories);
+		if (mDrink.getMixerCalories() != 0.00) {
+			mMixerCalories.setText(mDrink.getMixerCalories() + "");
+		}
+		
+		mMixerVolume = (EditText)v.findViewById(R.id.custom_mixer_volume);
+		if (mDrink.getMixerVolume() != 0.00) {
+			mMixerVolume.setText(mDrink.getMixerVolume() + "");
+		}	
 		
 		// Inflate and set the layout for the dialog
 		// Pass null as the parent view because its going in the dialog	 layout
@@ -128,6 +155,20 @@ public class CustomDrinkFragment extends DialogFragment {
 					} else {
                         mCustomDrinkVolume = Double.parseDouble(mDrinkVolume.getText().toString());
 					}
+					
+					// set Mixer's calories
+					if (mMixerCalories.getText().toString() == null || mMixerCalories.getText().toString().equals("")) {
+                        mCustomMixerCalories = 0;
+					} else {
+                        mCustomMixerCalories = Integer.parseInt(mMixerCalories.getText().toString());
+					}
+					
+					// set Mixer's volume
+					if (mMixerVolume.getText().toString() == null || mMixerVolume.getText().toString().equals("")) {
+                        mCustomMixerVolume = 0.00; 
+					} else {
+                        mCustomMixerVolume = Double.parseDouble(mMixerVolume.getText().toString());
+					}
                 	
 					sendResult(Activity.RESULT_OK);
 				}
@@ -136,11 +177,45 @@ public class CustomDrinkFragment extends DialogFragment {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					CustomDrinkFragment.this.getDialog().cancel();
+					CustomLiquorFragment.this.getDialog().cancel();
 				}
 			});
 			
 		return builder.create();
+	}
+	
+	class MyItemSelectedListener implements OnItemSelectedListener {
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view, int pos,
+				long id) {
+			String selected = parent.getItemAtPosition(pos).toString();
+			if (selected.equals("Liquor Shot")) {
+				setCustomDrink("Liquor Shot", "40.0", "97", "1.50");
+			}
+			else if (selected.equals("Margarita")) {
+				setCustomDrink("Margarita", "40.0", "400", "2.0");
+			} else if (selected.equals("Mimosa")) {
+				setCustomDrink("Mimosa", "12.0", "140", "5.0");
+			} else if (selected.equals("Bloody Mary")) {
+				setCustomDrink("Bloody Mary", "40.0", "125", "2.0");
+			} else if (selected.equals("Long Island")) {
+				setCustomDrink("Long Island", "40.0", "300", "5.0");
+			} else if (selected.equals("Rum & Coke")) {
+				setCustomDrink("Rum & Coke", "40.0", "180", "2.0");
+			} else if (selected.equals("Gin & Tonic")) {
+				setCustomDrink("Gin & Tonic", "40.0", "120", "2.0");
+			} else if (selected.equals("Vodka Soda")) {
+				setCustomDrink("Vodka Soda", "40.0", "200", "2.0");
+			} else if (selected.equals("Sake Bomb")) {
+				setCustomDrink("Sake Bomb", "16.0", "140", "7.0");
+			}
+		}
+		
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 	
 	// Convenience method to set the name, alc content,
@@ -160,8 +235,8 @@ public class CustomDrinkFragment extends DialogFragment {
 		Intent i = new Intent();
 		i.putExtra(EXTRA_CUSTOM_DRINK_NAME, mCustomDrinkName);
 		i.putExtra(EXTRA_CUSTOM_DRINK_ALCOHOL_CONTENT, mCustomDrinkAlcoholContent);
-		i.putExtra(EXTRA_CUSTOM_DRINK_CALORIES, mCustomDrinkCalories);
-		i.putExtra(EXTRA_CUSTOM_DRINK_VOLUME, mCustomDrinkVolume);
+		i.putExtra(EXTRA_CUSTOM_DRINK_CALORIES, mCustomDrinkCalories + mCustomMixerCalories);
+		i.putExtra(EXTRA_CUSTOM_DRINK_VOLUME, mCustomDrinkVolume + mCustomMixerVolume);
 		
 		getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, i);
 	}

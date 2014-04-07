@@ -2,6 +2,8 @@ package com.virat.drinkingbuddy;
 
 import java.util.UUID;
 
+import com.virat.drinkingbuddy.models.DrinkLab;
+
 import android.support.v4.app.Fragment;
 
 public class DrinkListActivity extends SingleFragmentActivity {

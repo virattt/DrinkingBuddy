@@ -1,7 +1,9 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.models;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
+import com.virat.drinkingbuddy.DrinkingBuddyJSONSerializer;
 
 import android.content.Context;
 import android.util.Log;

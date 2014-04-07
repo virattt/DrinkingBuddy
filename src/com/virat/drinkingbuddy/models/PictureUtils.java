@@ -1,4 +1,4 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.models;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

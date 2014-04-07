@@ -5,6 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import com.virat.drinkingbuddy.dialogfragments.BACDialogFragment;
+import com.virat.drinkingbuddy.dialogfragments.DoneDrinkingDialogFragment;
+import com.virat.drinkingbuddy.dialogfragments.ProfileIncompleteFragment;
+import com.virat.drinkingbuddy.models.DayLab;
+import com.virat.drinkingbuddy.models.Drink;
+import com.virat.drinkingbuddy.models.DrinkLab;
+import com.virat.drinkingbuddy.models.Person;
+
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;

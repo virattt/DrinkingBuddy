@@ -35,9 +35,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class DayListFragment extends ListFragment {
+import com.virat.drinkingbuddy.dialogfragments.TermsAndConditionsDialogFragment;
+import com.virat.drinkingbuddy.dialogfragments.TodaySessionExistDialogFragment;
+import com.virat.drinkingbuddy.models.DayLab;
+import com.virat.drinkingbuddy.models.DrinkLab;
+import com.virat.drinkingbuddy.models.Person;
 
-	private static final String TAG = "DayListFragment";
+/*
+ * This class displays the list of DrinkLabs (drinking sessions) 
+ * and lets the user create new DrinkLab 
+ */
+public class DayListFragment extends ListFragment {
 
 	private static final String DIALOG_TERMS = "terms_and_conditions";
 	private static final String DIALOG_SESSION_EXISTS = "session_exists";
@@ -47,8 +55,10 @@ public class DayListFragment extends ListFragment {
 	private static final int REQUEST_TERMS = 0;
 	private static final int REQUEST_SESSION_EXISTS = 1;
 
+	// Array of DrinkLab(s)
 	private ArrayList<DrinkLab> mDrinkDays;
 
+	// UI components
 	private TextView mDayTextView;
 	private TextView mCaloriesTextView;
 	private TextView mDateTextView;
@@ -68,18 +78,20 @@ public class DayListFragment extends ListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		// Customize the ActionBar
 		ActionBar actionBar = getActivity().getActionBar();
-
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
-
+		
 		mDrinkDays = DayLab.get(getActivity()).getDrinkLabs();
 
+		// Get and set the adapter
 		DayAdapter adapter = new DayAdapter(mDrinkDays);
 		setListAdapter(adapter);
 		setHasOptionsMenu(true);
 
+		// Set this class' context reference for system-wide notification creation
 		DayListFragment.context = getActivity().getApplicationContext();
 
 		// Set up Shared Prefs for Terms & Conditions
@@ -103,38 +115,42 @@ public class DayListFragment extends ListFragment {
 
 		// Terms & Conditions result
 		if (requestCode == REQUEST_TERMS) {
+			
+			// True = Terms accepted; False = Terms rejected
 			mTermsAgreed = data.getBooleanExtra(
 					TermsAndConditionsDialogFragment.EXTRA_TERMS_AGREED, false);
+			
+			// Get reference to SharedPrefs
 			SharedPreferences terms_settings = this.getActivity()
 					.getSharedPreferences(TERMS_AND_CONDITIONS, 0);
+			
 			// Editor object to make preference changes
 			SharedPreferences.Editor editor = terms_settings.edit();
 
-			// Force kill application if user did not agree
-			// to the Terms & Conditions
 			if (mTermsAgreed == false) {
-				// The terms have NOT been agreed
+				// User didn't agree to the Terms
 				editor.putBoolean("terms agreed", mTermsAgreed);
-				// Commit the edits
 				editor.commit();
-				// closing Entire Application
+
+				// Force kill application
 				android.os.Process.killProcess(android.os.Process.myPid());
 			} else {
-				// the user agreed to the Terms, run App as usual
+				// User agreed to Terms, run App as usual
 				editor.putBoolean("terms agreed", mTermsAgreed);
 				editor.commit();
 			}
 		} else if (requestCode == REQUEST_SESSION_EXISTS) {
+			// Receive user's choice to create 1+ sessions in same day
 			boolean create_new_session = data
-					.getBooleanExtra(
-							TodaySessionExistDialogFragment.EXTRA_CREATE_ANOTHER_SESSION,
-							false);
+					.getBooleanExtra(TodaySessionExistDialogFragment.EXTRA_CREATE_ANOTHER_SESSION,
+									false);
+
+			// Cancel current alarm and create new session
 			if (create_new_session) {
 				cancelExistingAlarm();
 				createNewDrinkLab();
 			}
 		}
-
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
@@ -145,7 +161,6 @@ public class DayListFragment extends ListFragment {
 		View v = getActivity().getLayoutInflater().inflate(
 				R.layout.list_item_all_day_list_frag, null);
 		v.setBackgroundColor(Color.parseColor("#B1BDCD")); // light gray
-															// background
 
 		mStartDrinkingButton = (Button) v
 				.findViewById(R.id.day_list_startDrinkingButton);
@@ -162,15 +177,16 @@ public class DayListFragment extends ListFragment {
 							REQUEST_SESSION_EXISTS);
 					dialog.show(fm, DIALOG_SESSION_EXISTS);
 				} else {
-					
+
 					// Cancel existing alarm
 					cancelExistingAlarm();
-					
+
 					createNewDrinkLab();
 				}
 			}
 		});
 
+		// ListView object
 		ListView listView = (ListView) v.findViewById(android.R.id.list);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -243,13 +259,6 @@ public class DayListFragment extends ListFragment {
 				menu);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onContextItemSelected(android.view.MenuItem
-	 * ) Deletes a Drink using a floating context menu
-	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
@@ -299,6 +308,7 @@ public class DayListFragment extends ListFragment {
 		}
 	}
 
+	/** Custom adapter that holds DrinkLabs for this ListFragment */
 	private class DayAdapter extends ArrayAdapter<DrinkLab> {
 
 		public DayAdapter(ArrayList<DrinkLab> drinkLabs) {
@@ -319,31 +329,33 @@ public class DayListFragment extends ListFragment {
 			TextView drinkCountTextView = (TextView) convertView
 					.findViewById(R.id.day_list_item_drinkCountTextView);
 
-			// see if drink count is plural
+			// Check for drink count plurality
 			if (d.getDrinkCount() == 1) {
 				drinkCountTextView.setText(d.getDrinkCount() + " Drink");
 			} else {
-
 				drinkCountTextView.setText(d.getDrinkCount() + " Drinks");
 			}
 
-			mDayTextView = (TextView) convertView
-					.findViewById(R.id.day_list_item_dayTextView);
+			mDayTextView = (TextView) convertView.findViewById(R.id.day_list_item_dayTextView);
+			
+			// If current DrinkLab is today, then display "Today" instead of day of week
 			if (isToday(d)) {
 				mDayTextView.setText("Today");
 			} else {
 				mDayTextView.setText(formatDay(d.getDate()));
 			}
-			mCaloriesTextView = (TextView) convertView
-					.findViewById(R.id.day_list_item_caloriesTextView);
+			
+			// Display DrinkLab calories
+			mCaloriesTextView = (TextView) convertView.findViewById(R.id.day_list_item_caloriesTextView);
 			mCaloriesTextView.setText(d.getCalories() + " Calories");
 
-			mDateTextView = (TextView) convertView
-					.findViewById(R.id.day_list_item_dateTextView);
+			// Display DrinkLab's date
+			mDateTextView = (TextView) convertView.findViewById(R.id.day_list_item_dateTextView);
 			mDateTextView.setText(formatDate(d.getDate()));
 
-			mSessionStatus = (TextView) convertView
-					.findViewById(R.id.day_list_item_session_status);
+			mSessionStatus = (TextView) convertView.findViewById(R.id.day_list_item_session_status);
+
+			// Display current DrinkLab's activity status (Drinking/Done Drinking)
 			if (d.getIsDrinking()) {
 				mSessionStatus.setText("Drinking");
 				mSessionStatus.setTypeface(null, Typeface.BOLD);
@@ -355,18 +367,8 @@ public class DayListFragment extends ListFragment {
 			return convertView;
 		}
 	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		((DayAdapter) getListAdapter()).notifyDataSetChanged();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
+	
+	/** Checks if a DrinkLab for today already exists */
 	private boolean todaySessionExists() {
 		// Today's Date
 		Date todayDate = new Date();
@@ -385,8 +387,9 @@ public class DayListFragment extends ListFragment {
 		}
 		return false;
 	}
-
+	/** Helper class that checks if a DrinkLab is for today */
 	private boolean isToday(DrinkLab drinkLab) {
+		
 		// Today's date
 		Date todayDate = new Date();
 		SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy");
@@ -399,34 +402,35 @@ public class DayListFragment extends ListFragment {
 		return false;
 	}
 
+	/** Formats DrinkLab date to day of week */
 	private String formatDay(Date date) {
 		SimpleDateFormat fmt = new SimpleDateFormat("EEEE");
 		return fmt.format(date);
 	}
-
+	
+	/** Formats DrinkLab's date - i.e. April 6, 2014 */
 	private String formatDate(Date date) {
 		SimpleDateFormat fmt = new SimpleDateFormat("MMMM d, yyyy");
 		return fmt.format(date);
 	}
 
+	/** Static helper method that returns this class' context */
 	public static Context getAppContext() {
 		return DayListFragment.context;
 	}
 
+	/** Helper method that creates a new DrinkLab */
 	private void createNewDrinkLab() {
 		// Mark previous sessions as Done Drinking
-		for (DrinkLab drinkLab : DayLab.get(getActivity())
-				.getDrinkLabs()) {
+		for (DrinkLab drinkLab : DayLab.get(getActivity()).getDrinkLabs()) {
 			drinkLab.setIsDrinking(false);
 		}
-		
+
 		// Create new DrinkLab
 		DrinkLab drinkLab = new DrinkLab();
 		DayLab.get(getActivity()).addDrinkLab(drinkLab);
-		Intent i = new Intent(getActivity(),
-				DrinkListActivity.class);
-		i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID,
-				drinkLab.getId());
+		Intent i = new Intent(getActivity(), DrinkListActivity.class);
+		i.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID, drinkLab.getId());
 		i.putExtra(DrinkListFragment.EXTRA_DRINKLAB, drinkLab);
 
 		// Person is now drinking
@@ -435,7 +439,8 @@ public class DayListFragment extends ListFragment {
 
 		startActivityForResult(i, 0);
 	}
-	
+
+	/** Helper method that cancels the existing alarm */
 	private void cancelExistingAlarm() {
 		// Get the AlarmManager Service
 		mAlarmManager = (AlarmManager) getActivity().getSystemService(
@@ -456,4 +461,16 @@ public class DayListFragment extends ListFragment {
 		mAlarmManager.cancel(mDrinkUpdateReceiverPendingIntent);
 		mDrinkUpdateReceiverPendingIntent.cancel();
 	}
+
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		((DayAdapter) getListAdapter()).notifyDataSetChanged();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+	}	
 }

@@ -1,5 +1,12 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.dialogfragments;
 
+
+import com.virat.drinkingbuddy.R;
+import com.virat.drinkingbuddy.R.array;
+import com.virat.drinkingbuddy.R.id;
+import com.virat.drinkingbuddy.R.layout;
+import com.virat.drinkingbuddy.R.string;
+import com.virat.drinkingbuddy.models.Drink;
 
 import android.app.Activity;
 import android.app.AlertDialog;

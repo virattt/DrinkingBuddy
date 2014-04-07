@@ -1,4 +1,4 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.models;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
