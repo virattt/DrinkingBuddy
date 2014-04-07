@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.virat.drinkingbuddy.DrinkingBuddyJSONSerializer;
 
 import android.content.Context;
 import android.os.Parcel;

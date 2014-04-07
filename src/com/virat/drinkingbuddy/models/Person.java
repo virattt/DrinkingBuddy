@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.virat.drinkingbuddy.DrinkingBuddyJSONSerializer;
 
 import android.content.Context;
 import android.util.Log;

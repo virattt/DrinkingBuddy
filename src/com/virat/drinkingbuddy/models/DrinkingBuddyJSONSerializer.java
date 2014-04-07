@@ -1,4 +1,4 @@
-package com.virat.drinkingbuddy;
+package com.virat.drinkingbuddy.models;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -16,8 +16,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.virat.drinkingbuddy.models.DrinkLab;
-import com.virat.drinkingbuddy.models.Person;
 
 import android.content.Context;
 
