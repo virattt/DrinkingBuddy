@@ -64,10 +64,6 @@ public class DayListFragment extends ListFragment {
 	private TextView mDateTextView;
 	private TextView mSessionStatus;
 
-	// Instance variables for drink updates
-	private AlarmManager mAlarmManager;
-	private Intent mDrinkUpdateReceiverIntent;
-	private PendingIntent mDrinkUpdateReceiverPendingIntent;
 
 	public static Context context;
 
@@ -442,24 +438,10 @@ public class DayListFragment extends ListFragment {
 
 	/** Helper method that cancels the existing alarm */
 	private void cancelExistingAlarm() {
-		// Get the AlarmManager Service
-		mAlarmManager = (AlarmManager) getActivity().getSystemService(
-				Context.ALARM_SERVICE);
-
-		// Create PendingIntent to start the
-		// DrinkUpdateRecevier
-		mDrinkUpdateReceiverIntent = new Intent(DayListFragment.context,
-				DrinkUpdateReceiver.class);
-
-		mDrinkUpdateReceiverPendingIntent = PendingIntent.getBroadcast(
-				DayListFragment.context, // context
-				0, // requestCode
-				mDrinkUpdateReceiverIntent, // intent
-				PendingIntent.FLAG_UPDATE_CURRENT);
-
-		// cancel the alarm
-		mAlarmManager.cancel(mDrinkUpdateReceiverPendingIntent);
-		mDrinkUpdateReceiverPendingIntent.cancel();
+		
+		// Cancel the alarm
+		Intent intent = new Intent();
+		DrinkUpdateService.setServiceAlarm(DayListFragment.context, false, intent);
 	}
 
 

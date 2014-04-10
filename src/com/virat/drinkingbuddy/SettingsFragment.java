@@ -26,15 +26,6 @@ public class SettingsFragment extends Fragment {
 	protected static final String SOUNDS_PREFS = "sounds_prefs";
 	protected static final String VIBRATION_PREFS = "vibration_prefs";
 
-	// Instance variables for drink updates
-	private AlarmManager mAlarmManager;
-	private Intent mDrinkUpdateReceiverIntent;
-	private PendingIntent mDrinkUpdateReceiverPendingIntent;
-
-	private TextView notificationsTextView;
-	private TextView soundsTextView;
-	private TextView vibrationTextView;
-
 	private Switch mNotificationsSwitch;
 	private Switch mSoundsSwitch;
 	private Switch mVibrationSwitch;
@@ -107,27 +98,10 @@ public class SettingsFragment extends Fragment {
 							mNotificationPrefs = true;
 						} else {
 							mNotificationPrefs = false;
-
-							// Get the AlarmManager Service
-							mAlarmManager = (AlarmManager) getActivity()
-									.getSystemService(Context.ALARM_SERVICE);
-
-							// Create PendingIntent to start the
-							// DrinkUpdateRecevier
-							mDrinkUpdateReceiverIntent = new Intent(
-									DayListFragment.context,
-									DrinkUpdateReceiver.class);
-
-							mDrinkUpdateReceiverPendingIntent = PendingIntent
-									.getBroadcast(DayListFragment.context, // context
-											0, // requestCode
-											mDrinkUpdateReceiverIntent, // intent
-											PendingIntent.FLAG_UPDATE_CURRENT);
-
-							// cancel the alarm
-							mAlarmManager
-									.cancel(mDrinkUpdateReceiverPendingIntent);
-							mDrinkUpdateReceiverPendingIntent.cancel();
+							
+							// Cancel the alarm
+							Intent intent = new Intent();
+							DrinkUpdateService.setServiceAlarm(DayListFragment.context, false, intent);
 						}
 					}
 				});

@@ -63,11 +63,6 @@ public class DrinkListFragment extends ListFragment {
 	private static final int REQUEST_TERMS = 1;
 	private static final int REQUEST_DONE_DRINKING = 2;
 
-	// Instance variables for drink updates
-	private AlarmManager mAlarmManager;
-	private Intent mDrinkUpdateReceiverIntent;
-	private PendingIntent mDrinkUpdateReceiverPendingIntent;
-
 	// Variables for user notification preferences
 	private SharedPreferences sharedPrefs;
 	private boolean mNotificationPrefs;
@@ -104,12 +99,6 @@ public class DrinkListFragment extends ListFragment {
 		return fragment;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle) The
-	 * onCreate function
-	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -136,38 +125,11 @@ public class DrinkListFragment extends ListFragment {
 		mNotificationPrefs = sharedPrefs.getBoolean(SettingsFragment.NOTIFICATION_PREFS, true);
 
 
-		// Get the AlarmManager Service
-		mAlarmManager = (AlarmManager) getActivity().getSystemService(
-				Context.ALARM_SERVICE);
-
-		// Create PendingIntent to start the DrinkUpdateRecevier
-		mDrinkUpdateReceiverIntent = new Intent(DayListFragment.context,
-				DrinkUpdateReceiver.class);
-
-		// Add variables for the content intent in DrinkUpdateReceiver
-		mDrinkUpdateReceiverIntent.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID,
-				mDrinkLab.getId());
-		mDrinkUpdateReceiverIntent.putExtra(DrinkListFragment.EXTRA_DRINKLAB,
-				mDrinkLab);
-
-		mDrinkUpdateReceiverPendingIntent = PendingIntent.getBroadcast(
-				DayListFragment.context, // context
-				0, // requestCode
-				mDrinkUpdateReceiverIntent, // intent
-				PendingIntent.FLAG_UPDATE_CURRENT);
-
 		// Create and set the list adapter
 		DrinkAdapter adapter = new DrinkAdapter(mDrinks);
 		setListAdapter(adapter);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.ListFragment#onCreateView(android.view.LayoutInflater
-	 * , android.view.ViewGroup, android.os.Bundle) The onCreateView function
-	 */
 	@TargetApi(11)
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -249,13 +211,10 @@ public class DrinkListFragment extends ListFragment {
 				public void onClick(View v) {
 					// Start drink updates if user JUST started drinking
 					if (mDrinks.size() >= 0 && mNotificationPrefs) {
-
-						// Set the alarm with a default interval of 1 hour
-						mAlarmManager.setInexactRepeating(
-								AlarmManager.RTC_WAKEUP,
-									System.currentTimeMillis() + AlarmManager.INTERVAL_HALF_HOUR, // Start first alarm in 30 mins
-									AlarmManager.INTERVAL_HOUR, // Repeat alarm every hour
-								mDrinkUpdateReceiverPendingIntent);
+						
+						// Create an Intent to start the Notification service
+						Intent intent = createAlarmIntent();
+						DrinkUpdateService.setServiceAlarm(DayListFragment.context, true, intent);
 					}
 
 					Drink drink = new Drink();
@@ -331,28 +290,12 @@ public class DrinkListFragment extends ListFragment {
 		return v;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateOptionsMenu(android.view.Menu,
-	 * android.view.MenuInflater) The onCreateOptionsMenu - inflates the options
-	 * menu at the top of the Activity
-	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_drink_list, menu);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onOptionsItemSelected(android.view.MenuItem
-	 * ) onOptionsItemSelected - puts the users ActionBar choice on an Intent
-	 * and starts an Activity that corresponds to the users choice
-	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -366,14 +309,6 @@ public class DrinkListFragment extends ListFragment {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.ListFragment#onListItemClick(android.widget.ListView
-	 * , android.view.View, int, long) Handler for the lists in the LsitView
-	 * when the user clicks a ListView View object
-	 */
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Drink d = ((DrinkAdapter) getListAdapter()).getItem(position);
@@ -387,7 +322,6 @@ public class DrinkListFragment extends ListFragment {
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// super.onActivityResult(requestCode, resultCode, data);
 
 		if (resultCode != Activity.RESULT_OK)
 			return;
@@ -401,24 +335,21 @@ public class DrinkListFragment extends ListFragment {
 			mDrinkLab.setIsDrinking(false);
 			mDoneDrinkingButton.setClickable(false);
 			mNewDrinkButton.setClickable(false);
-
-			mAlarmManager.cancel(mDrinkUpdateReceiverPendingIntent);
-			mDrinkUpdateReceiverPendingIntent.cancel();
+			
+			// Re-create Intent to stop the Notification service
+			Intent intent = createAlarmIntent();
+			DrinkUpdateService.setServiceAlarm(DayListFragment.context, false, intent);
 		}
 	}
-
-	/*
-	 * Gets a static instance of this activity's context
-	 */
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateContextMenu(android.view.ContextMenu
-	 * , android.view.View, android.view.ContextMenu.ContextMenuInfo) Inflate
-	 * the Context Menu for pre-Honeycomb devices
-	 */
+	/** Creates/re-creates Intent for starting/stopping alarm service */
+	private Intent createAlarmIntent() {
+		
+		Intent intent = new Intent();
+		intent.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID,
+				mDrinkLab.getId());
+		return intent;
+	}
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -426,13 +357,6 @@ public class DrinkListFragment extends ListFragment {
 				menu);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onContextItemSelected(android.view.MenuItem
-	 * ) Deletes a Drink using a floating context menu
-	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item
@@ -451,10 +375,7 @@ public class DrinkListFragment extends ListFragment {
 		return super.onContextItemSelected(item);
 	}
 
-	/*
-	 * Nested ArrayAdapter class that serves as the adapter for the ListView in
-	 * DrinkListFragment
-	 */
+	/** Serves as the adapter for the ListView in DrinkListFragment */
 	private class DrinkAdapter extends ArrayAdapter<Drink> {
 
 		public DrinkAdapter(ArrayList<Drink> drinks) {
@@ -504,9 +425,7 @@ public class DrinkListFragment extends ListFragment {
 		DayLab.get(getActivity()).saveDrinkLab();
 	}
 
-	/*
-	 * Formats the Time and returns it as a formatted String
-	 */
+	/** Formats the Time and returns it as a formatted String */
 	private String formatTime(Date time) {
 		SimpleDateFormat fmt = new SimpleDateFormat("h:mm a");
 		return fmt.format(time);

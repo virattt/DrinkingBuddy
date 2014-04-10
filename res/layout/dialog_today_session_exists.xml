@@ -34,6 +34,6 @@
         android:layout_marginRight="16dp"
         android:gravity="center"
         android:textSize="14dp"
-        android:text="Are you sure you want to create a new drinking session today? All previous sessions will be marked as Done Drinking."/>
+        android:text="Are you sure you want to create a new drinking session today? \n\n All previous sessions will be marked as Done Drinking."/>
 
 </LinearLayout>
