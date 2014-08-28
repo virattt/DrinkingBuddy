@@ -74,7 +74,6 @@ public class DrinkListFragment extends ListFragment {
 	private TextView mTimeTextView; // time of drink
 	private TextView mTotalCaloriesTextView; // total calories
 	private TextView mTotalDrinksTextView; // total drinks
-	private TextView mTotalTimeTextView; // total drinking time
 	private TextView mBacTextView; // BAC text view
 
 	private Button mDoneDrinkingButton;
@@ -223,11 +222,6 @@ public class DrinkListFragment extends ListFragment {
 				.findViewById(R.id.drink_list_totalCaloriesTextView);
 		mTotalCaloriesTextView.setText(mDrinkLab.getCalories() + "");
 
-		// TextView for total drinking time
-		mTotalTimeTextView = (TextView) v
-				.findViewById(R.id.drink_list_durationTextView);
-		mTotalTimeTextView.setText(mDrinkLab.getDrinkingDuration(mDrinkLab));
-
 		// Button for Done Drinking
 		mDoneDrinkingButton = (Button) v
 				.findViewById(R.id.drink_list_doneDrinkingButton);
@@ -265,7 +259,6 @@ public class DrinkListFragment extends ListFragment {
 					BACDialogFragment dialog = new BACDialogFragment()
 							.newInstance(mDrinkLab);
 					dialog.show(fm, DIALOG_DONE_DRINKING);
-
 				}
 			}
 		});
