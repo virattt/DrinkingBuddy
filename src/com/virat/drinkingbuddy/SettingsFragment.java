@@ -100,8 +100,7 @@ public class SettingsFragment extends Fragment {
 							mNotificationPrefs = false;
 							
 							// Cancel the alarm
-							Intent intent = new Intent();
-							DrinkUpdateService.setServiceAlarm(DayListFragment.context, false, intent);
+							DrinkUpdates.stopUpdates(DayListFragment.context);
 						}
 					}
 				});

@@ -5,19 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-import com.virat.drinkingbuddy.dialogfragments.BACDialogFragment;
-import com.virat.drinkingbuddy.dialogfragments.DoneDrinkingDialogFragment;
-import com.virat.drinkingbuddy.dialogfragments.ProfileIncompleteFragment;
-import com.virat.drinkingbuddy.models.DayLab;
-import com.virat.drinkingbuddy.models.Drink;
-import com.virat.drinkingbuddy.models.DrinkLab;
-import com.virat.drinkingbuddy.models.Person;
-
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +17,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -43,6 +32,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.virat.drinkingbuddy.dialogfragments.BACDialogFragment;
+import com.virat.drinkingbuddy.dialogfragments.DoneDrinkingDialogFragment;
+import com.virat.drinkingbuddy.dialogfragments.ProfileIncompleteFragment;
+import com.virat.drinkingbuddy.models.DayLab;
+import com.virat.drinkingbuddy.models.Drink;
+import com.virat.drinkingbuddy.models.DrinkLab;
+import com.virat.drinkingbuddy.models.User;
 
 public class DrinkListFragment extends ListFragment {
 
@@ -63,9 +60,6 @@ public class DrinkListFragment extends ListFragment {
 	private static final int REQUEST_TERMS = 1;
 	private static final int REQUEST_DONE_DRINKING = 2;
 
-	// Variables for user notification preferences
-	private SharedPreferences sharedPrefs;
-	private boolean mNotificationPrefs;
 	
 	// Model level instance variables
 	private ArrayList<Drink> mDrinks;
@@ -83,9 +77,9 @@ public class DrinkListFragment extends ListFragment {
 	private TextView mTotalTimeTextView; // total drinking time
 	private TextView mBacTextView; // BAC text view
 
+	private Button mDoneDrinkingButton;
 	private Button mBacButton;
 	private Button mNewDrinkButton;
-	private Button mDoneDrinkingButton;
 
 	public static DrinkListFragment newInstance(UUID drinkLabId,
 			DrinkLab drinkLab) {
@@ -120,11 +114,6 @@ public class DrinkListFragment extends ListFragment {
 		mTotalCalories = mDrinkLab.getCalories();
 		mIsDrinking = mDrinkLab.getIsDrinking();
 
-		sharedPrefs = getActivity().getSharedPreferences(SettingsFragment.SHARED_PREFS,
-				Context.MODE_PRIVATE);
-		mNotificationPrefs = sharedPrefs.getBoolean(SettingsFragment.NOTIFICATION_PREFS, true);
-
-
 		// Create and set the list adapter
 		DrinkAdapter adapter = new DrinkAdapter(mDrinks);
 		setListAdapter(adapter);
@@ -135,7 +124,7 @@ public class DrinkListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = getActivity().getLayoutInflater().inflate(
-				R.layout.list_item_all_drink_list_frag, null);
+				R.layout.list_item_all_drink, null);
 		v.setBackgroundColor(Color.parseColor("#B1BDCD"));
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -209,14 +198,6 @@ public class DrinkListFragment extends ListFragment {
 
 				@Override
 				public void onClick(View v) {
-					// Start drink updates if user JUST started drinking
-					if (mDrinks.size() >= 0 && mNotificationPrefs) {
-						
-						// Create an Intent to start the Notification service
-						Intent intent = createAlarmIntent();
-						DrinkUpdateService.setServiceAlarm(DayListFragment.context, true, intent);
-					}
-
 					Drink drink = new Drink();
 
 					DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId())
@@ -247,6 +228,26 @@ public class DrinkListFragment extends ListFragment {
 				.findViewById(R.id.drink_list_durationTextView);
 		mTotalTimeTextView.setText(mDrinkLab.getDrinkingDuration(mDrinkLab));
 
+		// Button for Done Drinking
+		mDoneDrinkingButton = (Button) v
+				.findViewById(R.id.drink_list_doneDrinkingButton);
+		if (!mDrinkLab.getIsDrinking()) {
+			mDoneDrinkingButton.setClickable(false);
+		} else {
+			mDoneDrinkingButton.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					FragmentManager fm = getActivity()
+							.getSupportFragmentManager();
+					DoneDrinkingDialogFragment dialog = new DoneDrinkingDialogFragment();
+					dialog.setTargetFragment(DrinkListFragment.this,
+							REQUEST_DONE_DRINKING);
+					dialog.show(fm, DIALOG_DONE_DRINKING);
+				}
+			});
+		}
+		
 		// Button for BAC
 		mBacButton = (Button) v.findViewById(R.id.drink_list_BACButton);
 		mBacButton.setOnClickListener(new View.OnClickListener() {
@@ -268,25 +269,7 @@ public class DrinkListFragment extends ListFragment {
 				}
 			}
 		});
-
-		mDoneDrinkingButton = (Button) v
-				.findViewById(R.id.drink_list_doneDrinkingButton);
-		if (!mDrinkLab.getIsDrinking()) {
-			mDoneDrinkingButton.setClickable(false);
-		} else {
-			mDoneDrinkingButton.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					FragmentManager fm = getActivity()
-							.getSupportFragmentManager();
-					DoneDrinkingDialogFragment dialog = new DoneDrinkingDialogFragment();
-					dialog.setTargetFragment(DrinkListFragment.this,
-							REQUEST_DONE_DRINKING);
-					dialog.show(fm, DIALOG_DONE_DRINKING);
-				}
-			});
-		}
+		
 		return v;
 	}
 
@@ -327,18 +310,17 @@ public class DrinkListFragment extends ListFragment {
 			return;
 
 		if (requestCode == REQUEST_DRINKLAB) {
-			mDrinkLab = data
-					.getParcelableExtra(DrinkFragment.EXTRA_DRINKS_ARRAY);
+			mDrinkLab = data.getParcelableExtra(DrinkFragment.EXTRA_DRINKS_ARRAY);
 		} else if (requestCode == REQUEST_DONE_DRINKING) {
-			Person.get(getActivity()).setIsDrinking(false);
-			Person.get(getActivity()).savePerson();
+			User.get(getActivity()).setIsDrinking(false);
+			User.get(getActivity()).savePerson();
 			mDrinkLab.setIsDrinking(false);
 			mDoneDrinkingButton.setClickable(false);
 			mNewDrinkButton.setClickable(false);
 			
 			// Re-create Intent to stop the Notification service
 			Intent intent = createAlarmIntent();
-			DrinkUpdateService.setServiceAlarm(DayListFragment.context, false, intent);
+			DrinkUpdates.stopUpdates(DayListFragment.context);
 		}
 	}
 	/** Creates/re-creates Intent for starting/stopping alarm service */
@@ -432,9 +414,9 @@ public class DrinkListFragment extends ListFragment {
 	}
 
 	private boolean userProfileIncomplete() {
-		if (Person.get(getActivity()).getWeight() == null
-				|| Person.get(getActivity()).getWeight().equals("")
-				|| Person.get(getActivity()).getGender().equals("none")) {
+		if (User.get(getActivity()).getWeight() == null
+				|| User.get(getActivity()).getWeight().equals("")
+				|| User.get(getActivity()).getGender().equals("none")) {
 			return true;
 		}
 		return false;

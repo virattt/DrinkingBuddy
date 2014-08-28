@@ -261,45 +261,8 @@ public class DrinkLab implements Parcelable {
 		Date first_drink_time = mDrinks.get(first_drink_index).getTime();
 		Date time_right_now = new Date();
 
-		long hour_now = (time_right_now.getTime() / (1000 * 60 * 60)); // I TOOK
-																		// OFF
-																		// MOD
-																		// 24 (
-																		// % 24)
-																		// TO
-																		// SEE
-																		// IF I
-																		// CAN
-																		// GET
-																		// ABSOLUTE
-																		// HOUR
-																		// DURATION
-																		// vs
-																		// 24/hr
-																		// based
-																		// HOUR
-		long hour_first_drink = (first_drink_time.getTime() / (1000 * 60 * 60)); // I
-																					// TOOK
-																					// OFF
-																					// MOD
-																					// 24
-																					// (
-																					// %
-																					// 24)
-																					// TO
-																					// SEE
-																					// IF
-																					// I
-																					// CAN
-																					// GET
-																					// ABSOLUTE
-																					// HOUR
-																					// DURATION
-																					// vs
-																					// 24/hr
-																					// based
-																					// HOUR
-
+		long hour_now = (time_right_now.getTime() / (1000 * 60 * 60)); 		
+		long hour_first_drink = (first_drink_time.getTime() / (1000 * 60 * 60)); 
 		double hour_difference = Math.floor(hour_now - hour_first_drink);
 
 		if (hour_difference < 0) {
@@ -319,7 +282,7 @@ public class DrinkLab implements Parcelable {
 		// total hours of drinking
 		long hours = getHoursOfDrinking();
 
-		int weight = Integer.parseInt(Person.get(mAppContext).getWeight());
+		int weight = Integer.parseInt(User.get(mAppContext).getWeight());
 
 		double sum_alcohol_content = getSumAlcoholContent();
 		double alcohol_elimination_constant = 0.015;
@@ -328,7 +291,7 @@ public class DrinkLab implements Parcelable {
 		double bac_double_formatted = 0.000;
 		// calculate the gender constant:
 		// 0.55 for females and 0.68 for males
-		if (Person.get(mAppContext).getGender().equals("female")) {
+		if (User.get(mAppContext).getGender().equals("female")) {
 			gender_constant = 0.66;
 		} else {
 			gender_constant = 0.73;

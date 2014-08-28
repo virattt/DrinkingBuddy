@@ -39,7 +39,7 @@ import com.virat.drinkingbuddy.dialogfragments.TermsAndConditionsDialogFragment;
 import com.virat.drinkingbuddy.dialogfragments.TodaySessionExistDialogFragment;
 import com.virat.drinkingbuddy.models.DayLab;
 import com.virat.drinkingbuddy.models.DrinkLab;
-import com.virat.drinkingbuddy.models.Person;
+import com.virat.drinkingbuddy.models.User;
 
 /*
  * This class displays the list of DrinkLabs (drinking sessions) 
@@ -155,7 +155,7 @@ public class DayListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = getActivity().getLayoutInflater().inflate(
-				R.layout.list_item_all_day_list_frag, null);
+				R.layout.list_item_all_day, null);
 		v.setBackgroundColor(Color.parseColor("#B1BDCD")); // light gray
 
 		mStartDrinkingButton = (Button) v
@@ -165,7 +165,7 @@ public class DayListFragment extends ListFragment {
 			@Override
 			public void onClick(View v) {
 
-				if (todaySessionExists()) {
+				if (sessionExists()) {
 					FragmentManager fm = getActivity()
 							.getSupportFragmentManager();
 					TodaySessionExistDialogFragment dialog = new TodaySessionExistDialogFragment();
@@ -364,25 +364,17 @@ public class DayListFragment extends ListFragment {
 		}
 	}
 	
-	/** Checks if a DrinkLab for today already exists */
-	private boolean todaySessionExists() {
-		// Today's Date
-		Date todayDate = new Date();
-		SimpleDateFormat fmt = new SimpleDateFormat("M/d/yyyy");
-		String todayDateStr = fmt.format(todayDate);
-
+	/** Checks if an active DrinkLab session already exists */
+	private boolean sessionExists() {
+		
 		for (DrinkLab drinkLab : DayLab.get(getActivity()).getDrinkLabs()) {
-			// Get date of current drinkLab
-			Date drinkLabDate = drinkLab.getDate();
-			String drinkLabDateStr = fmt.format(drinkLabDate);
-
-			// Check if drinkLab's date is today
-			if (todayDateStr.equals(drinkLabDateStr)) {
+			if (drinkLab.getIsDrinking()) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	/** Helper class that checks if a DrinkLab is for today */
 	private boolean isToday(DrinkLab drinkLab) {
 		
@@ -430,8 +422,8 @@ public class DayListFragment extends ListFragment {
 		i.putExtra(DrinkListFragment.EXTRA_DRINKLAB, drinkLab);
 
 		// Person is now drinking
-		Person.get(getActivity()).setIsDrinking(true);
-		Person.get(getActivity()).savePerson();
+		User.get(getActivity()).setIsDrinking(true);
+		User.get(getActivity()).savePerson();
 
 		startActivityForResult(i, 0);
 	}
@@ -440,8 +432,7 @@ public class DayListFragment extends ListFragment {
 	private void cancelExistingAlarm() {
 		
 		// Cancel the alarm
-		Intent intent = new Intent();
-		DrinkUpdateService.setServiceAlarm(DayListFragment.context, false, intent);
+		DrinkUpdates.stopUpdates(context);
 	}
 
 
@@ -454,5 +445,8 @@ public class DayListFragment extends ListFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
+		
+		// Save the drinklabs
+		DayLab.get(getActivity()).saveDrinkLab();
 	}	
 }

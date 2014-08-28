@@ -18,7 +18,6 @@ public class BACDialogFragment extends DialogFragment {
 	private static final String EXTRA_CUSTOM_DRINKLAB = "com.virat.drinkingbuddy.custom_drink";
 	
 	private TextView mBACTextView;
-	private TextView mImpairmentLevel;
 	
 	private DrinkLab mDrinkLab;
 	
@@ -48,9 +47,6 @@ public class BACDialogFragment extends DialogFragment {
 		View v = inflater.inflate(R.layout.bac_dialog_fragment, null);
 		mBACTextView = (TextView)v.findViewById(R.id.bac_textview);
 		mBACTextView.setText(mDrinkLab.getBAC() + "%");
-		
-		mImpairmentLevel = (TextView)v.findViewById(R.id.bac_impairment_level);
-		mImpairmentLevel.setText(mDrinkLab.getImpairmentLevel());
 		
 		builder.setView(v)
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {

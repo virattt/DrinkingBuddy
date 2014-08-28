@@ -1,6 +1,6 @@
 package com.virat.drinkingbuddy;
 
-import com.virat.drinkingbuddy.models.Person;
+import com.virat.drinkingbuddy.models.User;
 
 import android.app.ActionBar;
 import android.graphics.Color;
@@ -52,13 +52,13 @@ public class UserFragment extends Fragment {
 															// background
 
 		mPersonName = (EditText) v.findViewById(R.id.user_name_editText);
-		mPersonName.setText(Person.get(getActivity()).getName());
+		mPersonName.setText(User.get(getActivity()).getName());
 		mPersonName.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				Person.get(getActivity()).setName(s.toString());
+				User.get(getActivity()).setName(s.toString());
 			}
 
 			@Override
@@ -73,13 +73,13 @@ public class UserFragment extends Fragment {
 		});
 
 		mPersonWeight = (EditText) v.findViewById(R.id.user_weight_editText);
-		mPersonWeight.setText(Person.get(getActivity()).getWeight());
+		mPersonWeight.setText(User.get(getActivity()).getWeight());
 		mPersonWeight.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
-				Person.get(getActivity()).setWeight(s.toString());
+				User.get(getActivity()).setWeight(s.toString());
 			}
 
 			@Override
@@ -99,9 +99,9 @@ public class UserFragment extends Fragment {
 				.findViewById(R.id.user_male_radioButton);
 
 		// Check if user has already specified their gender
-		if (Person.get(getActivity()).getGender().equals("female")) {
+		if (User.get(getActivity()).getGender().equals("female")) {
 			mRadioFemaleButton.setChecked(true);
-		} else if (Person.get(getActivity()).getGender().equals("male")) {
+		} else if (User.get(getActivity()).getGender().equals("male")) {
 			mRadioMaleButton.setChecked(true);
 		}
 
@@ -114,12 +114,12 @@ public class UserFragment extends Fragment {
 						// Check which radio button is clicked
 						switch (checkedId) {
 						case R.id.user_female_radioButton:
-							Person.get(getActivity()).setGender("female"); // user
+							User.get(getActivity()).setGender("female"); // user
 																			// is
 																			// female
 							break;
 						case R.id.user_male_radioButton:
-							Person.get(getActivity()).setGender("male"); // user
+							User.get(getActivity()).setGender("male"); // user
 																			// is
 																			// male
 							break;
@@ -144,7 +144,7 @@ public class UserFragment extends Fragment {
 				} else {
 					mUserProfileIncompleteTextView
 							.setVisibility(View.INVISIBLE);
-					Person.get(getActivity()).savePerson();
+					User.get(getActivity()).savePerson();
 					Toast.makeText(getActivity(), "Profile Saved!",
 							Toast.LENGTH_SHORT).show();
 
@@ -162,9 +162,9 @@ public class UserFragment extends Fragment {
 
 	// Check if user has entered weight
 	private boolean weightIncomplete() {
-		if (Person.get(getActivity()).getWeight() == null
-				|| Person.get(getActivity()).getWeight().equals("")
-				|| Person.get(getActivity()).getWeight().equals("0")) {
+		if (User.get(getActivity()).getWeight() == null
+				|| User.get(getActivity()).getWeight().equals("")
+				|| User.get(getActivity()).getWeight().equals("0")) {
 			return true;
 		} else {
 			return false;
@@ -172,8 +172,8 @@ public class UserFragment extends Fragment {
 	}
 
 	private boolean nameIncomplete() {
-		if (Person.get(getActivity()).getName() == null
-				|| Person.get(getActivity()).getName().equals("")) {
+		if (User.get(getActivity()).getName() == null
+				|| User.get(getActivity()).getName().equals("")) {
 			return true;
 		} else {
 			return false;
@@ -196,7 +196,7 @@ public class UserFragment extends Fragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		Person.get(getActivity()).savePerson();
+		User.get(getActivity()).savePerson();
 	}
 
 }

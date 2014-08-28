@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-public class Person {
+public class User {
 	private static final String FILENAME = "person.json";
 
 	private static final String JSON_NAME = "name";
@@ -17,7 +17,7 @@ public class Person {
 	private static final String JSON_WEIGHT = "weight";
 	private static final String JSON_IS_DRINKING = "is_drinking";
 
-	private static Person sPerson;
+	private static User sPerson;
 	private Context mAppContext;
 	private DrinkingBuddyJSONSerializer mSerializer;
 
@@ -26,7 +26,7 @@ public class Person {
 	private String mWeight;
 	private boolean mIsDrinking;
 
-	public Person(Context appContext) {
+	public User(Context appContext) {
 		mAppContext = appContext;
 		JSONObject json = new JSONObject();
 
@@ -56,9 +56,9 @@ public class Person {
 		return json;
 	}
 
-	public static Person get(Context c) {
+	public static User get(Context c) {
 		if (sPerson == null) {
-			sPerson = new Person(c.getApplicationContext());
+			sPerson = new User(c.getApplicationContext());
 		}
 		return sPerson;
 	}

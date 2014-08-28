@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import com.virat.drinkingbuddy.models.DayLab;
 import com.virat.drinkingbuddy.models.DrinkLab;
-import com.virat.drinkingbuddy.models.Person;
+import com.virat.drinkingbuddy.models.User;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -66,9 +66,8 @@ public class DrinkUpdateService extends IntentService {
 				(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 		if (isOn) {
-			alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 
-					System.currentTimeMillis() + AlarmManager.INTERVAL_HALF_HOUR, 
-					AlarmManager.INTERVAL_HOUR, 
+			alarmManager.set(AlarmManager.RTC_WAKEUP, 
+					System.currentTimeMillis() + AlarmManager.INTERVAL_HALF_HOUR + AlarmManager.INTERVAL_FIFTEEN_MINUTES,  
 					pi);
 		} else {
 			alarmManager.cancel(pi);
@@ -76,6 +75,7 @@ public class DrinkUpdateService extends IntentService {
 		}
 	}
 	
+	/** Creates a new Notification and pushes it to the user */
 	private void sendNotification(Intent intent) {
 		// Get user's SharedPreferences on Notification vibration and sound
 		SharedPreferences sharedPrefs = getSharedPreferences(SettingsFragment.SHARED_PREFS, Context.MODE_PRIVATE);
@@ -92,9 +92,9 @@ public class DrinkUpdateService extends IntentService {
 				PendingIntent.getActivity(this, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		// Create an Intent and PendingIntent for dismissing notifications
-		Intent notificationCancelIntent = new Intent(this, CancelNotificationReceiver.class);
+		Intent notificationCancelIntent = new Intent(DayListFragment.context, CancelNotificationReceiver.class);
 		notificationCancelIntent.putExtra(MY_NOTIFICATION_ID_STRING, MY_NOTIFICATION_ID);
-		PendingIntent contentCancelIntent = PendingIntent.getBroadcast(this, 0, notificationCancelIntent, 0);
+		PendingIntent contentCancelIntent = PendingIntent.getBroadcast(DayListFragment.context, 0, notificationCancelIntent, 0);
 
 		if (DayLab.get(this).getDrinkLab(drinkLabId) != null) {
 			int total_drinks = 
@@ -103,7 +103,7 @@ public class DrinkUpdateService extends IntentService {
 			double BAC;
 
 			// Check if user has completed their profile, if not, return 0.00 for BAC
-			if (Person.get(this).userProfileIncomplete()) {
+			if (User.get(this).userProfileIncomplete()) {
 				BAC = 0.00;
 			} else {
 				BAC = DayLab.get(this).getDrinkLab(drinkLabId).getBAC();
@@ -129,9 +129,9 @@ public class DrinkUpdateService extends IntentService {
 					.setContentTitle(notificationTitle)
 					.setContentText(notificationText)
 					.setContentIntent(contentIntent)
-					.setStyle(inboxStyle)
-					.addAction(R.drawable.ic_action_cancel, "Dismiss Drink Updates",
-							contentCancelIntent);
+					.setStyle(inboxStyle);
+					//.addAction(R.drawable.ic_action_cancel, "Dismiss Drink Updates",
+						//	contentCancelIntent);
 
 			// Check if user wants sound on Notification
 			if (soundsPrefs) {

@@ -63,7 +63,6 @@ public class Drink implements Parcelable {
 		if (json.has(JSON_ALCOHOL)) {
 			mAlcoholContent = json.getDouble(JSON_ALCOHOL);
 		}
-		
 	}
 	
 	/** Constructor from Parcel, reads back fields IN THE ORDER they were written */

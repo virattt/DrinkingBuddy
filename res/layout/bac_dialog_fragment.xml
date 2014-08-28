@@ -34,11 +34,4 @@
        	android:textStyle="bold"
         android:textSize="40dp"
         android:text="0.000%"/>
-    
-    <TextView 
-        android:id="@+id/bac_impairment_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginBottom="8dp"/>
 </LinearLayout>

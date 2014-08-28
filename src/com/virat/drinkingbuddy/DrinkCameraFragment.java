@@ -73,12 +73,12 @@ public class DrinkCameraFragment extends Fragment {
                     if (mCamera != null) {
                         mCamera.setPreviewDisplay(holder);
                         
-	                    // set SurfaceView to Portrait mode
+	                    // Set SurfaceView to Portrait mode
 	                    if (Build.VERSION.SDK_INT >= 8) 
-	                    	mCamera.setDisplayOrientation(90);
-	                    
+	                    	mCamera.setDisplayOrientation(90);	                    
                     }
                 } catch (IOException exception) {
+                	// Do  nothing
                 }   
             }
 
@@ -96,22 +96,23 @@ public class DrinkCameraFragment extends Fragment {
                 Camera.Parameters parameters = mCamera.getParameters();
                 Size s = getBestSupportedSize(parameters.getSupportedPreviewSizes(), w, h);
                 
-                // check is user's phone is a Samsung Galaxy S4. 
+                // Check if user's phone is a Samsung Galaxy S4. 
                 // The reason for this is because the S4 has a 
-                // resolution setting is 2560 x 1440.  Without this
+                // resolution setting that is 2560 x 1440.  Without this
                 // check and reformatting of s.width to 1440, the user's
                 // S4 will take pictures that have white/black bars on the 
-                // side of the image that are quite unsightly.
+                // side of the image(s).
                 if (isGalaxyS4()) {
                 	s.width = 1440;
                 }
+                
                 parameters.setPreviewSize(s.width, s.height);
                 s = getBestSupportedSize(parameters.getSupportedPictureSizes(), w, h);
                 parameters.setPictureSize(s.width, s.height);
                 parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
                 mCamera.setParameters(parameters);
                 
-                // toggle flash button
+                // Toggle flash button
                 mFlashButton.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -143,7 +144,6 @@ public class DrinkCameraFragment extends Fragment {
                 }
             }
         });
-        
         mProgressContainer = v.findViewById(R.id.drink_camera_progressContainer);
         mProgressContainer.setVisibility(View.INVISIBLE);
         
@@ -175,7 +175,6 @@ public class DrinkCameraFragment extends Fragment {
 	};
 	
 	private Camera.PictureCallback mJpegCallback = new Camera.PictureCallback() {
-		
 		@Override
 		public void onPictureTaken(byte[] data, Camera camera) {
 			// Create a filename
@@ -224,6 +223,7 @@ public class DrinkCameraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             mCamera = Camera.open(0);
         } else {

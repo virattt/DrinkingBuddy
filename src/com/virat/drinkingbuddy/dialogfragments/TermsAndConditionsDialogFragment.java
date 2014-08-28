@@ -56,7 +56,6 @@ public class TermsAndConditionsDialogFragment extends DialogFragment {
 		i.putExtra(EXTRA_TERMS_AGREED, mTermsAgreed);
 		getTargetFragment().onActivityResult(getTargetRequestCode(),
 				resultCode, i);
-
 	}
 
 	@Override

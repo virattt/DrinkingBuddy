@@ -29,7 +29,7 @@ public class DrinkingBuddyJSONSerializer {
 		mFilename = f;
 	}
 	
-	public void savePerson(Person person) throws JSONException, IOException {
+	public void savePerson(User person) throws JSONException, IOException {
 		// Build an array with JSON
 		JSONArray array = new JSONArray();
 		array.put(person.toJSON());
@@ -67,7 +67,6 @@ public class DrinkingBuddyJSONSerializer {
 			}
 		}
 	}
-	
 
 	public JSONObject loadPerson() throws IOException, JSONException {
 		JSONObject json = new JSONObject();

@@ -11,6 +11,8 @@ import com.virat.drinkingbuddy.dialogfragments.CustomBeerFragment;
 import com.virat.drinkingbuddy.dialogfragments.CustomDrinkFragment;
 import com.virat.drinkingbuddy.dialogfragments.CustomLiquorFragment;
 import com.virat.drinkingbuddy.dialogfragments.CustomWineFragment;
+import com.virat.drinkingbuddy.dialogfragments.DeleteDrinkDialogFragment;
+import com.virat.drinkingbuddy.dialogfragments.DoneDrinkingDialogFragment;
 import com.virat.drinkingbuddy.dialogfragments.ImageFragment;
 import com.virat.drinkingbuddy.dialogfragments.TimePickerFragment;
 import com.virat.drinkingbuddy.models.DayLab;
@@ -24,6 +26,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -46,8 +49,8 @@ public class DrinkFragment extends Fragment {
 
 	//private static 	final String TAG = "DrinkFragment"; // for debugging
 	
-	public static final String EXTRA_DRINK_ID = "com.virat.drinkingbuddy.drink_id";
-	public static final String EXTRA_DRINKLAB_ID = "com.virat.drinkingbuddy.drinklab_id";
+	public static final String EXTRA_DRINK_ID = "com.virat.drinkingbuddy.drinkfragment.drink_id";
+	public static final String EXTRA_DRINKLAB_ID = "com.virat.drinkingbuddy.drinkfragment.drinklab_id";
 	
 	public static final String EXTRA_DRINKS_ARRAY = "com.virat.drinkingbuddy.drinks_array";
 	public static final String EXTRA_DRINK = "com.virat.drinkingbuddy.drink";
@@ -58,10 +61,12 @@ public class DrinkFragment extends Fragment {
 	private static final String DIALOG_CUSTOM_BEER = "custom_beer";
 	private static final String DIALOG_CUSTOM_WINE = "custom_wine";
 	private static final String DIALOG_CUSTOM_LIQUOR = "custom_liquor";
+	private static final String DIALOG_DELETE_DRINK = "delete_drink";
 	
 	private static final int REQUEST_TIME = 0;
 	private static final int REQUEST_PHOTO = 1;
 	private static final int REQUEST_CUSTOM_DRINK = 2;
+	private static final int REQUEST_DELETE_DRINK = 3;
 	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	
@@ -90,7 +95,11 @@ public class DrinkFragment extends Fragment {
 	private Button mWineButton;
 	private Button mLiquorButton;
 	private Button mSaveButton;
+	private Button mDeleteButton;
 	
+	// Variables for user notification preferences
+	private SharedPreferences sharedPrefs;
+	private boolean mNotificationPrefs;	
 	
 	public static DrinkFragment newInstance(UUID drinkId, UUID drinkLabId) {
 		Bundle args = new Bundle();
@@ -137,6 +146,11 @@ public class DrinkFragment extends Fragment {
 	            return bitmap.getByteCount() / 1024;
 			}
 		};
+		
+		sharedPrefs = getActivity().getSharedPreferences(SettingsFragment.SHARED_PREFS,
+				Context.MODE_PRIVATE);
+		mNotificationPrefs = sharedPrefs.getBoolean(SettingsFragment.NOTIFICATION_PREFS, true);
+
 	}
 
 	@TargetApi(11)
@@ -271,11 +285,33 @@ public class DrinkFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (NavUtils.getParentActivityName(getActivity()) != null) {
+					
+					// Start drink updates
+					if (mNotificationPrefs) {
+						
+						// Create an Intent to start the Notification service
+						Intent intent = createAlarmIntent();
+						DrinkUpdates.startUpdates(DayListFragment.context, intent);
+					}
+
 					Toast.makeText(getActivity(), "Drink Saved!", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(getActivity(), DrinkListActivity.class);
 					intent.putExtra(EXTRA_DRINKLAB_ID, mDrinkLab.getId());
 					NavUtils.navigateUpTo(getActivity(), intent);
 				}
+			}
+		});
+        
+        mDeleteButton = (Button)v.findViewById(R.id.drink_deleteButton);
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				FragmentManager fm = getActivity()
+						.getSupportFragmentManager();
+				DeleteDrinkDialogFragment dialog = new DeleteDrinkDialogFragment();
+				dialog.setTargetFragment(DrinkFragment.this, REQUEST_DELETE_DRINK);
+				dialog.show(fm, DIALOG_DELETE_DRINK);	
 			}
 		});
 		
@@ -287,6 +323,15 @@ public class DrinkFragment extends Fragment {
         }		
 		
 		return v; 
+	}
+	
+	/** Creates/re-creates Intent for starting/stopping alarm service */
+	private Intent createAlarmIntent() {
+		
+		Intent intent = new Intent();
+		intent.putExtra(DrinkFragment.EXTRA_DRINKLAB_ID,
+				mDrinkLab.getId());
+		return intent;
 	}
 	
 	private boolean isNewDrink() {
@@ -338,6 +383,26 @@ public class DrinkFragment extends Fragment {
 			
 			double custom_drink_volume = data.getDoubleExtra(CustomDrinkFragment.EXTRA_CUSTOM_DRINK_VOLUME, 0.00);
 			mDrink.setVolume(custom_drink_volume);
+		} else if (requestCode == REQUEST_DELETE_DRINK) {
+			
+			boolean delete_drink = 
+					data.getBooleanExtra(DeleteDrinkDialogFragment.EXTRA_DELETE_DRINK, false);
+			
+			if (delete_drink) {
+				// Delete the drink from the DrinkLab
+				DayLab.get(getActivity()).getDrinkLab(mDrinkLab.getId())
+				.deleteDrink(mDrink);
+				
+				// Cancel the alarm
+				DrinkUpdates.stopUpdates(DayListFragment.context);
+				
+				// Navigate up to parent activity
+				Toast.makeText(getActivity(), "Drink Deleted", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getActivity(), DrinkListActivity.class);
+				intent.putExtra(EXTRA_DRINKLAB_ID, mDrinkLab.getId());
+				NavUtils.navigateUpTo(getActivity(), intent);				
+			}
+			
 		}
 	}
 	

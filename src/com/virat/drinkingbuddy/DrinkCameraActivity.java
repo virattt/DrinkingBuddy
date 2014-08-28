@@ -22,5 +22,4 @@ public class DrinkCameraActivity extends SingleFragmentActivity {
 		
 		return new DrinkCameraFragment();
 	}
-
 }

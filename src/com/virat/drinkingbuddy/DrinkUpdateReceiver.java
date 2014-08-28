@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import com.virat.drinkingbuddy.models.DayLab;
 import com.virat.drinkingbuddy.models.DrinkLab;
-import com.virat.drinkingbuddy.models.Person;
+import com.virat.drinkingbuddy.models.User;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -50,7 +50,8 @@ public class DrinkUpdateReceiver extends BroadcastReceiver {
 
 		// DrinkLab variables for the Notification's content intent
 		UUID drinkLabId = (UUID) intent
-				.getSerializableExtra(DrinkFragment.EXTRA_DRINKLAB_ID);
+				.getSerializableExtra(DrinkUpdates.EXTRA_DRINKLAB_ID);
+		
 		DrinkLab drinkLab = (DrinkLab) intent
 				.getParcelableExtra(DrinkListFragment.EXTRA_DRINKLAB);
 
@@ -60,22 +61,15 @@ public class DrinkUpdateReceiver extends BroadcastReceiver {
 		mContentIntent = PendingIntent.getActivity(context, 0,
 				mNotificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		// Create an Intent/PI for dismissing notifications
-		mNotificationCancelIntent = new Intent(context,
-				CancelNotificationReceiver.class);
-		mNotificationCancelIntent.putExtra(MY_NOTIFICATION_ID_STRING,
-				MY_NOTIFICATION_ID);
-		mContentCancelIntent = PendingIntent.getBroadcast(context, 0,
-				mNotificationCancelIntent, 0);
-
 		if (DayLab.get(context).getDrinkLab(drinkLabId) != null) {
-			int total_drinks = DayLab.get(context).getDrinkLab(drinkLabId)
-					.getDrinkCount();
+			
+			int total_drinks = 
+					DayLab.get(context).getDrinkLab(drinkLabId).getDrinkCount();
 			double BAC;
 
 			// Check if user has completed their profile,
 			// if not, return 0.00 for BAC
-			if (Person.get(context).userProfileIncomplete()) {
+			if (User.get(context).userProfileIncomplete()) {
 				BAC = 0.00;
 			} else {
 				BAC = DayLab.get(context).getDrinkLab(drinkLabId).getBAC();
@@ -83,14 +77,16 @@ public class DrinkUpdateReceiver extends BroadcastReceiver {
 
 			String notificationTitle = "Drinkster";
 			String notificationText = "Total Drinks: " + total_drinks
-					+ "\n\nEstimate BAC: " + BAC;
+					+ "\n\nEstimated BAC: " + BAC;
 
+			
+			// Make the Notification "expandable"
 			Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
-			// Sets a title for the Inbox style big view
 			inboxStyle.setBigContentTitle(notificationTitle);
 			inboxStyle.addLine("Total Drinks: " + total_drinks);
 			inboxStyle.addLine("Estimated BAC: " + BAC + "%");
 
+			// Build the Notification
 			Notification.Builder notificationBuilder = new Notification.Builder(
 					context)
 					.setTicker(notificationText)
@@ -100,10 +96,9 @@ public class DrinkUpdateReceiver extends BroadcastReceiver {
 					.setContentTitle(notificationTitle)
 					.setContentText(notificationText)
 					.setContentIntent(mContentIntent)
-					.setStyle(inboxStyle)
-					.addAction(R.drawable.ic_action_cancel, "Dismiss",
-							mContentCancelIntent);
+					.setStyle(inboxStyle);
 
+			// Check user's preference for Notification sound/vibration
 			if (mSoundsPrefs) {
 				notificationBuilder.setSound(mSound);
 			}
@@ -113,10 +108,9 @@ public class DrinkUpdateReceiver extends BroadcastReceiver {
 			}
 
 			// Pass the Notification to the NotificationManager:
-			NotificationManager mNotificationManager = (NotificationManager) context
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(MY_NOTIFICATION_ID,
-					notificationBuilder.build());
+			NotificationManager mNotificationManager = 
+					(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			mNotificationManager.notify(MY_NOTIFICATION_ID,notificationBuilder.build());
 		}
 	}
 }
